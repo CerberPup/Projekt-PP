@@ -42,8 +42,8 @@ namespace AutoLogin
 
         public void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            String ausername = "wowr130013@gmail.com";
-            String apassword = "HFXKV7x2hYUF";
+            String ausername = "";
+            String apassword = "";
             var webBrowser = sender as WebBrowser;
             try
             {
