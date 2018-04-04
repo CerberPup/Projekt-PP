@@ -84,10 +84,155 @@ namespace AutoLogin
             webBrowser1.Navigate(input);*/
             //MessageBox.Show(ReadHtmlPage());
             //email password
+
             Dane d = new Dane
             {
-                Username = "haha",
-                data = "wololo"
+                _User = new User
+                {
+                    _Name = "NazwaUsera",
+                    //_Date = "<PUSTE>",
+                    _Id = "ID56423196874",
+                    _Likes = new Like[2]
+                    {
+                        new Like{
+                            _Date = DateTime.Parse("04.02.1996 00:00:00"),
+                            _PhotoId = ""
+                        },
+                        new Like{
+                            _Date = DateTime.Parse("04.02.1996 00:00:00"),
+                            _PhotoId = ""
+                        }
+                    }
+                },
+                _Followers = new User[3]
+                {
+                    new User{
+                        _Name = "floower1",
+                        _Date = DateTime.Parse("04.02.1991 00:00:00"),
+                        _Id = "ID56423196874",
+                        _Likes = new Like[2]
+                    {
+                        new Like{
+                            _Date = DateTime.Parse("04.02.1996 00:00:00"),
+                            _PhotoId = ""
+                        },
+                        new Like{
+                            _Date = DateTime.Parse("04.02.1996 00:00:00"),
+                            _PhotoId = ""
+                        }
+                    }
+                    }
+                    ,
+                    new User
+                    {
+                        _Name = "floower2",
+                        _Date = DateTime.Parse("04.02.1991 00:00:00"),
+                        _Id = "ID56423196124",
+                        _Likes = new Like[2]
+                    {
+                        new Like{
+                            _Date = DateTime.Parse("04.02.1996 00:00:00"),
+                            _PhotoId = ""
+                        },
+                        new Like{
+                            _Date = DateTime.Parse("04.02.1996 00:00:00"),
+                            _PhotoId = ""
+                        }
+                    }
+                    },
+                    new User
+                    {
+                        _Name = "floower3",
+                        _Date = DateTime.Parse("04.02.1991 00:00:00"),
+                        _Id = "ID5643311874",
+                        _Likes = new Like[2]
+                    {
+                        new Like{
+                            _Date = DateTime.Parse("04.02.1996 00:00:00"),
+                            _PhotoId = ""
+                        },
+                        new Like{
+                            _Date = DateTime.Parse("04.02.1996 00:00:00"),
+                            _PhotoId = ""
+                        }
+                    }
+                    }
+                },
+                _Following = new User[2]
+                {
+                    new User
+                    {
+                        _Name = "follolowany1",
+                        _Date = DateTime.Parse("04.02.1996 00:00:00"),
+                        _Id = "ID52222196874",
+                        _Likes = new Like[2]
+                    {
+                        new Like{
+                            _Date = DateTime.Parse("04.02.1996 00:00:00"),
+                            _PhotoId = ""
+                        },
+                        new Like{
+                            _Date = DateTime.Parse("04.02.1996 00:00:00"),
+                            _PhotoId = ""
+                        }
+                    }
+                    },
+                    new User
+                    {
+                        _Name = "follolowany2",
+                        _Date = DateTime.Parse("04.02.1996 00:00:00"),
+                        _Id = "ID56423446874",
+                        _Likes = new Like[2]
+                    {
+                        new Like{
+                            _Date = DateTime.Parse("04.02.1996 00:00:00"),
+                            _PhotoId = ""
+                        },
+                        new Like{
+                            _Date = DateTime.Parse("04.02.1996 00:00:00"),
+                            _PhotoId = ""
+                        }
+                    }
+                    }
+                },
+                _Follow2way = new User[2]
+                {
+                    new User
+                    {
+                        _Name = "wzajemny1",
+                        _Date = DateTime.Parse("04.03.1996 00:00:00"),
+                        _Id = "ID56423226874",
+                        _Likes = new Like[2]
+                    {
+                        new Like{
+                            _Date = DateTime.Parse("04.02.1996 00:00:00"),
+                            _PhotoId = ""
+                        },
+                        new Like{
+                            _Date = DateTime.Parse("04.02.1996 00:00:00"),
+                            _PhotoId = ""
+                        }
+                    }
+                    },
+                    new User
+                    {
+                        _Name = "wzajemny2",
+                        _Date = DateTime.Parse("04.01.1996 00:00:00"),
+                        _Id = "ID56333346874",
+                        _Likes = new Like[2]
+                    {
+                        new Like{
+                            _Date = DateTime.Parse("04.02.1996 00:00:00"),
+                            _PhotoId = ""
+                        },
+                        new Like{
+                            _Date = DateTime.Parse("04.02.1996 00:00:00"),
+                            _PhotoId = ""
+                        }
+                    }
+                    }
+                }
+                
             };
 
             JsonSerializer serializer = new JsonSerializer();
@@ -106,7 +251,7 @@ namespace AutoLogin
             string pass = "HFXKV7x2hYUF";
             string user = "wowr130013@gmail.com";
             string site = "https://500px.com/login";
-
+            
             /*
             var request = (HttpWebRequest)WebRequest.Create("https://500px.com/login");
 
@@ -128,15 +273,31 @@ namespace AutoLogin
             var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
             */
 
-            MessageBox.Show(ReadHtmlPage());
+            MessageBox.Show("bum");
 
 
         }
     }
 
+    public class Like
+    {
+        public DateTime _Date { get; set; }
+        public string _PhotoId { get; set; }
+    }
+    public class User
+    {
+        public string _Name { get; set; }
+        public string _Id { get; set; }
+        public DateTime _Date { get; set; }
+        public Like[] _Likes { get; set; }
+    }
+
     public class Dane
     {
-        public string Username { get; set; }
-        public string data { get; set; }
+        public User _User { get; set; }
+        public User[] _Followers { get; set; }
+        public User[] _Following { get; set; }
+        public User[] _Follow2way { get; set; }
+
     }
 }
