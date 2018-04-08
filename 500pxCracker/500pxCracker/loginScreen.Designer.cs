@@ -85,7 +85,7 @@
             this.warningTextbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.warningTextbox.Cursor = System.Windows.Forms.Cursors.Default;
             this.warningTextbox.Font = new System.Drawing.Font("Corbel", 9.25F);
-            this.warningTextbox.Location = new System.Drawing.Point(117, 224);
+            this.warningTextbox.Location = new System.Drawing.Point(117, 245);
             this.warningTextbox.Name = "warningTextbox";
             this.warningTextbox.Size = new System.Drawing.Size(253, 16);
             this.warningTextbox.TabIndex = 10;
@@ -98,9 +98,9 @@
             this.OKbutton.BackColor = System.Drawing.Color.Transparent;
             this.OKbutton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.OKbutton.Image = ((System.Drawing.Image)(resources.GetObject("OKbutton.Image")));
-            this.OKbutton.Location = new System.Drawing.Point(219, 186);
+            this.OKbutton.Location = new System.Drawing.Point(207, 181);
             this.OKbutton.Name = "OKbutton";
-            this.OKbutton.Size = new System.Drawing.Size(33, 32);
+            this.OKbutton.Size = new System.Drawing.Size(69, 58);
             this.OKbutton.TabIndex = 11;
             this.OKbutton.UseVisualStyleBackColor = false;
             this.OKbutton.Click += new System.EventHandler(this.OKbutton_Click_1);
@@ -110,7 +110,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.ClientSize = new System.Drawing.Size(492, 261);
+            this.ClientSize = new System.Drawing.Size(492, 282);
             this.Controls.Add(this.OKbutton);
             this.Controls.Add(this.warningTextbox);
             this.Controls.Add(this.closeButton);
@@ -123,6 +123,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "500px cracker";
             this.Load += new System.EventHandler(this.loginScreen_Load);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.loginScreen_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.logoPic)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
