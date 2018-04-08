@@ -21,13 +21,30 @@ namespace _500pxCracker
         {
 
         }
+        
+        private void frm2_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void loginTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (warningTextbox.Visible)
+                warningTextbox.Visible = false;
+        }
+
+        private void pswdTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (warningTextbox.Visible)
+                warningTextbox.Visible = false;
+        }
 
         private void closeButton_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void OKButton_Click(object sender, EventArgs e)
+        private void OKbutton_Click_1(object sender, EventArgs e)
         {
             //dorobic warunek gdy login jest bialymi znakami?
             //loginTextBox.Text[0] != ' ' \
@@ -44,22 +61,6 @@ namespace _500pxCracker
             {
                 warningTextbox.Visible = true;
             }
-        }
-        private void frm2_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            this.Close();
-        }
-
-        private void loginTextBox_TextChanged(object sender, EventArgs e)
-        {
-            if (warningTextbox.Visible)
-                warningTextbox.Visible = false;
-        }
-
-        private void pswdTextBox_TextChanged(object sender, EventArgs e)
-        {
-            if (warningTextbox.Visible)
-                warningTextbox.Visible = false;
         }
     }
     
