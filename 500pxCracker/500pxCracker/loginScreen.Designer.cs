@@ -98,7 +98,7 @@
             this.OKbutton.BackColor = System.Drawing.Color.Transparent;
             this.OKbutton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.OKbutton.Image = ((System.Drawing.Image)(resources.GetObject("OKbutton.Image")));
-            this.OKbutton.Location = new System.Drawing.Point(207, 181);
+            this.OKbutton.Location = new System.Drawing.Point(204, 186);
             this.OKbutton.Name = "OKbutton";
             this.OKbutton.Size = new System.Drawing.Size(69, 58);
             this.OKbutton.TabIndex = 11;
