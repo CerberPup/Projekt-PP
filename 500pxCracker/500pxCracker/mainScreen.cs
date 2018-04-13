@@ -126,7 +126,7 @@ namespace _500pxCracker
 
         private void likeLatestButton_Click(object sender, EventArgs e)
         {
-            //do stuff
+            CurrentUser.Get().LikeLatestPhotos();
 
             MessageBox.Show("Successfully liked all the photos!");
         }
@@ -135,7 +135,7 @@ namespace _500pxCracker
         {
             if(photosNumberTextBox.Text.Length!=0)
             {
-                //do stuff
+                CurrentUser.Get().LikeLikingMe(int.Parse(photosNumberTextBox.Text));
 
                 MessageBox.Show("Successfully liked all the photos");
                 photosNumberTextBox.Text = "";
@@ -155,10 +155,13 @@ namespace _500pxCracker
                 topUsersPanel.Visible = false;
 
             var items = nonFollowersListBox.Items;
+            items.Clear();
             //here add items to the nonFollowersListBox ~~~~~~~~~~~~~~
-            items.Add("Perls");
-            items.Add("Honey");
-            items.Add("Aloe");
+            User[] users= CurrentUser.Get().OneWayFollow();
+            foreach(User u in users)
+            {
+                items.Add(u._Name);
+            }
         }
 
         private void mutualFolButton_Click(object sender, EventArgs e)
@@ -170,7 +173,15 @@ namespace _500pxCracker
             if (topUsersPanel.Visible)
                 topUsersPanel.Visible = false;
 
+            var items = mutualListBox.Items;
+            items.Clear();
             //here add items to mutualListBox ~~~~~~~~~~~~~~
+            User[] users = CurrentUser.Get().MutualFollow();
+            foreach (User u in users)
+            {
+                items.Add(String.Format("{0,-27}{1,-27}{2,27}", 
+                    u._Name, u._FollowedSince.ToShortDateString(), u._StartedFollowing.ToShortDateString()));
+            }
             //item_format = userName + \t\t + date1 + \t\t + date2
 
             //date1 = since when I have been following user B
@@ -259,7 +270,11 @@ namespace _500pxCracker
 
         private void unfollowButton_Click(object sender, EventArgs e)
         {
-            //do stuff with selected items
+            CurrentUser current = CurrentUser.Get();
+            foreach (string user in nonFollowersListBox.SelectedItems)
+            {
+                current.Unfollow(current.GetUserByName(user));
+            }
         }
 
         //profile panel ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -271,8 +286,36 @@ namespace _500pxCracker
                     statsPanel.Visible = true;
                 statsText2.Text = "times last " + timeDropDown.SelectedItem.ToString();
 
-                //do stuff
-                //statsLikes.Text => uzupełnić
+                DateTime since = DateTime.Today;
+                switch(timeDropDown.SelectedIndex)
+                {
+                    case 0:
+                        since -= new TimeSpan(1, 0, 0, 0);
+                        break;
+                    case 1:
+                        since -= new TimeSpan(7, 0, 0, 0);
+                        break;
+                    case 2:
+                        int month = since.Month - 1;
+                        int year = since.Year;
+                        if (month == 0)
+                        {
+                            month = 12;
+                            year--;
+                        }
+                        since -= new TimeSpan(DateTime.DaysInMonth(year, month),0,0,0);
+                        break;
+                    case 3:
+                        since -= new TimeSpan(DateTime.IsLeapYear(since.Year-1)?1:0 +365, 0, 0, 0);
+                        break;
+                }
+                var likes = CurrentUser.Get().GetLastLikes(since);
+                int count = 0;
+                foreach(var user in likes)
+                {
+                    count += user.Value;
+                }
+                statsLikes.Text = count.ToString();
 
                 timeDropDown.SelectedIndex = -1;
             }

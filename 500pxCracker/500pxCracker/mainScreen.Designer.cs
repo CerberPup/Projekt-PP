@@ -892,9 +892,6 @@
             this.mutualListBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
             this.mutualListBox.FormattingEnabled = true;
             this.mutualListBox.ItemHeight = 15;
-            this.mutualListBox.Items.AddRange(new object[] {
-            "Ailee\t\t25-11-2015\t\t20-11-2015",
-            "Taeyeon\t\t07-07-2012\t\t04-02-2013"});
             this.mutualListBox.Location = new System.Drawing.Point(12, 42);
             this.mutualListBox.Name = "mutualListBox";
             this.mutualListBox.SelectionMode = System.Windows.Forms.SelectionMode.None;
