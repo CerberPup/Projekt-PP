@@ -21,6 +21,7 @@ namespace _500pxCracker
 
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
+
         public mainScreen()
         {
             InitializeComponent();
@@ -28,11 +29,18 @@ namespace _500pxCracker
 
         private void mainScreen_Load(object sender, EventArgs e)
         {
+            //mainScreen.Size = new System.Drawing.Size(670, 400);
             nonFollowersPanel.Size = new Size(440, 185);
             mutualFollowersPanel.Size = new Size(440, 185);
             mutualFollowersPanel.Location = new Point(30, 160);
             topUsersPanel.Size = new Size(440, 185);
             topUsersPanel.Location = new Point(30, 160);
+
+            likesPanel.Location = new Point(119, 12);
+            likesPanel.Size = new Size(440, 185);
+
+            profilePanel.Location = new Point(119, 12);
+            profilePanel.Size = new Size(440, 185);
         }
 
         private void frm2_FormClosed(object sender, FormClosedEventArgs e)
@@ -103,6 +111,10 @@ namespace _500pxCracker
             if (photoTypeDropDown.SelectedIndex > -1 && freshPhotosNumberTextBox.Text.Length!=0)
             {
                 //do stuff
+
+                MessageBox.Show("Successfully liked the photos!");
+                freshPhotosNumberTextBox.Text = "";
+                photoTypeDropDown.SelectedIndex = -1;
             }
             else
                 MessageBox.Show("Please provide all required information!");
@@ -111,6 +123,8 @@ namespace _500pxCracker
         private void likeLatestButton_Click(object sender, EventArgs e)
         {
             //do stuff
+
+            MessageBox.Show("Successfully liked all the photos!");
         }
 
         private void likePhotosButton_Click(object sender, EventArgs e)
@@ -118,6 +132,9 @@ namespace _500pxCracker
             if(photosNumberTextBox.Text.Length!=0)
             {
                 //do stuff
+
+                MessageBox.Show("Successfully liked all the photos");
+                photosNumberTextBox.Text = "";
             }
             else
                 MessageBox.Show("Please provide all required information!");
@@ -227,7 +244,19 @@ namespace _500pxCracker
         //profile panel ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         private void statsButton_Click(object sender, EventArgs e)
         {
-            //for meh for now
+            if (timeDropDown.SelectedIndex > -1)
+            {
+                if(!statsPanel.Visible)
+                    statsPanel.Visible = true;
+                statsText2.Text = "times last " + timeDropDown.SelectedItem.ToString();
+
+                //do stuff
+                //statsLikes.Text => uzupełnić
+
+                timeDropDown.SelectedIndex = -1;
+            }
+            else
+                MessageBox.Show("Please choose one of the available options!");
         }
 
         private void exitButton_Click(object sender, EventArgs e)

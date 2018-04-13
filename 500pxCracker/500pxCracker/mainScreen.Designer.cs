@@ -27,7 +27,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
-        {
+        { 
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainScreen));
             this.menuPanel = new System.Windows.Forms.Panel();
             this.exitButton = new System.Windows.Forms.PictureBox();
@@ -40,6 +40,26 @@
             this.statsText = new System.Windows.Forms.TextBox();
             this.profilePic = new System.Windows.Forms.PictureBox();
             this.followersPanel = new System.Windows.Forms.Panel();
+            this.topUsersPanel = new System.Windows.Forms.Panel();
+            this.topUsersListBox = new System.Windows.Forms.CheckedListBox();
+            this.mutualFollowersPanel = new System.Windows.Forms.Panel();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.mutualCheckedListBox = new System.Windows.Forms.CheckedListBox();
+            this.displayFollowingTimeText = new System.Windows.Forms.TextBox();
+            this.nonFollowersPanel = new System.Windows.Forms.Panel();
+            this.unfollowButton = new System.Windows.Forms.PictureBox();
+            this.selectAllUsersButton = new System.Windows.Forms.PictureBox();
+            this.deselectAllUsersButton = new System.Windows.Forms.PictureBox();
+            this.deselectAllUser = new System.Windows.Forms.TextBox();
+            this.nonFollowersListBox = new System.Windows.Forms.CheckedListBox();
+            this.selectAllUsersText = new System.Windows.Forms.TextBox();
+            this.selectRandomButton = new System.Windows.Forms.PictureBox();
+            this.unfollowUsersText = new System.Windows.Forms.TextBox();
+            this.selectText2 = new System.Windows.Forms.TextBox();
+            this.selectText = new System.Windows.Forms.TextBox();
+            this.usersToBeSelectedNumber = new System.Windows.Forms.TextBox();
             this.topUsersText2 = new System.Windows.Forms.TextBox();
             this.numberOfTopUsersTextBox = new System.Windows.Forms.TextBox();
             this.topUsersButton = new System.Windows.Forms.PictureBox();
@@ -62,26 +82,11 @@
             this.photosText = new System.Windows.Forms.TextBox();
             this.likeText = new System.Windows.Forms.TextBox();
             this.likesPic = new System.Windows.Forms.PictureBox();
-            this.nonFollowersListBox = new System.Windows.Forms.CheckedListBox();
-            this.unfollowUsersText = new System.Windows.Forms.TextBox();
-            this.selectText = new System.Windows.Forms.TextBox();
-            this.usersToBeSelectedNumber = new System.Windows.Forms.TextBox();
-            this.selectText2 = new System.Windows.Forms.TextBox();
-            this.selectRandomButton = new System.Windows.Forms.PictureBox();
-            this.selectAllUsersText = new System.Windows.Forms.TextBox();
-            this.nonFollowersPanel = new System.Windows.Forms.Panel();
-            this.deselectAllUsersButton = new System.Windows.Forms.PictureBox();
-            this.deselectAllUser = new System.Windows.Forms.TextBox();
-            this.selectAllUsersButton = new System.Windows.Forms.PictureBox();
-            this.unfollowButton = new System.Windows.Forms.PictureBox();
-            this.mutualFollowersPanel = new System.Windows.Forms.Panel();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.mutualCheckedListBox = new System.Windows.Forms.CheckedListBox();
-            this.displayFollowingTimeText = new System.Windows.Forms.TextBox();
-            this.topUsersPanel = new System.Windows.Forms.Panel();
-            this.topUsersListBox = new System.Windows.Forms.CheckedListBox();
+            this.timeDropDown = new System.Windows.Forms.ComboBox();
+            this.statsPanel = new System.Windows.Forms.Panel();
+            this.statsText1 = new System.Windows.Forms.TextBox();
+            this.statsText2 = new System.Windows.Forms.TextBox();
+            this.statsLikes = new System.Windows.Forms.TextBox();
             this.menuPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.exitButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.logoPic)).BeginInit();
@@ -92,6 +97,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.statsButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.profilePic)).BeginInit();
             this.followersPanel.SuspendLayout();
+            this.topUsersPanel.SuspendLayout();
+            this.mutualFollowersPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            this.nonFollowersPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.unfollowButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.selectAllUsersButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deselectAllUsersButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.selectRandomButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.topUsersButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mutualFolButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nonFolButton)).BeginInit();
@@ -101,15 +115,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.likeLatestButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.likeFreshButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.likesPic)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.selectRandomButton)).BeginInit();
-            this.nonFollowersPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.deselectAllUsersButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.selectAllUsersButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.unfollowButton)).BeginInit();
-            this.mutualFollowersPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            this.topUsersPanel.SuspendLayout();
+            this.statsPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuPanel
@@ -189,12 +195,14 @@
             // 
             // profilePanel
             // 
+            this.profilePanel.Controls.Add(this.statsPanel);
+            this.profilePanel.Controls.Add(this.timeDropDown);
             this.profilePanel.Controls.Add(this.statsButton);
             this.profilePanel.Controls.Add(this.statsText);
             this.profilePanel.Controls.Add(this.profilePic);
-            this.profilePanel.Location = new System.Drawing.Point(769, 12);
+            this.profilePanel.Location = new System.Drawing.Point(623, 12);
             this.profilePanel.Name = "profilePanel";
-            this.profilePanel.Size = new System.Drawing.Size(193, 168);
+            this.profilePanel.Size = new System.Drawing.Size(431, 168);
             this.profilePanel.TabIndex = 1;
             this.profilePanel.Visible = false;
             this.profilePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
@@ -204,7 +212,7 @@
             this.statsButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.statsButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.statsButton.Image = ((System.Drawing.Image)(resources.GetObject("statsButton.Image")));
-            this.statsButton.Location = new System.Drawing.Point(119, 64);
+            this.statsButton.Location = new System.Drawing.Point(378, 61);
             this.statsButton.Name = "statsButton";
             this.statsButton.Size = new System.Drawing.Size(25, 25);
             this.statsButton.TabIndex = 13;
@@ -217,13 +225,13 @@
             this.statsText.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.statsText.Cursor = System.Windows.Forms.Cursors.Default;
             this.statsText.Enabled = false;
-            this.statsText.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.statsText.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.statsText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.statsText.Location = new System.Drawing.Point(3, 70);
+            this.statsText.Location = new System.Drawing.Point(31, 63);
             this.statsText.Name = "statsText";
-            this.statsText.Size = new System.Drawing.Size(120, 15);
+            this.statsText.Size = new System.Drawing.Size(210, 19);
             this.statsText.TabIndex = 13;
-            this.statsText.Text = "Show me my statistics";
+            this.statsText.Text = "Show me my statistics for the last";
             // 
             // profilePic
             // 
@@ -252,10 +260,273 @@
             this.followersPanel.Controls.Add(this.followersPic);
             this.followersPanel.Location = new System.Drawing.Point(119, 12);
             this.followersPanel.Name = "followersPanel";
-            this.followersPanel.Size = new System.Drawing.Size(530, 373);
+            this.followersPanel.Size = new System.Drawing.Size(498, 373);
             this.followersPanel.TabIndex = 2;
             this.followersPanel.Visible = false;
             this.followersPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
+            // 
+            // topUsersPanel
+            // 
+            this.topUsersPanel.Controls.Add(this.topUsersListBox);
+            this.topUsersPanel.Location = new System.Drawing.Point(30, 229);
+            this.topUsersPanel.Name = "topUsersPanel";
+            this.topUsersPanel.Size = new System.Drawing.Size(443, 23);
+            this.topUsersPanel.TabIndex = 39;
+            this.topUsersPanel.Visible = false;
+            // 
+            // topUsersListBox
+            // 
+            this.topUsersListBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.topUsersListBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.topUsersListBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.topUsersListBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.topUsersListBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.topUsersListBox.FormattingEnabled = true;
+            this.topUsersListBox.Location = new System.Drawing.Point(8, 5);
+            this.topUsersListBox.Name = "topUsersListBox";
+            this.topUsersListBox.Size = new System.Drawing.Size(240, 164);
+            this.topUsersListBox.TabIndex = 27;
+            // 
+            // mutualFollowersPanel
+            // 
+            this.mutualFollowersPanel.Controls.Add(this.pictureBox2);
+            this.mutualFollowersPanel.Controls.Add(this.pictureBox3);
+            this.mutualFollowersPanel.Controls.Add(this.textBox1);
+            this.mutualFollowersPanel.Controls.Add(this.mutualCheckedListBox);
+            this.mutualFollowersPanel.Controls.Add(this.displayFollowingTimeText);
+            this.mutualFollowersPanel.Location = new System.Drawing.Point(30, 189);
+            this.mutualFollowersPanel.Name = "mutualFollowersPanel";
+            this.mutualFollowersPanel.Size = new System.Drawing.Size(443, 34);
+            this.mutualFollowersPanel.TabIndex = 38;
+            this.mutualFollowersPanel.Visible = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(241, 70);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox2.TabIndex = 36;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBox3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
+            this.pictureBox3.Location = new System.Drawing.Point(241, 100);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox3.TabIndex = 35;
+            this.pictureBox3.TabStop = false;
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.textBox1.Enabled = false;
+            this.textBox1.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+            this.textBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.textBox1.Location = new System.Drawing.Point(237, 47);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(220, 17);
+            this.textBox1.TabIndex = 34;
+            this.textBox1.Text = "How long have these users followed me";
+            // 
+            // mutualCheckedListBox
+            // 
+            this.mutualCheckedListBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.mutualCheckedListBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.mutualCheckedListBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.mutualCheckedListBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.mutualCheckedListBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.mutualCheckedListBox.FormattingEnabled = true;
+            this.mutualCheckedListBox.Location = new System.Drawing.Point(8, 5);
+            this.mutualCheckedListBox.Name = "mutualCheckedListBox";
+            this.mutualCheckedListBox.Size = new System.Drawing.Size(223, 164);
+            this.mutualCheckedListBox.TabIndex = 26;
+            // 
+            // displayFollowingTimeText
+            // 
+            this.displayFollowingTimeText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.displayFollowingTimeText.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.displayFollowingTimeText.Cursor = System.Windows.Forms.Cursors.Default;
+            this.displayFollowingTimeText.Enabled = false;
+            this.displayFollowingTimeText.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+            this.displayFollowingTimeText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.displayFollowingTimeText.Location = new System.Drawing.Point(237, 17);
+            this.displayFollowingTimeText.Name = "displayFollowingTimeText";
+            this.displayFollowingTimeText.Size = new System.Drawing.Size(200, 17);
+            this.displayFollowingTimeText.TabIndex = 32;
+            this.displayFollowingTimeText.Text = "How long have a followed these users";
+            // 
+            // nonFollowersPanel
+            // 
+            this.nonFollowersPanel.Controls.Add(this.unfollowButton);
+            this.nonFollowersPanel.Controls.Add(this.selectAllUsersButton);
+            this.nonFollowersPanel.Controls.Add(this.deselectAllUsersButton);
+            this.nonFollowersPanel.Controls.Add(this.deselectAllUser);
+            this.nonFollowersPanel.Controls.Add(this.nonFollowersListBox);
+            this.nonFollowersPanel.Controls.Add(this.selectAllUsersText);
+            this.nonFollowersPanel.Controls.Add(this.selectRandomButton);
+            this.nonFollowersPanel.Controls.Add(this.unfollowUsersText);
+            this.nonFollowersPanel.Controls.Add(this.selectText2);
+            this.nonFollowersPanel.Controls.Add(this.selectText);
+            this.nonFollowersPanel.Controls.Add(this.usersToBeSelectedNumber);
+            this.nonFollowersPanel.Location = new System.Drawing.Point(30, 160);
+            this.nonFollowersPanel.Name = "nonFollowersPanel";
+            this.nonFollowersPanel.Size = new System.Drawing.Size(443, 23);
+            this.nonFollowersPanel.TabIndex = 34;
+            this.nonFollowersPanel.Visible = false;
+            // 
+            // unfollowButton
+            // 
+            this.unfollowButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.unfollowButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.unfollowButton.Image = ((System.Drawing.Image)(resources.GetObject("unfollowButton.Image")));
+            this.unfollowButton.Location = new System.Drawing.Point(402, 101);
+            this.unfollowButton.Name = "unfollowButton";
+            this.unfollowButton.Size = new System.Drawing.Size(25, 25);
+            this.unfollowButton.TabIndex = 37;
+            this.unfollowButton.TabStop = false;
+            this.unfollowButton.Click += new System.EventHandler(this.unfollowButton_Click);
+            // 
+            // selectAllUsersButton
+            // 
+            this.selectAllUsersButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.selectAllUsersButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.selectAllUsersButton.Image = ((System.Drawing.Image)(resources.GetObject("selectAllUsersButton.Image")));
+            this.selectAllUsersButton.Location = new System.Drawing.Point(402, 11);
+            this.selectAllUsersButton.Name = "selectAllUsersButton";
+            this.selectAllUsersButton.Size = new System.Drawing.Size(25, 25);
+            this.selectAllUsersButton.TabIndex = 36;
+            this.selectAllUsersButton.TabStop = false;
+            this.selectAllUsersButton.Click += new System.EventHandler(this.selectAllUsersButton_Click);
+            // 
+            // deselectAllUsersButton
+            // 
+            this.deselectAllUsersButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.deselectAllUsersButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.deselectAllUsersButton.Image = ((System.Drawing.Image)(resources.GetObject("deselectAllUsersButton.Image")));
+            this.deselectAllUsersButton.Location = new System.Drawing.Point(402, 41);
+            this.deselectAllUsersButton.Name = "deselectAllUsersButton";
+            this.deselectAllUsersButton.Size = new System.Drawing.Size(25, 25);
+            this.deselectAllUsersButton.TabIndex = 35;
+            this.deselectAllUsersButton.TabStop = false;
+            this.deselectAllUsersButton.Click += new System.EventHandler(this.deselectAllUsersButton_Click);
+            // 
+            // deselectAllUser
+            // 
+            this.deselectAllUser.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.deselectAllUser.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.deselectAllUser.Cursor = System.Windows.Forms.Cursors.Default;
+            this.deselectAllUser.Enabled = false;
+            this.deselectAllUser.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+            this.deselectAllUser.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.deselectAllUser.Location = new System.Drawing.Point(254, 47);
+            this.deselectAllUser.Name = "deselectAllUser";
+            this.deselectAllUser.Size = new System.Drawing.Size(125, 17);
+            this.deselectAllUser.TabIndex = 34;
+            this.deselectAllUser.Text = "Select/deselect all users";
+            // 
+            // nonFollowersListBox
+            // 
+            this.nonFollowersListBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.nonFollowersListBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.nonFollowersListBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.nonFollowersListBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.nonFollowersListBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.nonFollowersListBox.FormattingEnabled = true;
+            this.nonFollowersListBox.Location = new System.Drawing.Point(8, 5);
+            this.nonFollowersListBox.Name = "nonFollowersListBox";
+            this.nonFollowersListBox.Size = new System.Drawing.Size(240, 164);
+            this.nonFollowersListBox.TabIndex = 26;
+            // 
+            // selectAllUsersText
+            // 
+            this.selectAllUsersText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.selectAllUsersText.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.selectAllUsersText.Cursor = System.Windows.Forms.Cursors.Default;
+            this.selectAllUsersText.Enabled = false;
+            this.selectAllUsersText.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+            this.selectAllUsersText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.selectAllUsersText.Location = new System.Drawing.Point(254, 17);
+            this.selectAllUsersText.Name = "selectAllUsersText";
+            this.selectAllUsersText.Size = new System.Drawing.Size(125, 17);
+            this.selectAllUsersText.TabIndex = 32;
+            this.selectAllUsersText.Text = "Select/deselect all users";
+            // 
+            // selectRandomButton
+            // 
+            this.selectRandomButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.selectRandomButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.selectRandomButton.Image = ((System.Drawing.Image)(resources.GetObject("selectRandomButton.Image")));
+            this.selectRandomButton.Location = new System.Drawing.Point(402, 71);
+            this.selectRandomButton.Name = "selectRandomButton";
+            this.selectRandomButton.Size = new System.Drawing.Size(25, 25);
+            this.selectRandomButton.TabIndex = 14;
+            this.selectRandomButton.TabStop = false;
+            this.selectRandomButton.Click += new System.EventHandler(this.selectRandomButton_Click);
+            // 
+            // unfollowUsersText
+            // 
+            this.unfollowUsersText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.unfollowUsersText.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.unfollowUsersText.Cursor = System.Windows.Forms.Cursors.Default;
+            this.unfollowUsersText.Enabled = false;
+            this.unfollowUsersText.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+            this.unfollowUsersText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.unfollowUsersText.Location = new System.Drawing.Point(256, 107);
+            this.unfollowUsersText.Name = "unfollowUsersText";
+            this.unfollowUsersText.Size = new System.Drawing.Size(125, 17);
+            this.unfollowUsersText.TabIndex = 28;
+            this.unfollowUsersText.Text = "Unfollow selected users";
+            // 
+            // selectText2
+            // 
+            this.selectText2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.selectText2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.selectText2.Cursor = System.Windows.Forms.Cursors.Default;
+            this.selectText2.Enabled = false;
+            this.selectText2.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+            this.selectText2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.selectText2.Location = new System.Drawing.Point(321, 77);
+            this.selectText2.Name = "selectText2";
+            this.selectText2.Size = new System.Drawing.Size(75, 17);
+            this.selectText2.TabIndex = 31;
+            this.selectText2.Text = "random users";
+            // 
+            // selectText
+            // 
+            this.selectText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.selectText.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.selectText.Cursor = System.Windows.Forms.Cursors.Default;
+            this.selectText.Enabled = false;
+            this.selectText.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+            this.selectText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.selectText.Location = new System.Drawing.Point(254, 77);
+            this.selectText.Name = "selectText";
+            this.selectText.Size = new System.Drawing.Size(35, 17);
+            this.selectText.TabIndex = 29;
+            this.selectText.Text = "Select";
+            // 
+            // usersToBeSelectedNumber
+            // 
+            this.usersToBeSelectedNumber.BackColor = System.Drawing.Color.LightGray;
+            this.usersToBeSelectedNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.usersToBeSelectedNumber.Cursor = System.Windows.Forms.Cursors.Default;
+            this.usersToBeSelectedNumber.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.usersToBeSelectedNumber.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.usersToBeSelectedNumber.Location = new System.Drawing.Point(290, 73);
+            this.usersToBeSelectedNumber.MaxLength = 2;
+            this.usersToBeSelectedNumber.Name = "usersToBeSelectedNumber";
+            this.usersToBeSelectedNumber.Size = new System.Drawing.Size(25, 22);
+            this.usersToBeSelectedNumber.TabIndex = 30;
+            this.usersToBeSelectedNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.usersToBeSelectedNumber.TextChanged += new System.EventHandler(this.usersToBeSelectedNumber_TextChanged);
             // 
             // topUsersText2
             // 
@@ -389,9 +660,9 @@
             this.likesPanel.Controls.Add(this.photosText);
             this.likesPanel.Controls.Add(this.likeText);
             this.likesPanel.Controls.Add(this.likesPic);
-            this.likesPanel.Location = new System.Drawing.Point(769, 186);
+            this.likesPanel.Location = new System.Drawing.Point(626, 189);
             this.likesPanel.Name = "likesPanel";
-            this.likesPanel.Size = new System.Drawing.Size(193, 202);
+            this.likesPanel.Size = new System.Drawing.Size(431, 196);
             this.likesPanel.TabIndex = 4;
             this.likesPanel.Visible = false;
             this.likesPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
@@ -401,7 +672,7 @@
             this.likePhotosButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.likePhotosButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.likePhotosButton.Image = ((System.Drawing.Image)(resources.GetObject("likePhotosButton.Image")));
-            this.likePhotosButton.Location = new System.Drawing.Point(279, 132);
+            this.likePhotosButton.Location = new System.Drawing.Point(322, 117);
             this.likePhotosButton.Name = "likePhotosButton";
             this.likePhotosButton.Size = new System.Drawing.Size(25, 25);
             this.likePhotosButton.TabIndex = 23;
@@ -415,7 +686,7 @@
             this.photosNumberTextBox.Cursor = System.Windows.Forms.Cursors.Default;
             this.photosNumberTextBox.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.photosNumberTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.photosNumberTextBox.Location = new System.Drawing.Point(27, 135);
+            this.photosNumberTextBox.Location = new System.Drawing.Point(59, 122);
             this.photosNumberTextBox.MaxLength = 4;
             this.photosNumberTextBox.Name = "photosNumberTextBox";
             this.photosNumberTextBox.Size = new System.Drawing.Size(30, 22);
@@ -429,13 +700,13 @@
             this.photosText2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.photosText2.Cursor = System.Windows.Forms.Cursors.Default;
             this.photosText2.Enabled = false;
-            this.photosText2.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.photosText2.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.photosText2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.photosText2.Location = new System.Drawing.Point(63, 137);
+            this.photosText2.Location = new System.Drawing.Point(95, 124);
             this.photosText2.Name = "photosText2";
-            this.photosText2.Size = new System.Drawing.Size(210, 15);
+            this.photosText2.Size = new System.Drawing.Size(230, 19);
             this.photosText2.TabIndex = 21;
-            this.photosText2.Text = "photos from users who liked my photos";
+            this.photosText2.Text = "photos from users who liked mine";
             // 
             // likeText3
             // 
@@ -443,11 +714,11 @@
             this.likeText3.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.likeText3.Cursor = System.Windows.Forms.Cursors.Default;
             this.likeText3.Enabled = false;
-            this.likeText3.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.likeText3.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.likeText3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.likeText3.Location = new System.Drawing.Point(3, 139);
+            this.likeText3.Location = new System.Drawing.Point(28, 126);
             this.likeText3.Name = "likeText3";
-            this.likeText3.Size = new System.Drawing.Size(20, 15);
+            this.likeText3.Size = new System.Drawing.Size(25, 19);
             this.likeText3.TabIndex = 22;
             this.likeText3.Text = "Like";
             // 
@@ -456,7 +727,7 @@
             this.likeLatestButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.likeLatestButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.likeLatestButton.Image = ((System.Drawing.Image)(resources.GetObject("likeLatestButton.Image")));
-            this.likeLatestButton.Location = new System.Drawing.Point(279, 103);
+            this.likeLatestButton.Location = new System.Drawing.Point(322, 88);
             this.likeLatestButton.Name = "likeLatestButton";
             this.likeLatestButton.Size = new System.Drawing.Size(25, 25);
             this.likeLatestButton.TabIndex = 19;
@@ -469,11 +740,11 @@
             this.likeText2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.likeText2.Cursor = System.Windows.Forms.Cursors.Default;
             this.likeText2.Enabled = false;
-            this.likeText2.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.likeText2.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.likeText2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.likeText2.Location = new System.Drawing.Point(3, 107);
+            this.likeText2.Location = new System.Drawing.Point(28, 94);
             this.likeText2.Name = "likeText2";
-            this.likeText2.Size = new System.Drawing.Size(220, 15);
+            this.likeText2.Size = new System.Drawing.Size(260, 19);
             this.likeText2.TabIndex = 17;
             this.likeText2.Text = "Like all lastest photos of the users I follow";
             // 
@@ -482,7 +753,7 @@
             this.likeFreshButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.likeFreshButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.likeFreshButton.Image = ((System.Drawing.Image)(resources.GetObject("likeFreshButton.Image")));
-            this.likeFreshButton.Location = new System.Drawing.Point(279, 72);
+            this.likeFreshButton.Location = new System.Drawing.Point(322, 57);
             this.likeFreshButton.Name = "likeFreshButton";
             this.likeFreshButton.Size = new System.Drawing.Size(25, 25);
             this.likeFreshButton.TabIndex = 14;
@@ -499,7 +770,7 @@
             this.photoTypeDropDown.Items.AddRange(new object[] {
             "Fresh",
             "Upcoming"});
-            this.photoTypeDropDown.Location = new System.Drawing.Point(132, 72);
+            this.photoTypeDropDown.Location = new System.Drawing.Point(177, 59);
             this.photoTypeDropDown.Name = "photoTypeDropDown";
             this.photoTypeDropDown.Size = new System.Drawing.Size(121, 21);
             this.photoTypeDropDown.TabIndex = 18;
@@ -511,7 +782,7 @@
             this.freshPhotosNumberTextBox.Cursor = System.Windows.Forms.Cursors.Default;
             this.freshPhotosNumberTextBox.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.freshPhotosNumberTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.freshPhotosNumberTextBox.Location = new System.Drawing.Point(27, 72);
+            this.freshPhotosNumberTextBox.Location = new System.Drawing.Point(59, 59);
             this.freshPhotosNumberTextBox.MaxLength = 4;
             this.freshPhotosNumberTextBox.Name = "freshPhotosNumberTextBox";
             this.freshPhotosNumberTextBox.Size = new System.Drawing.Size(30, 22);
@@ -525,11 +796,11 @@
             this.photosText.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.photosText.Cursor = System.Windows.Forms.Cursors.Default;
             this.photosText.Enabled = false;
-            this.photosText.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.photosText.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.photosText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.photosText.Location = new System.Drawing.Point(61, 76);
+            this.photosText.Location = new System.Drawing.Point(95, 63);
             this.photosText.Name = "photosText";
-            this.photosText.Size = new System.Drawing.Size(65, 15);
+            this.photosText.Size = new System.Drawing.Size(80, 19);
             this.photosText.TabIndex = 17;
             this.photosText.Text = "photos from";
             // 
@@ -539,11 +810,11 @@
             this.likeText.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.likeText.Cursor = System.Windows.Forms.Cursors.Default;
             this.likeText.Enabled = false;
-            this.likeText.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.likeText.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.likeText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.likeText.Location = new System.Drawing.Point(3, 76);
+            this.likeText.Location = new System.Drawing.Point(28, 63);
             this.likeText.Name = "likeText";
-            this.likeText.Size = new System.Drawing.Size(20, 15);
+            this.likeText.Size = new System.Drawing.Size(25, 19);
             this.likeText.TabIndex = 17;
             this.likeText.Text = "Like";
             // 
@@ -558,279 +829,87 @@
             this.likesPic.TabIndex = 3;
             this.likesPic.TabStop = false;
             // 
-            // nonFollowersListBox
+            // timeDropDown
             // 
-            this.nonFollowersListBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.nonFollowersListBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.nonFollowersListBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.nonFollowersListBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.nonFollowersListBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.nonFollowersListBox.FormattingEnabled = true;
-            this.nonFollowersListBox.Location = new System.Drawing.Point(8, 5);
-            this.nonFollowersListBox.Name = "nonFollowersListBox";
-            this.nonFollowersListBox.Size = new System.Drawing.Size(240, 164);
-            this.nonFollowersListBox.TabIndex = 26;
+            this.timeDropDown.BackColor = System.Drawing.Color.LightGray;
+            this.timeDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.timeDropDown.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.timeDropDown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.timeDropDown.FormattingEnabled = true;
+            this.timeDropDown.Items.AddRange(new object[] {
+            "day",
+            "week",
+            "month",
+            "year"});
+            this.timeDropDown.Location = new System.Drawing.Point(246, 63);
+            this.timeDropDown.Name = "timeDropDown";
+            this.timeDropDown.Size = new System.Drawing.Size(121, 21);
+            this.timeDropDown.TabIndex = 24;
             // 
-            // unfollowUsersText
+            // statsPanel
             // 
-            this.unfollowUsersText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.unfollowUsersText.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.unfollowUsersText.Cursor = System.Windows.Forms.Cursors.Default;
-            this.unfollowUsersText.Enabled = false;
-            this.unfollowUsersText.Font = new System.Drawing.Font("Segoe UI", 9.25F);
-            this.unfollowUsersText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.unfollowUsersText.Location = new System.Drawing.Point(256, 107);
-            this.unfollowUsersText.Name = "unfollowUsersText";
-            this.unfollowUsersText.Size = new System.Drawing.Size(125, 17);
-            this.unfollowUsersText.TabIndex = 28;
-            this.unfollowUsersText.Text = "Unfollow selected users";
+            this.statsPanel.Controls.Add(this.statsLikes);
+            this.statsPanel.Controls.Add(this.statsText2);
+            this.statsPanel.Controls.Add(this.statsText1);
+            this.statsPanel.Location = new System.Drawing.Point(31, 95);
+            this.statsPanel.Name = "statsPanel";
+            this.statsPanel.Size = new System.Drawing.Size(397, 60);
+            this.statsPanel.TabIndex = 25;
+            this.statsPanel.Visible = false;
             // 
-            // selectText
+            // statsText1
             // 
-            this.selectText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.selectText.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.selectText.Cursor = System.Windows.Forms.Cursors.Default;
-            this.selectText.Enabled = false;
-            this.selectText.Font = new System.Drawing.Font("Segoe UI", 9.25F);
-            this.selectText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.selectText.Location = new System.Drawing.Point(254, 77);
-            this.selectText.Name = "selectText";
-            this.selectText.Size = new System.Drawing.Size(35, 17);
-            this.selectText.TabIndex = 29;
-            this.selectText.Text = "Select";
+            this.statsText1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.statsText1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.statsText1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.statsText1.Enabled = false;
+            this.statsText1.Font = new System.Drawing.Font("Segoe UI", 10.25F);
+            this.statsText1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.statsText1.Location = new System.Drawing.Point(0, 12);
+            this.statsText1.Name = "statsText1";
+            this.statsText1.Size = new System.Drawing.Size(160, 19);
+            this.statsText1.TabIndex = 26;
+            this.statsText1.Text = "My photos has been liked";
             // 
-            // usersToBeSelectedNumber
+            // statsText2
             // 
-            this.usersToBeSelectedNumber.BackColor = System.Drawing.Color.LightGray;
-            this.usersToBeSelectedNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.usersToBeSelectedNumber.Cursor = System.Windows.Forms.Cursors.Default;
-            this.usersToBeSelectedNumber.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-            this.usersToBeSelectedNumber.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.usersToBeSelectedNumber.Location = new System.Drawing.Point(290, 73);
-            this.usersToBeSelectedNumber.MaxLength = 2;
-            this.usersToBeSelectedNumber.Name = "usersToBeSelectedNumber";
-            this.usersToBeSelectedNumber.Size = new System.Drawing.Size(25, 22);
-            this.usersToBeSelectedNumber.TabIndex = 30;
-            this.usersToBeSelectedNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.usersToBeSelectedNumber.TextChanged += new System.EventHandler(this.usersToBeSelectedNumber_TextChanged);
+            this.statsText2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.statsText2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.statsText2.Cursor = System.Windows.Forms.Cursors.Default;
+            this.statsText2.Enabled = false;
+            this.statsText2.Font = new System.Drawing.Font("Segoe UI", 10.25F);
+            this.statsText2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.statsText2.Location = new System.Drawing.Point(232, 12);
+            this.statsText2.Name = "statsText2";
+            this.statsText2.Size = new System.Drawing.Size(160, 19);
+            this.statsText2.TabIndex = 27;
+            this.statsText2.Text = "times last";
             // 
-            // selectText2
+            // statsLikes
             // 
-            this.selectText2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.selectText2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.selectText2.Cursor = System.Windows.Forms.Cursors.Default;
-            this.selectText2.Enabled = false;
-            this.selectText2.Font = new System.Drawing.Font("Segoe UI", 9.25F);
-            this.selectText2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.selectText2.Location = new System.Drawing.Point(321, 77);
-            this.selectText2.Name = "selectText2";
-            this.selectText2.Size = new System.Drawing.Size(75, 17);
-            this.selectText2.TabIndex = 31;
-            this.selectText2.Text = "random users";
-            // 
-            // selectRandomButton
-            // 
-            this.selectRandomButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.selectRandomButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.selectRandomButton.Image = ((System.Drawing.Image)(resources.GetObject("selectRandomButton.Image")));
-            this.selectRandomButton.Location = new System.Drawing.Point(402, 71);
-            this.selectRandomButton.Name = "selectRandomButton";
-            this.selectRandomButton.Size = new System.Drawing.Size(25, 25);
-            this.selectRandomButton.TabIndex = 14;
-            this.selectRandomButton.TabStop = false;
-            this.selectRandomButton.Click += new System.EventHandler(this.selectRandomButton_Click);
-            // 
-            // selectAllUsersText
-            // 
-            this.selectAllUsersText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.selectAllUsersText.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.selectAllUsersText.Cursor = System.Windows.Forms.Cursors.Default;
-            this.selectAllUsersText.Enabled = false;
-            this.selectAllUsersText.Font = new System.Drawing.Font("Segoe UI", 9.25F);
-            this.selectAllUsersText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.selectAllUsersText.Location = new System.Drawing.Point(254, 17);
-            this.selectAllUsersText.Name = "selectAllUsersText";
-            this.selectAllUsersText.Size = new System.Drawing.Size(125, 17);
-            this.selectAllUsersText.TabIndex = 32;
-            this.selectAllUsersText.Text = "Select/deselect all users";
-            // 
-            // nonFollowersPanel
-            // 
-            this.nonFollowersPanel.Controls.Add(this.unfollowButton);
-            this.nonFollowersPanel.Controls.Add(this.selectAllUsersButton);
-            this.nonFollowersPanel.Controls.Add(this.deselectAllUsersButton);
-            this.nonFollowersPanel.Controls.Add(this.deselectAllUser);
-            this.nonFollowersPanel.Controls.Add(this.nonFollowersListBox);
-            this.nonFollowersPanel.Controls.Add(this.selectAllUsersText);
-            this.nonFollowersPanel.Controls.Add(this.selectRandomButton);
-            this.nonFollowersPanel.Controls.Add(this.unfollowUsersText);
-            this.nonFollowersPanel.Controls.Add(this.selectText2);
-            this.nonFollowersPanel.Controls.Add(this.selectText);
-            this.nonFollowersPanel.Controls.Add(this.usersToBeSelectedNumber);
-            this.nonFollowersPanel.Location = new System.Drawing.Point(30, 160);
-            this.nonFollowersPanel.Name = "nonFollowersPanel";
-            this.nonFollowersPanel.Size = new System.Drawing.Size(443, 23);
-            this.nonFollowersPanel.TabIndex = 34;
-            this.nonFollowersPanel.Visible = false;
-            // 
-            // deselectAllUsersButton
-            // 
-            this.deselectAllUsersButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.deselectAllUsersButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.deselectAllUsersButton.Image = ((System.Drawing.Image)(resources.GetObject("deselectAllUsersButton.Image")));
-            this.deselectAllUsersButton.Location = new System.Drawing.Point(402, 41);
-            this.deselectAllUsersButton.Name = "deselectAllUsersButton";
-            this.deselectAllUsersButton.Size = new System.Drawing.Size(25, 25);
-            this.deselectAllUsersButton.TabIndex = 35;
-            this.deselectAllUsersButton.TabStop = false;
-            this.deselectAllUsersButton.Click += new System.EventHandler(this.deselectAllUsersButton_Click);
-            // 
-            // deselectAllUser
-            // 
-            this.deselectAllUser.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.deselectAllUser.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.deselectAllUser.Cursor = System.Windows.Forms.Cursors.Default;
-            this.deselectAllUser.Enabled = false;
-            this.deselectAllUser.Font = new System.Drawing.Font("Segoe UI", 9.25F);
-            this.deselectAllUser.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.deselectAllUser.Location = new System.Drawing.Point(254, 47);
-            this.deselectAllUser.Name = "deselectAllUser";
-            this.deselectAllUser.Size = new System.Drawing.Size(125, 17);
-            this.deselectAllUser.TabIndex = 34;
-            this.deselectAllUser.Text = "Select/deselect all users";
-            // 
-            // selectAllUsersButton
-            // 
-            this.selectAllUsersButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.selectAllUsersButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.selectAllUsersButton.Image = ((System.Drawing.Image)(resources.GetObject("selectAllUsersButton.Image")));
-            this.selectAllUsersButton.Location = new System.Drawing.Point(402, 11);
-            this.selectAllUsersButton.Name = "selectAllUsersButton";
-            this.selectAllUsersButton.Size = new System.Drawing.Size(25, 25);
-            this.selectAllUsersButton.TabIndex = 36;
-            this.selectAllUsersButton.TabStop = false;
-            this.selectAllUsersButton.Click += new System.EventHandler(this.selectAllUsersButton_Click);
-            // 
-            // unfollowButton
-            // 
-            this.unfollowButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.unfollowButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.unfollowButton.Image = ((System.Drawing.Image)(resources.GetObject("unfollowButton.Image")));
-            this.unfollowButton.Location = new System.Drawing.Point(402, 101);
-            this.unfollowButton.Name = "unfollowButton";
-            this.unfollowButton.Size = new System.Drawing.Size(25, 25);
-            this.unfollowButton.TabIndex = 37;
-            this.unfollowButton.TabStop = false;
-            this.unfollowButton.Click += new System.EventHandler(this.unfollowButton_Click);
-            // 
-            // mutualFollowersPanel
-            // 
-            this.mutualFollowersPanel.Controls.Add(this.pictureBox2);
-            this.mutualFollowersPanel.Controls.Add(this.pictureBox3);
-            this.mutualFollowersPanel.Controls.Add(this.textBox1);
-            this.mutualFollowersPanel.Controls.Add(this.mutualCheckedListBox);
-            this.mutualFollowersPanel.Controls.Add(this.displayFollowingTimeText);
-            this.mutualFollowersPanel.Location = new System.Drawing.Point(30, 189);
-            this.mutualFollowersPanel.Name = "mutualFollowersPanel";
-            this.mutualFollowersPanel.Size = new System.Drawing.Size(443, 34);
-            this.mutualFollowersPanel.TabIndex = 38;
-            this.mutualFollowersPanel.Visible = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(241, 70);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(25, 25);
-            this.pictureBox2.TabIndex = 36;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
-            this.pictureBox3.Location = new System.Drawing.Point(241, 100);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(25, 25);
-            this.pictureBox3.TabIndex = 35;
-            this.pictureBox3.TabStop = false;
-            // 
-            // textBox1
-            // 
-            this.textBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.textBox1.Enabled = false;
-            this.textBox1.Font = new System.Drawing.Font("Segoe UI", 9.25F);
-            this.textBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox1.Location = new System.Drawing.Point(237, 47);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(220, 17);
-            this.textBox1.TabIndex = 34;
-            this.textBox1.Text = "How long have these users followed me";
-            // 
-            // mutualCheckedListBox
-            // 
-            this.mutualCheckedListBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.mutualCheckedListBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.mutualCheckedListBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.mutualCheckedListBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.mutualCheckedListBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.mutualCheckedListBox.FormattingEnabled = true;
-            this.mutualCheckedListBox.Location = new System.Drawing.Point(8, 5);
-            this.mutualCheckedListBox.Name = "mutualCheckedListBox";
-            this.mutualCheckedListBox.Size = new System.Drawing.Size(223, 164);
-            this.mutualCheckedListBox.TabIndex = 26;
-            // 
-            // displayFollowingTimeText
-            // 
-            this.displayFollowingTimeText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.displayFollowingTimeText.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.displayFollowingTimeText.Cursor = System.Windows.Forms.Cursors.Default;
-            this.displayFollowingTimeText.Enabled = false;
-            this.displayFollowingTimeText.Font = new System.Drawing.Font("Segoe UI", 9.25F);
-            this.displayFollowingTimeText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.displayFollowingTimeText.Location = new System.Drawing.Point(237, 17);
-            this.displayFollowingTimeText.Name = "displayFollowingTimeText";
-            this.displayFollowingTimeText.Size = new System.Drawing.Size(200, 17);
-            this.displayFollowingTimeText.TabIndex = 32;
-            this.displayFollowingTimeText.Text = "How long have a followed these users";
-            // 
-            // topUsersPanel
-            // 
-            this.topUsersPanel.Controls.Add(this.topUsersListBox);
-            this.topUsersPanel.Location = new System.Drawing.Point(30, 229);
-            this.topUsersPanel.Name = "topUsersPanel";
-            this.topUsersPanel.Size = new System.Drawing.Size(443, 23);
-            this.topUsersPanel.TabIndex = 39;
-            this.topUsersPanel.Visible = false;
-            // 
-            // topUsersListBox
-            // 
-            this.topUsersListBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.topUsersListBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.topUsersListBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.topUsersListBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.topUsersListBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.topUsersListBox.FormattingEnabled = true;
-            this.topUsersListBox.Location = new System.Drawing.Point(8, 5);
-            this.topUsersListBox.Name = "topUsersListBox";
-            this.topUsersListBox.Size = new System.Drawing.Size(240, 164);
-            this.topUsersListBox.TabIndex = 27;
+            this.statsLikes.BackColor = System.Drawing.Color.LightGray;
+            this.statsLikes.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.statsLikes.Cursor = System.Windows.Forms.Cursors.Default;
+            this.statsLikes.Enabled = false;
+            this.statsLikes.Font = new System.Drawing.Font("Segoe UI", 10.25F);
+            this.statsLikes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.statsLikes.Location = new System.Drawing.Point(166, 12);
+            this.statsLikes.Name = "statsLikes";
+            this.statsLikes.Size = new System.Drawing.Size(60, 19);
+            this.statsLikes.TabIndex = 28;
+            this.statsLikes.Text = "0";
+            this.statsLikes.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // mainScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.ClientSize = new System.Drawing.Size(974, 400);
+            this.ClientSize = new System.Drawing.Size(1084, 400);
             this.Controls.Add(this.likesPanel);
             this.Controls.Add(this.followersPanel);
-            this.Controls.Add(this.profilePanel);
             this.Controls.Add(this.menuPanel);
+            this.Controls.Add(this.profilePanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "mainScreen";
@@ -850,6 +929,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.profilePic)).EndInit();
             this.followersPanel.ResumeLayout(false);
             this.followersPanel.PerformLayout();
+            this.topUsersPanel.ResumeLayout(false);
+            this.mutualFollowersPanel.ResumeLayout(false);
+            this.mutualFollowersPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            this.nonFollowersPanel.ResumeLayout(false);
+            this.nonFollowersPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.unfollowButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.selectAllUsersButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deselectAllUsersButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.selectRandomButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.topUsersButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mutualFolButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nonFolButton)).EndInit();
@@ -860,17 +950,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.likeLatestButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.likeFreshButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.likesPic)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.selectRandomButton)).EndInit();
-            this.nonFollowersPanel.ResumeLayout(false);
-            this.nonFollowersPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.deselectAllUsersButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.selectAllUsersButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.unfollowButton)).EndInit();
-            this.mutualFollowersPanel.ResumeLayout(false);
-            this.mutualFollowersPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            this.topUsersPanel.ResumeLayout(false);
+            this.statsPanel.ResumeLayout(false);
+            this.statsPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -930,5 +1011,10 @@
         private System.Windows.Forms.TextBox displayFollowingTimeText;
         private System.Windows.Forms.Panel topUsersPanel;
         private System.Windows.Forms.CheckedListBox topUsersListBox;
+        private System.Windows.Forms.ComboBox timeDropDown;
+        private System.Windows.Forms.Panel statsPanel;
+        private System.Windows.Forms.TextBox statsText2;
+        private System.Windows.Forms.TextBox statsText1;
+        private System.Windows.Forms.TextBox statsLikes;
     }
 }
