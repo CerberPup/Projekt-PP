@@ -67,7 +67,7 @@ namespace _500pxCracker
 
         public void Serialize(Dane d)
         {
-            //d = GenData();
+            //500pxCracker/500pxCracker/mainScreen.resx         | 1582 +++++++++++++++++++++d = GenData();
             JsonSerializer serializer = new JsonSerializer();
             serializer.NullValueHandling = NullValueHandling.Ignore;
 
