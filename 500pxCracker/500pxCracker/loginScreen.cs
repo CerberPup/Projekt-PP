@@ -56,12 +56,7 @@ namespace _500pxCracker
                 warningTextbox.Visible = false;
         }
 
-        private void closeButton_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void OKbutton_Click_1(object sender, EventArgs e)
+        private void logInButton_Click(object sender, EventArgs e)
         {
             //dorobic warunek gdy login jest bialymi znakami?
             //loginTextBox.Text[0] != ' ' \
@@ -78,7 +73,12 @@ namespace _500pxCracker
             {
                 warningTextbox.Visible = true;
             }
-        } 
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
     
 }

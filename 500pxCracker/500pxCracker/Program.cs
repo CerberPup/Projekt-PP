@@ -16,7 +16,7 @@ namespace _500pxCracker
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new loginScreen());
+            Application.Run(new mainScreen());
         }
     }
 }
