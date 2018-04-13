@@ -125,6 +125,7 @@
             this.Name = "loginScreen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "500px cracker";
+            this.TransparencyKey = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
             this.Load += new System.EventHandler(this.loginScreen_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.loginScreen_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.logoPic)).EndInit();
