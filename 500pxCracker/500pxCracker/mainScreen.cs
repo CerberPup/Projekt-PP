@@ -29,16 +29,20 @@ namespace _500pxCracker
 
         private void mainScreen_Load(object sender, EventArgs e)
         {
-            //mainScreen.Size = new System.Drawing.Size(670, 400);
-            nonFollowersPanel.Size = new Size(440, 185);
-            mutualFollowersPanel.Size = new Size(440, 185);
-            mutualFollowersPanel.Location = new Point(30, 160);
+            //followers
+            nonFollowersPanel.Size = new Size(460, 185);
+            mutualFollowersPanel.Size = new Size(460, 185);
             topUsersPanel.Size = new Size(440, 185);
+
+            nonFollowersPanel.Location = new Point(30, 160);
+            mutualFollowersPanel.Location = new Point(30, 160);
             topUsersPanel.Location = new Point(30, 160);
 
+            //likes
             likesPanel.Location = new Point(119, 12);
-            likesPanel.Size = new Size(440, 185);
+            likesPanel.Size = new Size(460, 185);
 
+            //profile
             profilePanel.Location = new Point(119, 12);
             profilePanel.Size = new Size(440, 185);
         }
@@ -166,7 +170,12 @@ namespace _500pxCracker
             if (topUsersPanel.Visible)
                 topUsersPanel.Visible = false;
 
-            //here add items to mutualCheckedListBox ~~~~~~~~~~~~~~
+            //here add items to mutualListBox ~~~~~~~~~~~~~~
+            //item_format = userName + \t\t + date1 + \t\t + date2
+
+            //date1 = since when I have been following user B
+            //date2 = since when user B has been following me
+            //date_format = dd-mm-yy
         }
 
         private void topUsersButton_Click(object sender, EventArgs e)
@@ -236,6 +245,18 @@ namespace _500pxCracker
                 nonFollowersListBox.SetItemChecked(i, false);
             }
         }
+
+        private void invertSelectionButton_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < nonFollowersListBox.Items.Count; i++)
+            {
+                if(nonFollowersListBox.GetItemCheckState(i) == CheckState.Checked)
+                    nonFollowersListBox.SetItemChecked(i, false);
+                else
+                    nonFollowersListBox.SetItemChecked(i, true);
+            }
+        }
+
         private void unfollowButton_Click(object sender, EventArgs e)
         {
             //do stuff with selected items
@@ -280,6 +301,12 @@ namespace _500pxCracker
             ReleaseCapture();
             SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
         }
-        
+
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            //+ log out
+            this.Close();
+        }
+
     }
 }
