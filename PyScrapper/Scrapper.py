@@ -7,12 +7,14 @@ scriptDir = os.path.abspath(os.path.dirname(__file__))
 
 class Scrapper:
 
-    followingFile = scriptDir + '/following.json'
-    followersFile = scriptDir + '/followers.json'
-
+    userDir = scriptDir + '/UserInfo'
+    followingFile = userDir + '/following.json'
+    followersFile = userDir + '/followers.json'
+    photosDir = scriptDir + '/photosDumps'
+    galleriesDir = scriptDir + '/galleriesDumps'
 
     def __init__(self, email, password, debugMode):
-        self.logger = Logger(scriptDir, "log_"+email, debugMode)
+        self.logger = Logger(Scrapper.userDir, "log_"+email, debugMode)
         self.session = requests.Session()
         self.session.headers.update({
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
@@ -31,12 +33,17 @@ class Scrapper:
         self.UserData = None
         self._retrieveToken()
         self._login()
-
+        if not os.path.exists(Scrapper.photosDir):
+            os.makedirs(Scrapper.photosDir)
+        if not os.path.exists(Scrapper.galleriesDir):
+            os.makedirs(Scrapper.galleriesDir)
 
     def getFollowings(self):
         pageNum = 1
         following = []
         self.logger.LogLine("Attempt to retrieve followings list...")
+        if os.path.isfile(Scrapper.followingFile):
+            os.remove(Scrapper.followingFile)
         while True:
             followingPage = self.requestWebPage('GET', 'https://api.500px.com/v1/users/' + str(
                 self.UserData['id']) + '/friends?fullformat=0&page=' + str(pageNum), headers=self.csrfHeaders)
@@ -59,6 +66,8 @@ class Scrapper:
         pageNum = 1
         followers = []
         self.logger.LogLine("Attempt to retrieve followers list...")
+        if os.path.isfile(Scrapper.followersFile):
+            os.remove(Scrapper.followersFile)
         while True:
             followersPage = self.requestWebPage('GET', 'https://api.500px.com/v1/users/' + str(
                 self.UserData['id']) + '/followers?fullformat=0&page=' + str(pageNum), headers=self.csrfHeaders)
@@ -171,7 +180,6 @@ class Scrapper:
                 time.sleep(5)
         time.sleep(20)
 
-
     def GetUserInfo(self, username):
         UserInfo = {}
         infoPage = self.requestWebPage('GET', 'https://api.500px.com/v1/users/show?username=' + username, data=self.payload)
@@ -187,13 +195,15 @@ class Scrapper:
     def GetPhotosGalleriesForUser(self, id):
         Galleries = []
         page=1
-        jsonFile = scriptDir + '/' + str(id) + 'galleries'
+        jsonFile = Scrapper.galleriesDir + '/' + str(id) + '_galleries'
+        if os.path.isfile(jsonFile):
+            os.remove(jsonFile)
         while True:
             galleryPage= self.requestWebPage('GET', 'https://api.500px.com/v1/users/' + str(id) + '/galleries?page='+ str(page), data=self.payload)
             self.logger.LogLine("Attempt to get galleries for user " + str(id))
             if galleryPage.status_code == 200:
                 galleryPage_json = json.loads(galleryPage.text)
-                with open(jsonFile, 'w') as f:
+                with open(jsonFile, 'a') as f:
                     f.write(json.dumps(galleryPage_json['galleries']))
                 Galleries += galleryPage_json['galleries']
                 self.logger.LogLine("Galleries retrieved succesfully")
@@ -208,13 +218,21 @@ class Scrapper:
     def GetItemsForGallery(self, UserId, GalleryId):
         Photos=[]
         page=1
-        json_file = scriptDir + '/photos_of_' + str(GalleryId) + '_gallery_user_' + str(UserId)
+        dir = Scrapper.photosDir + '/User' + str(UserId)
+        if not os.path.exists(dir):
+            os.makedirs(dir)
+        galleryDir = dir + '/Gallery_' + str(GalleryId)
+        if not os.path.exists(galleryDir):
+            os.makedirs(galleryDir)
+        json_file = galleryDir + '/photos'
+        if os.path.isfile(json_file):
+            os.remove(json_file)
         while True:
             photosPage = self.requestWebPage('GET', 'https://api.500px.com/v1/users/' + str(UserId) + '/galleries/' + str(GalleryId) + '/items?page='+ str(page), data=self.payload)
             self.logger.LogLine("Attempt to get photos for user " + str(UserId) + " in gallery " + str(GalleryId))
             if photosPage.status_code == 200:
                 photosPage_json = json.loads(photosPage.text)
-                with open(json_file, 'w') as f:
+                with open(json_file, 'a') as f:
                     f.write(json.dumps(photosPage_json))
                 Photos += photosPage_json['photos']
                 self.logger.LogLine("Galleries retrieved succesfully")

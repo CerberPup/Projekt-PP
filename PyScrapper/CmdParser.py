@@ -6,9 +6,13 @@ class CmdParser:
         if(len(self.args)==1):
             self.DisplayHelp()
             return
-        self.Credentials={}
-        self.Credentials['login'] = self.args[1]
-        self.Credentials['password'] = self.args[2]
+        elif self.GetHelp():
+            self.DisplayHelp()
+            return
+        else:
+            self.Credentials={}
+            self.Credentials['login'] = self.args[1]
+            self.Credentials['password'] = self.args[2]
 
     def GetPhotosCmd(self):
         for arg in self.args:
@@ -50,6 +54,12 @@ class CmdParser:
     def GetFollowers(self):
         for arg in self.args:
             if arg == "-f2":
+                return True
+        return False
+
+    def GetHelp(self):
+        for arg in self.args:
+            if arg == "-h":
                 return True
         return False
 
