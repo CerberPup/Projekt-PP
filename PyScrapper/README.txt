@@ -2,7 +2,7 @@ Script parses data requested from 500px to .json files.
 
 Currently generated files:
 
-	1. followings.json / followers.json - files with information about our followings or followers in directory UserInfo.
+	1. Information about users followed by our user are stored in Userinfo/followings directory for each user separatly. Right now, followers.json exists as dump of all followers, it needs to be updated to work the same way as followings.
 	2. <UserID>galleries - dump of user's galleries in directory galleriesDumps
 	3. photos - dump of  photos of gallery for user in directory photosDumps organized by UserID and GalleryID.
 	4.log_<email> - debug information for users logged in with email in UserInfo directory
