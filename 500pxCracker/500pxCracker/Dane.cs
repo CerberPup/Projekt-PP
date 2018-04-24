@@ -106,31 +106,31 @@ namespace _500pxCracker
                     {
                         new Photo
                         {
-                            _PhotoUploadDate = DateTime.Parse("04/02/1992 00:00:00 AM"),
+                            _PhotoUploadDate = DateTime.Parse("04.02.1992 00:00:00"),
                             _PhotoId = "1212334",
                             _Likes = new Like[2]
                             {
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/22/2017 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.22.2017 00:00:00"),
                                     _UserId = "ID56423196874"
                                 },
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/2018 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.2018 00:00:00"),
                                     _UserId = "ID56423196874"
                                 }
                             }
                         },
                         new Photo{
-                            _PhotoUploadDate = DateTime.Parse("04/02/1926 00:00:00 AM"),
+                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
                             _PhotoId = "",
                             _Likes = new Like[2]
                             {
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID5643311874"
                                 },
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID56423196874"
                                 }
                             }
@@ -141,38 +141,38 @@ namespace _500pxCracker
                 {
                     new User{
                         _Name = "follower1",
-                        _StartedFollowing = DateTime.Parse("04/02/1991 00:00:00 AM"),
-                        _FollowedSince = DateTime.Parse("03/02/1991 00:00:00 AM"),
+                        _StartedFollowing = DateTime.Parse("04.02.1991 00:00:00"),
+                        _FollowedSince = DateTime.Parse("03.02.1991 00:00:00"),
                         _Id = "ID56423196874",
                         _Photos = new Photo[2]
                     {
                         new Photo
                         {
-                            _PhotoUploadDate = DateTime.Parse("04/02/1926 00:00:00 AM"),
+                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
                             _PhotoId = "1212334",
                             _Likes = new Like[2]
                             {
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID56423196874"
                                 },
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID56423196874"
                                 }
                             }
                         },
                         new Photo{
-                            _PhotoUploadDate = DateTime.Parse("04/02/1926 00:00:00 AM"),
+                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
                             _PhotoId = "",
                             _Likes = new Like[2]
                             {
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID5643311874"
                                 },
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID56423196874"
                                 }
                             }
@@ -183,38 +183,38 @@ namespace _500pxCracker
                     new User
                     {
                         _Name = "follower2",
-                        _StartedFollowing = DateTime.Parse("04/05/1993 00:00:00 AM"),
-                        _FollowedSince = DateTime.Parse("03/08/1992 00:00:00 AM"),
+                        _StartedFollowing = DateTime.Parse("04.05.1993 00:00:00"),
+                        _FollowedSince = DateTime.Parse("03.08.1992 00:00:00"),
                         _Id = "ID56423196124",
                         _Photos = new Photo[2]
                     {
                         new Photo
                         {
-                            _PhotoUploadDate = DateTime.Parse("04/02/1926 00:00:00 AM"),
+                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
                             _PhotoId = "1212334",
                             _Likes = new Like[2]
                             {
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID56423196874"
                                 },
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID56423196874"
                                 }
                             }
                         },
                         new Photo{
-                            _PhotoUploadDate = DateTime.Parse("04/02/1926 00:00:00 AM"),
+                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
                             _PhotoId = "",
                             _Likes = new Like[2]
                             {
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID5643311874"
                                 },
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID56423196874"
                                 }
                             }
@@ -224,38 +224,38 @@ namespace _500pxCracker
                     new User
                     {
                         _Name = "follower3",
-                        _StartedFollowing = DateTime.Parse("05/13/1991 00:00:00 AM"),
-                        _FollowedSince = DateTime.Parse("06/22/1991 00:00:00 AM"),
+                        _StartedFollowing = DateTime.Parse("05.13.1991 00:00:00"),
+                        _FollowedSince = DateTime.Parse("06.22.1991 00:00:00"),
                         _Id = "ID5643311874",
                         _Photos = new Photo[2]
                     {
                         new Photo
                         {
-                            _PhotoUploadDate = DateTime.Parse("04/02/1926 00:00:00 AM"),
+                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
                             _PhotoId = "1212334",
                             _Likes = new Like[2]
                             {
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/2017 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.2017 00:00:00"),
                                     _UserId = "ID56423196874"
                                 },
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/2018 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.2018 00:00:00"),
                                     _UserId = "ID56423196874"
                                 }
                             }
                         },
                         new Photo{
-                            _PhotoUploadDate = DateTime.Parse("04/02/1926 00:00:00 AM"),
+                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
                             _PhotoId = "",
                             _Likes = new Like[2]
                             {
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID5643311874"
                                 },
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID56423196874"
                                 }
                             }
@@ -268,37 +268,37 @@ namespace _500pxCracker
                     new User
                     {
                         _Name = "followed1",
-                        _FollowedSince = DateTime.Parse("03/02/2014 00:00:00 AM"),
+                        _FollowedSince = DateTime.Parse("03.02.2014 00:00:00"),
                         _Id = "ID52222196874",
                         _Photos = new Photo[2]
                     {
                         new Photo
                         {
-                            _PhotoUploadDate = DateTime.Parse("04/02/1926 00:00:00 AM"),
+                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
                             _PhotoId = "1212334",
                             _Likes = new Like[2]
                             {
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID56423196874"
                                 },
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID56423196874"
                                 }
                             }
                         },
                         new Photo{
-                            _PhotoUploadDate = DateTime.Parse("04/02/1926 00:00:00 AM"),
+                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
                             _PhotoId = "",
                             _Likes = new Like[2]
                             {
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID5643311874"
                                 },
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID56423196874"
                                 }
                             }
@@ -308,38 +308,38 @@ namespace _500pxCracker
                     new User
                     {
                         _Name = "follolowed2",
-                        _StartedFollowing = DateTime.Parse("05/05/2005 05:05:05"),
-                        _FollowedSince = DateTime.Parse("12/12/2012 12:12:12"),
+                        _StartedFollowing = DateTime.Parse("05.05.2005 05:05:05"),
+                        _FollowedSince = DateTime.Parse("12.12.2012 12:12:12"),
                         _Id = "ID56423446874",
                         _Photos = new Photo[2]
                     {
                         new Photo
                         {
-                            _PhotoUploadDate = DateTime.Parse("04/02/1926 00:00:00 AM"),
+                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
                             _PhotoId = "1212334",
                             _Likes = new Like[2]
                             {
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID56423196874"
                                 },
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID56423196874"
                                 }
                             }
                         },
                         new Photo{
-                            _PhotoUploadDate = DateTime.Parse("04/02/1926 00:00:00 AM"),
+                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
                             _PhotoId = "",
                             _Likes = new Like[2]
                             {
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID5643311874"
                                 },
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04/02/1996 00:00:00 AM"),
+                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
                                     _UserId = "ID56423196874"
                                 }
                             }
