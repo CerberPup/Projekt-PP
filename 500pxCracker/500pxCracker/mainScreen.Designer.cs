@@ -951,6 +951,73 @@
             this.closeButton.TabStop = false;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
+<<<<<<< HEAD
+=======
+            // mutualListBox
+            // 
+            this.mutualListBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.mutualListBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.mutualListBox.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.mutualListBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.mutualListBox.FormattingEnabled = true;
+            this.mutualListBox.ItemHeight = 15;
+            this.mutualListBox.Location = new System.Drawing.Point(12, 42);
+            this.mutualListBox.Name = "mutualListBox";
+            this.mutualListBox.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.mutualListBox.Size = new System.Drawing.Size(349, 122);
+            this.mutualListBox.TabIndex = 37;
+            // 
+            // profilePic1
+            // 
+            this.profilePic1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.profilePic1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.profilePic1.Enabled = false;
+            this.profilePic1.Image = ((System.Drawing.Image)(resources.GetObject("profilePic1.Image")));
+            this.profilePic1.Location = new System.Drawing.Point(293, 11);
+            this.profilePic1.Name = "profilePic1";
+            this.profilePic1.Size = new System.Drawing.Size(25, 25);
+            this.profilePic1.TabIndex = 38;
+            this.profilePic1.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.pictureBox1.Enabled = false;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(157, 11);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox1.TabIndex = 39;
+            this.pictureBox1.TabStop = false;
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.textBox1.Enabled = false;
+            this.textBox1.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+            this.textBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.textBox1.Location = new System.Drawing.Point(254, 77);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(125, 17);
+            this.textBox1.TabIndex = 38;
+            this.textBox1.Text = "Invert selection";
+            // 
+            // invertSelectionButton
+            // 
+            this.invertSelectionButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.invertSelectionButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.invertSelectionButton.Image = ((System.Drawing.Image)(resources.GetObject("invertSelectionButton.Image")));
+            this.invertSelectionButton.Location = new System.Drawing.Point(402, 71);
+            this.invertSelectionButton.Name = "invertSelectionButton";
+            this.invertSelectionButton.Size = new System.Drawing.Size(25, 25);
+            this.invertSelectionButton.TabIndex = 39;
+            this.invertSelectionButton.TabStop = false;
+            this.invertSelectionButton.Click += new System.EventHandler(this.invertSelectionButton_Click);
+            // 
+>>>>>>> 303adc6ae82d3c2ce5bd17944cae17abb4a8f98a
             // mainScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
