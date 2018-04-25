@@ -951,8 +951,7 @@
             this.closeButton.TabStop = false;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
-<<<<<<< HEAD
-=======
+
             // mutualListBox
             // 
             this.mutualListBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
@@ -1017,7 +1016,6 @@
             this.invertSelectionButton.TabStop = false;
             this.invertSelectionButton.Click += new System.EventHandler(this.invertSelectionButton_Click);
             // 
->>>>>>> 303adc6ae82d3c2ce5bd17944cae17abb4a8f98a
             // mainScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
