@@ -63,16 +63,71 @@ class CmdParser:
     def UseFollowersList(self):
         return self.IsParameterPresent("-sf2")
 
+    def GetVote(self):
+        return self.IsParameterPresent("-v")
+
+    def FollowUser(self):
+        it = iter(self.args)
+        for arg in it:
+            if arg == "-fl":
+                return next(it)
+        return ""
+
+    def UnfollowUser(self):
+        it = iter(self.args)
+        for arg in it:
+            if arg == "-ufl":
+                return next(it)
+        return ""
+
+    def VoteForPhoto(self):
+        it = iter(self.args)
+        for arg in it:
+            if arg == "-v":
+                return next(it)
+        return ""
+
+    def UnvotePhoto(self):
+        it = iter(self.args)
+        for arg in it:
+            if arg == "-uv":
+                return next(it)
+        return ""
+
+    def VoteForFresh(self):
+        it = iter(self.args)
+        for arg in it:
+            if arg == "-vf":
+                return next(it)
+        return ""
+
+    def VoteForUpcoming(self):
+        it = iter(self.args)
+        for arg in it:
+            if arg == "-vu":
+                return next(it)
+        return ""
+
+
+
     def DisplayHelp(self):
         print("Cmd args: <email> <password> [<args>]")
         print("args:")
         print("\t-f1\t-\tget followings list")
-        print("\t-sf1\t-\tuser followings list as the users list to get data about")
-        print("\t-f2\t-\tget followers list - might not work xD")
+        print("\t-f2\t-\tget followers list")
+        print("\t-sf1\t-\tuse followings list as the users list to photos")
         print("\t-p\t-\tget photos for users given in the -u parameter")
         print("\t-u\t-\tlist of users to process, now used only with -p parameter")
-        print("\t-debug\t-\tturn on debug info on std output (anyway logged to log_email file)")
-        print("\t-offline\t-\tdo not log in to service ( debug purposes mostly) ")
-
+        print("\t-v\t-\tvotes for photo [photoID]")
+        print("\t-uv\t-\tunvotes for photo [photoID]")
+        print("\t-fl\t-\tfollows user [username]")
+        print("\t-ufl\t-\tfollows user [username]")
+        print("\t-vf\t-\tvotes for photos in fresh list [amount]")
+        print("\t-vu\t-\tvotes for photos in upcoming list [amount]")
+        print("\t-debug\t-\tturns on debug info on std output (anyway logged to log_email file), should be used in terminal only")
         print("\nexample: email@domain.com samplepasswd -f1")
         print("\nexample: email@domain.com samplepasswd -p -u username1 username2")
+        print("\nexample: email@domain.com samplepasswd -sf1")
+        print("\nexample: email@domain.com samplepasswd -fl someUser")
+        print("\nexample: email@domain.com samplepasswd -v 123456789")
+        print("\nexample: email@domain.com samplepasswd -vf 100")

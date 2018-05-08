@@ -7,10 +7,19 @@ if len(cmdParser.args) > 1:
         login = cmdParser.GetLogin()
         passwd = cmdParser.GetPassword()
         scrapper = Scrapper(login, passwd, cmdParser.GetDebugMode(), cmdParser.GetOffline())
+
         if cmdParser.GetFollowers():
             scrapper.getFollowers()
         if cmdParser.GetFollowings():
             scrapper.getFollowings()
+
+        toFollow = cmdParser.FollowUser()
+        toUnfollow = cmdParser.UnfollowUser()
+        if toFollow != "":
+            scrapper.FollowUser(toFollow)
+        if toUnfollow != "":
+            scrapper.UnfollowUser(toUnfollow)
+
         if cmdParser.GetPhotosCmd():
             usersList=[]
             if cmdParser.UseFollowingsList():
@@ -20,3 +29,15 @@ if len(cmdParser.args) > 1:
             if len(usersList) > 0:
                for user in usersList:
                    scrapper.GetPhotosForUser(user)
+
+        if cmdParser.GetVote():
+            scrapper.VoteForPhoto(cmdParser.VoteForPhoto())
+
+        if cmdParser.UnvotePhoto()!="":
+            scrapper.DeleteVoteForPhoto(cmdParser.UnvotePhoto())
+
+        if cmdParser.VoteForFresh()!="":
+            scrapper.VoteFreshOrUpcoming(True, int(cmdParser.VoteForFresh()))
+
+        if cmdParser.VoteForUpcoming()!="":
+            scrapper.VoteFreshOrUpcoming(False, int(cmdParser.VoteForUpcoming()))

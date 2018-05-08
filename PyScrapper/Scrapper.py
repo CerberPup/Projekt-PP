@@ -13,6 +13,7 @@ class Scrapper:
     followersDir= userDir + '/followers'
     photosDir = scriptDir + '/photosDumps'
     galleriesDir = scriptDir + '/galleriesDumps'
+    likesDir = scriptDir + '/likesForPhotos'
 
     def __init__(self, email, password, debugMode, offlineMode):
         self.logger = Logger(Scrapper.userDir, "log_"+email, debugMode)
@@ -39,6 +40,8 @@ class Scrapper:
             os.makedirs(Scrapper.photosDir)
         if not os.path.exists(Scrapper.galleriesDir):
             os.makedirs(Scrapper.galleriesDir)
+        if not os.path.exists(Scrapper.likesDir):
+            os.makedirs(Scrapper.likesDir)
 
     def getFollowings(self):
         pageNum = 1
@@ -52,6 +55,9 @@ class Scrapper:
             if followingPage.status_code == 200:
                 self.logger.LogLine("Succesfully retrieved followings page: " + str(pageNum))
                 followingPage_json = json.loads(followingPage.text)
+                followingPageFile = Scrapper.followingDir + '/' + 'fullJson.json'
+                with open (followingPageFile, 'a') as f:
+                    f.write(json.dumps(followingPage_json))
                 following += followingPage_json['friends']
                 if pageNum == followingPage_json['friends_pages']:
                     break
@@ -100,7 +106,7 @@ class Scrapper:
 
         return followings
 
-    def requestWebPage(self, method, url, data={}, headers={}, checkStatusCode=True, Retries=10):
+    def requestWebPage(self, method, url, data={}, headers={}, checkStatusCode=True, Retries=5):
         retriesCounter=0
         while True:
             retriesCounter=retriesCounter+1
@@ -110,9 +116,11 @@ class Scrapper:
                 self.logger.LogLine('Requested page is not responding, retrying...')
                 time.sleep(5)
                 continue
+            if Retries>0:
+                if retriesCounter > Retries:
+                    self.logger.LogLine("Request web page reached limit of retries.")
+                    self.logger.LogLine(url + " " + str(retriesCounter))
             if retriesCounter > Retries:
-                self.logger.LogLine("Request web page reached limit of retries. Aborting...")
-                self.logger.LogLine(url + " " + str(retriesCounter))
                 return response
             if response.status_code == 429:
                 self.logger.LogLine("Too many requests in time, please shut down scrapper and try again later")
@@ -127,7 +135,7 @@ class Scrapper:
     def _retrieveToken(self):
         self.logger.LogLine("Attempt to retrieve token. Requesting login page...")
         self.web = self.requestWebPage('GET', 'https://500px.com/login')
-        time.sleep(20)
+        time.sleep(2)
         if self.web.status_code == 200:
             self.logger.LogLine("Requested login page")
             web_soup = BeautifulSoup(self.web.text, 'html.parser')
@@ -140,7 +148,7 @@ class Scrapper:
     def _login(self):
         self.logger.LogLine("Attempt to log in...")
         self.web = self.requestWebPage('POST', 'https://api.500px.com/v1/session', data = self.payload)
-        time.sleep(20)
+        time.sleep(2)
         if self.web.status_code == 200:
             self.UserData = json.loads(self.web.text)['user']
             self.logger.LogLine("Logged in as: " + self.UserData['username'])
@@ -149,50 +157,32 @@ class Scrapper:
             self.logger.LogLine("Unable to log in : " + str(self.web.status_code))
             self.logger.LogLine("URL: " + str(self.web.url))
 
-    def FollowUser(self, userID):
-        self.logger.LogLine("Attempt to follow user: " + str(userID))
-        acceptPage = self.requestWebPage('POST', 'https://api.500px.com/v1/users/' + str(userID) + '/friends', data = self.payload, Retries=3)
-        continueLoop = True
-        while continueLoop:
-            try:
-                if acceptPage.status_code == 200:
-                    self.logger.LogLine("Followed successfully")
-                    continueLoop=False
-                elif acceptPage.status_code == 403:
-                    self.logger.LogLine("The user requested has been disabled or already in followers list.")
-                    continueLoop=False
-                elif acceptPage.status_code == 404:
-                    self.logger.LogLine("User does not exist")
-                    continueLoop=False
-                else:
-                    self.logger.LogLine('A server error (' + str(acceptPage.status_code) + ') occured. Retrying...')
-                    self.logger.LogLine('Error URL: ' + acceptPage.url)
-                    time.sleep(5)
-            except requests.exceptions.RequestException:
-                self.logger.LogLine('Web page timed out. Retrying...')
-                time.sleep(5)
-            time.sleep(20)
+    def FollowUser(self, targetUserName):
+        self.logger.LogLine("Attempt to follow user: " + targetUserName)
+        acceptPage = self.requestWebPage('POST', 'https://500px.com/' + targetUserName + '/follow', headers=self.csrfHeaders, Retries=0)
+        if acceptPage.status_code == 200:
+           self.logger.LogLine("Followed successfully")
+        elif acceptPage.status_code == 403:
+           self.logger.LogLine("The user requested has been disabled or already in followers list.")
+        elif acceptPage.status_code == 404:
+           self.logger.LogLine("User does not exist")
+        else:
+           self.logger.LogLine('A server error (' + str(acceptPage.status_code) + ') occured. Retrying...')
+           self.logger.LogLine('Error URL: ' + acceptPage.url)
 
     def UnfollowUser(self, targetUserName):
-        continueLoop = True
-        while continueLoop:
-            try:
-                unfollowResp = self.session.post('https://500px.com/' + targetUserName + '/unfollow', timeout=5,
-                                                headers=self.csrfHeaders)
-                if unfollowResp.status_code == 200:
-                    self.logger.LogLine('Unfollowed ' + targetUserName + '.')
-                    continueLoop = False
-                elif unfollowResp.status_code == 404:
-                    self.logger.LogLine('User ' + targetUserName + ' no longer exists. Skipped unfollow.')
-                    continueLoop = False
-                else:
-                    self.logger.LogLine('A server error (' + str(unfollowResp.status_code) + ') occured. Retrying...')
-                    self.logger.LogLine('Error page: ' + unfollowResp.url)
-                    time.sleep(5)
-            except requests.exceptions.RequestException:
-                self.logger.LogLine('Web page timed out. Retrying...')
-                time.sleep(5)
-        time.sleep(20)
+        self.logger.LogLine("Attempt to unfollow user: " + targetUserName)
+        acceptPage = self.requestWebPage('POST', 'https://500px.com/' + targetUserName + '/unfollow',
+                                         headers=self.csrfHeaders, Retries=3)
+        if acceptPage.status_code == 200:
+            self.logger.LogLine("Unfollowed successfully")
+        elif acceptPage.status_code == 403:
+            self.logger.LogLine("The user requested has been disabled or not present in followers list.")
+        elif acceptPage.status_code == 404:
+            self.logger.LogLine("User does not exist")
+        else:
+            self.logger.LogLine('A server error (' + str(acceptPage.status_code) + ') occured. Retrying...')
+            self.logger.LogLine('Error URL: ' + acceptPage.url)
 
     def GetUserInfo(self, username):
         UserInfo = {}
@@ -263,3 +253,117 @@ class Scrapper:
         galleries = self.GetPhotosGalleriesForUser(ID)
         for gallery in galleries:
             self.GetItemsForGallery(ID, gallery['id'])
+
+    def GetVotesForPhoto(self, photoID):
+        Votes=[]
+        page=1
+        photoFile = Scrapper.likesDir + '/' + str(photoID)
+        if os.path.isfile(photoFile):
+            os.remove(photoFile)
+        while True:
+            likesPage = self.requestWebPage('GET', 'https://api.500px.com/v1/photos/' + str(photoID) + '/votes?page='+ str(page), data=self.payload)
+            self.logger.LogLine("Attempt to get votes for photo " + str(photoID))
+            if likesPage.status_code == 200:
+                likesPage_json= json.loads(likesPage.text)
+                with open(photoFile, 'a') as f:
+                    f.write(json.dumps(likesPage_json['users']))
+                Votes+= likesPage_json['users']
+                self.logger.LogLine("Galleries retrieved succesfully")
+                if page == likesPage_json['total_pages']:
+                    break
+                page=page+1
+            else:
+                self.logger.LogLine("Unable to get galleries")
+                break
+        return Votes
+
+    #Like = True - like photo, False - dislike
+    def VoteForPhoto(self, photoID, Like=True):
+        votePage = self.requestWebPage("POST", 'https://api.500px.com/v1/photos/' + str(photoID) + '/vote?vote=' + str(int(Like)),data=self.payload, Retries=0)
+        self.logger.LogLine("Attempt to vote for photo: " + str(photoID) + " Like: " + str(Like))
+        if votePage.status_code==200:
+            self.logger.LogLine("Voted successfully")
+        elif votePage.status_code==400:
+            self.logger.LogLine("Invalid request")
+        elif votePage.status_code==403:
+            self.logger.LogLine("The vote has been rejected; common reasons are: current user is inactive, has not completed their profile, is trying to vote on their own photo, or has already voted for the photo.")
+        elif votePage.status_code==404:
+            self.logger.LogLine("Photo does not exists")
+        else:
+            self.logger.LogLine("Unexpected error: " + str (votePage.status_code))
+        return votePage.status_code==200
+
+    def DeleteVoteForPhoto(self, photoID):
+        votePage = self.requestWebPage("DELETE", 'https://api.500px.com/v1/photos/' + str(photoID) + '/vote',data=self.payload, Retries=0)
+        self.logger.LogLine("Attempt to delete vote for photo: " + str(photoID))
+        if votePage.status_code==200:
+            self.logger.LogLine("Unvoted successfully")
+        elif votePage.status_code==404:
+            self.logger.LogLine("The requested photo does not exist or was deleted")
+        else:
+            self.logger.LogLine("Unexpected error: " + str (votePage.status_code))
+
+    def GetPhotosFromFresh(self,startPage=1, amount=50):
+        Photos = []
+        file = self.photosDir + '/FreshPhotos'
+        if os.path.isfile(file):
+            os.remove(file)
+        page = startPage
+        while amount>0:
+            URL = 'https://webapi.500px.com/discovery/fresh?rpp=50&feature=fresh&image_size[]=1&image_size[]=2&image_size[]=32&image_size[]=31&image_size[]=33&image_size[]=34&image_size[]=35&image_size[]=36&image_size[]=2048&image_size[]=4&image_size[]=14&sort=&include_states=true&include_licensing=false&formats=jpeg,lytro&only=&exclude=&personalized_categories=false&page='+ str(page) + '&rpp=50'
+            self.logger.LogLine("Attempt to get photos from Fresh, page " + str(page))
+            response = self.requestWebPage("GET", URL, data=self.payload)
+            if response.status_code == 200:
+                self.logger.LogLine("Photos retrieved successfully")
+                response_json = json.loads(response.text)
+                with open(file, 'a') as f:
+                    f.write(json.dumps(response_json['photos']))
+                Photos += response_json['photos']
+            else:
+                self.logger.LogLine("Error in retrieving photos: " + str(response.status_code))
+            page+=1
+            amount-=50
+        return Photos
+
+    def GetPhotosFromUpcoming(self,startPage=1, amount=50):
+        Photos = []
+        file = self.photosDir + '/UpcomingPhotos'
+        if os.path.isfile(file):
+            os.remove(file)
+        page = startPage
+        while amount>0:
+            URL = 'https://api.500px.com/v1/photos?rpp=50&feature=upcoming&image_size[]=1&image_size[]=2&image_size[]=32&image_size[]=31&image_size[]=33&image_size[]=34&image_size[]=35&image_size[]=36&image_size[]=2048&image_size[]=4&image_size[]=14&sort=&include_states=true&include_licensing=false&formats=jpeg,lytro&only=&exclude=&personalized_categories=false&page='+ str(page) + '&rpp=50'
+            self.logger.LogLine("Attempt to get photos from Upcoming, page " + str(page))
+            response = self.requestWebPage("GET", URL, data=self.payload)
+            if response.status_code == 200:
+                self.logger.LogLine("Photos retrieved successfully")
+                response_json = json.loads(response.text)
+                with open(file, 'a') as f:
+                    f.write(json.dumps(response_json['photos']))
+                Photos += response_json['photos']
+            else:
+                self.logger.LogLine("Error in retrieving photos: " + str(response.status_code))
+            page+=1
+            amount-=50
+        return Photos
+
+    def VoteFreshOrUpcoming(self, fresh=True, amount=100):
+        Photos=[]
+        page=1
+        if fresh:
+            self.logger.LogLine("Attempt to like " + str(amount) + " photos from fresh")
+        else:
+            self.logger.LogLine("Attempt to like " + str(amount) + " photos from upcoming")
+
+        while amount>0:
+            if fresh:
+                Photos = self.GetPhotosFromFresh(page, amount)
+            else:
+                Photos = self.GetPhotosFromUpcoming(page, amount)
+            page += int(round(amount / 50.0 + 0.499))
+            for photo in Photos:
+                if photo['liked'] == False:
+                    if self.VoteForPhoto(photo['id']):
+                        amount-=1
+                        if amount == 0:
+                            return
