@@ -278,6 +278,7 @@ class Scrapper:
 
     #Like = True - like photo, False - dislike
     def VoteForPhoto(self, photoID, Like=True):
+
         votePage = self.requestWebPage("POST", 'https://api.500px.com/v1/photos/' + str(photoID) + '/vote?vote=' + str(int(Like)),data=self.payload, Retries=0)
         self.logger.LogLine("Attempt to vote for photo: " + str(photoID) + " Like: " + str(Like))
         if votePage.status_code==200:
@@ -346,6 +347,13 @@ class Scrapper:
             amount-=50
         return Photos
 
+    def PhotoIsLiked(self, photoID):
+        votes = self.GetVotesForPhoto(int(photoID))
+        for vote in votes:
+            if vote['username'] == self.UserData['username']:
+                return True
+        return False
+
     def VoteFreshOrUpcoming(self, fresh=True, amount=100):
         Photos=[]
         page=1
@@ -361,8 +369,6 @@ class Scrapper:
                 Photos = self.GetPhotosFromUpcoming(page, amount)
             page += int(round(amount / 50.0 + 0.499))
             for photo in Photos:
-                if photo['liked'] == False:
+                if not self.PhotoIsLiked(photo['id']):
                     if self.VoteForPhoto(photo['id']):
                         amount-=1
-                        if amount == 0:
-                            return
