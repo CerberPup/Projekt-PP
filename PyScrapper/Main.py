@@ -1,6 +1,8 @@
 from Scrapper import *
 from CmdParser import *
 
+
+
 cmdParser = CmdParser(sys.argv)
 if len(cmdParser.args) > 1:
     if not cmdParser.GetHelp():
@@ -31,7 +33,10 @@ if len(cmdParser.args) > 1:
                    scrapper.GetPhotosForUser(user)
 
         if cmdParser.GetVote():
-            scrapper.VoteForPhoto(cmdParser.VoteForPhoto())
+            if scrapper.PhotoIsLiked(cmdParser.VoteForPhoto()):
+                scrapper.logger.LogLine("Photo already likes")
+            else:
+                scrapper.VoteForPhoto(cmdParser.VoteForPhoto())
 
         if cmdParser.UnvotePhoto()!="":
             scrapper.DeleteVoteForPhoto(cmdParser.UnvotePhoto())

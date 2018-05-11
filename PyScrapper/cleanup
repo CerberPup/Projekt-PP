@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ -d galleriesDumps ]; then
+rm galleriesDumps -R
+fi
+if [ -d photosDumps ]; then
+rm photosDumps -R
+fi
+if [ -d UserInfo ]; then
+rm UserInfo -R
+fi
+if [ -d likesForPhotos ]; then
+rm likesForPhotos -R
+fi
