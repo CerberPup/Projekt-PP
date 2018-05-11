@@ -5,7 +5,17 @@ using System.Collections.Generic;
 
 namespace _500pxCracker
 {
-    class Credentials
+    public class LocalizationData
+    {
+        static public string ScriptsDir = Directory.GetCurrentDirectory()+ "\\..\\..\\..\\..\\PyScrapper\\";
+        static public string MainPy = ScriptsDir + "Main.py";
+        static public string GalleriesDir = ScriptsDir + "galleriesDumps\\";
+        static public string LikesForPhotosDir = ScriptsDir + "likesForPhotos\\";
+        static public string UserInfoDir = ScriptsDir + "UserInfo\\";
+        static public string FollowersDir = UserInfoDir + "followers\\";
+        static public string FollowingDir = UserInfoDir + "followings\\";
+    }
+    public class Credentials
     {
         private string _login;
         private string _passwd;
@@ -61,7 +71,18 @@ namespace _500pxCracker
 
     public class CurrentUser
     {
-        Credentials _Credentials;
+        private Credentials _Credentials;
+
+        public Credentials Get_Credentials()
+        {
+            return _Credentials;
+        }
+
+        public void Set_Credentials(Credentials value)
+        {
+            _Credentials = value;
+        }
+
         public User _User { get; set; }
         public User[] _Followers { get; set; }
         public User[] _Following { get; set; }
@@ -69,10 +90,11 @@ namespace _500pxCracker
         static CurrentUser instance;
         public static CurrentUser Get()
         {
-            if(instance ==null)
+            if(instance == null)
             {
-                Serialize(GenData());
-                instance = Deserialize();
+                instance = new CurrentUser();
+                //Serialize(GenData());
+                //instance = Deserialize();
             }
             return instance;
         }
@@ -95,9 +117,8 @@ namespace _500pxCracker
         }
         static CurrentUser GenData()
         {
-            return new CurrentUser
+            CurrentUser curr = new CurrentUser
             {
-                _Credentials = new Credentials("login", "password"),
                 _User = new User
                 {
                     _Name = "username",
@@ -111,7 +132,7 @@ namespace _500pxCracker
                             _Likes = new Like[2]
                             {
                                 new Like{
-                                    _LikeDate = DateTime.Parse("04.22.2017 00:00:00"),
+                                    _LikeDate = DateTime.Parse("22.04.2017 00:00:00"),
                                     _UserId = "ID56423196874"
                                 },
                                 new Like{
@@ -224,14 +245,14 @@ namespace _500pxCracker
                     new User
                     {
                         _Name = "follower3",
-                        _StartedFollowing = DateTime.Parse("05.13.1991 00:00:00"),
-                        _FollowedSince = DateTime.Parse("06.22.1991 00:00:00"),
+                        _StartedFollowing = DateTime.Parse("13.05.1991 00:00:00"),
+                        _FollowedSince = DateTime.Parse("22.06.1991 00:00:00"),
                         _Id = "ID5643311874",
                         _Photos = new Photo[2]
                     {
                         new Photo
                         {
-                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
+                            _PhotoUploadDate = DateTime.Parse("04.02.1986 00:00:00"),
                             _PhotoId = "1212334",
                             _Likes = new Like[2]
                             {
@@ -246,7 +267,7 @@ namespace _500pxCracker
                             }
                         },
                         new Photo{
-                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
+                            _PhotoUploadDate = DateTime.Parse("04.02.1986 00:00:00"),
                             _PhotoId = "",
                             _Likes = new Like[2]
                             {
@@ -349,6 +370,8 @@ namespace _500pxCracker
                 }
 
             };
+            curr.Set_Credentials(new Credentials("login", "password"));
+            return curr;
         }
 
         public User[] MutualFollow()

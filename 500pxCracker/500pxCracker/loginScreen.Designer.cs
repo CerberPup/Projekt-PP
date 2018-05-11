@@ -47,6 +47,7 @@
             this.loginTextBox.Size = new System.Drawing.Size(100, 20);
             this.loginTextBox.TabIndex = 0;
             this.loginTextBox.TextChanged += new System.EventHandler(this.loginTextBox_TextChanged);
+            this.loginTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CheckEnter);
             // 
             // pswdTextBox
             // 
@@ -56,6 +57,7 @@
             this.pswdTextBox.TabIndex = 1;
             this.pswdTextBox.UseSystemPasswordChar = true;
             this.pswdTextBox.TextChanged += new System.EventHandler(this.pswdTextBox_TextChanged);
+            this.pswdTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CheckEnter);
             // 
             // logoPic
             // 
