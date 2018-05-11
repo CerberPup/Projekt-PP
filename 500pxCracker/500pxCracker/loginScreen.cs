@@ -63,8 +63,8 @@ namespace _500pxCracker
             Credentials credentials = CurrentUser.Get().Get_Credentials();
 
             string logDir = LocalizationData.UserInfoDir + "log_" + credentials.login;
-            if (File.Exists(logDir))
-                File.Delete(logDir);
+            /*if (File.Exists(logDir))
+                File.Delete(logDir);*/
 
             Process process = new Process();
             process.StartInfo.FileName = "python.exe";

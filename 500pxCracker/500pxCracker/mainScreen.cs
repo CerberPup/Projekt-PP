@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -157,8 +158,25 @@ namespace _500pxCracker
             var items = nonFollowersListBox.Items;
             items.Clear();
             //here add items to the nonFollowersListBox ~~~~~~~~~~~~~~
-            User[] users= CurrentUser.Get().OneWayFollow();
-            foreach(User u in users)
+
+
+            List<User> users = new List<User>();
+            DirectoryInfo d = new DirectoryInfo(LocalizationData.FollowingDir);
+            foreach (var file in d.GetFiles("*"))
+            {
+                if(file.Name!= "fullJson.json")
+                users.Add(new User { _Name = file.Name });
+            }
+            CurrentUser.Get()._Following = users.ToArray();
+            users.Clear();
+            d = new DirectoryInfo(LocalizationData.FollowersDir);
+            foreach (var file in d.GetFiles("*"))
+            {
+                if (file.Name != "fullJson.json")
+                    users.Add(new User { _Name = file.Name });
+            }
+            CurrentUser.Get()._Followers = users.ToArray();
+            foreach (User u in CurrentUser.Get().OneWayFollow())
             {
                 items.Add(u._Name);
             }
@@ -224,9 +242,17 @@ namespace _500pxCracker
                 }
                 else
                 {
-                    //tutaj dodać funkcję random albo co tam chcemy, bo ostatecznie nie wiem :v
-                    for (int i = 0; i < numberProvided; i++)
-                        nonFollowersListBox.SetItemChecked(i, true);
+                    deselectAllUsersButton_Click(sender, e);
+                    Random random = new Random();
+                    while (numberProvided != 0)
+                    {
+                        int randomInt = random.Next(nonFollowersListBox.Items.Count);
+                        if (!nonFollowersListBox.GetItemChecked(randomInt))
+                        {
+                            nonFollowersListBox.SetItemChecked(randomInt, true);
+                            numberProvided--;
+                        }
+                    }
                 }
             }
             else
@@ -261,10 +287,7 @@ namespace _500pxCracker
         {
             for (int i = 0; i < nonFollowersListBox.Items.Count; i++)
             {
-                if(nonFollowersListBox.GetItemCheckState(i) == CheckState.Checked)
-                    nonFollowersListBox.SetItemChecked(i, false);
-                else
-                    nonFollowersListBox.SetItemChecked(i, true);
+                nonFollowersListBox.SetItemChecked(i, !nonFollowersListBox.GetItemChecked(i));
             }
         }
 

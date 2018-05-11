@@ -2,6 +2,7 @@
 using System.IO;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace _500pxCracker
 {
@@ -387,15 +388,32 @@ namespace _500pxCracker
             return response.ToArray();
         }
 
+        public User FindFollowingByName(string Name)
+        {
+            foreach (User u in _Following)
+            {
+                if (u._Name == Name)
+                    return u;
+            }
+            return null;
+        }
+        public User FindFollowerByName(string Name)
+        {
+            foreach (User u in _Followers)
+            {
+                if (u._Name == Name)
+                    return u;
+            }
+            return null;
+        }
         public User[] OneWayFollow()
         {
             List<User> response = new List<User>();
+            
             foreach (User u in _Following)
             {
-                if (u._StartedFollowing == DateTime.MinValue)
-                {
-                    response.Add(u);
-                }
+                if (FindFollowerByName(u._Name) == null)
+                response.Add(u);
             }
             return response.ToArray();
         }
@@ -488,7 +506,13 @@ namespace _500pxCracker
 
         public void Unfollow(User user)
         {
-            //Send unfollow request to server
+            Process process = new Process();
+            process.StartInfo.FileName = "python.exe";
+            process.StartInfo.Arguments = LocalizationData.MainPy + " " + _Credentials.login + " " + _Credentials.password+" -ufl " + user._Name + " -debug";
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
+            process.Start();
+            process.WaitForExit();
             _Following = Array.FindAll(_Following, u => u!=user);
         }
 
