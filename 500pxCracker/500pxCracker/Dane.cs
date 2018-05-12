@@ -15,6 +15,8 @@ namespace _500pxCracker
         static public string UserInfoDir = ScriptsDir + "UserInfo\\";
         static public string FollowersDir = UserInfoDir + "followers\\";
         static public string FollowingDir = UserInfoDir + "followings\\";
+        static public string PythonDir = "";
+        static public string Python = "";
     }
     public class Credentials
     {
