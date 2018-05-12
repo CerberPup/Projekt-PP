@@ -49,6 +49,10 @@ class Scrapper:
         self.logger.LogLine("Attempt to retrieve followings list...")
         if not os.path.exists(Scrapper.followingDir):
             os.makedirs(Scrapper.followingDir)
+        else:
+            files = [f for f in os.listdir(Scrapper.followingDir) if os.path.isfile(os.path.join(Scrapper.followingDir, f))]
+            for file in files:
+                os.remove(os.path.join(Scrapper.followingDir, file))
         while True:
             followingPage = self.requestWebPage('GET', 'https://api.500px.com/v1/users/' + str(
                 self.UserData['id']) + '/friends?fullformat=0&page=' + str(pageNum), headers=self.csrfHeaders)
@@ -64,7 +68,7 @@ class Scrapper:
                 self.logger.LogLine("Unable to retrieve followings lists at " + str(pageNum))
                 self.logger.LogLine("Error URL: " + str(followingPage.url))
         for user in following:
-            followingFile = Scrapper.followingDir + '/' + user['username']
+            followingFile = u"{}".format(Scrapper.followingDir + '/' + user['username'])
             with open (followingFile,'w') as f:
                 f.write(json.dumps(user))
         return following
@@ -75,6 +79,10 @@ class Scrapper:
         self.logger.LogLine("Attempt to retrieve followers list...")
         if not os.path.exists(Scrapper.followersDir):
             os.makedirs(Scrapper.followersDir)
+        else:
+            files = [f for f in os.listdir(Scrapper.followersDir) if os.path.isfile(os.path.join(Scrapper.followersDir, f))]
+            for file in files:
+                os.remove(os.path.join(Scrapper.followersDir, file))
         while True:
             followersPage = self.requestWebPage('GET', 'https://api.500px.com/v1/users/' + str(
                 self.UserData['id']) + '/followers?fullformat=0&page=' + str(pageNum), headers=self.csrfHeaders)
@@ -90,7 +98,7 @@ class Scrapper:
                 self.logger.LogLine("Unable to retrieve followings lists at " + str(pageNum))
                 self.logger.LogLine("Error URL: " + str(followersPage.url))
         for user in followers:
-            followerFile = Scrapper.followersDir + '/' + user['username']
+            followerFile = u"{}".format(Scrapper.followersDir + '/' + user['username'])
             with open (followerFile,'w') as f:
                 f.write(json.dumps(user))
         return followers
