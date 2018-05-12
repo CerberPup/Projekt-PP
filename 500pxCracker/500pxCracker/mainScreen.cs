@@ -158,21 +158,7 @@ namespace _500pxCracker
             var items = nonFollowersListBox.Items;
             items.Clear();
             //here add items to the nonFollowersListBox ~~~~~~~~~~~~~~
-            //dataGetter.GetFollowersandFollowings();
-            List<User> users = new List<User>();
-            DirectoryInfo d = new DirectoryInfo(LocalizationData.FollowingDir);
-            foreach (var file in d.GetFiles("*"))
-            {
-                users.Add(new User { _Name = file.Name });
-            }
-            CurrentUser.Get()._Following = users.ToArray();
-            users.Clear();
-            d = new DirectoryInfo(LocalizationData.FollowersDir);
-            foreach (var file in d.GetFiles("*"))
-            {
-                users.Add(new User { _Name = file.Name });
-            }
-            CurrentUser.Get()._Followers = users.ToArray();
+            dataGetter.GetFollowersandFollowings();
             foreach (User u in CurrentUser.Get().OneWayFollow())
             {
                 items.Add(u._Name);
@@ -191,8 +177,8 @@ namespace _500pxCracker
             var items = mutualListBox.Items;
             items.Clear();
             //here add items to mutualListBox ~~~~~~~~~~~~~~
-            User[] users = CurrentUser.Get().MutualFollow();
-            foreach (User u in users)
+            dataGetter.GetFollowersandFollowings();
+            foreach (User u in CurrentUser.Get().MutualFollow())
             {
                 items.Add(String.Format("{0,-27}{1,-27}{2,27}", 
                     u._Name, u._FollowedSince.ToShortDateString(), u._StartedFollowing.ToShortDateString()));
@@ -294,6 +280,7 @@ namespace _500pxCracker
             foreach (string user in nonFollowersListBox.SelectedItems)
             {
                 current.Unfollow(current.GetUserByName(user));
+                nonFollowersListBox.Items.Remove(user);
             }
         }
 

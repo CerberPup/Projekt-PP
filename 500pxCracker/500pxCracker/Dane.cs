@@ -8,6 +8,26 @@ namespace _500pxCracker
 {
     public class dataGetter
     {
+        public static void UpdateFollowers()
+        {
+            List<User> users = new List<User>();
+            DirectoryInfo d = new DirectoryInfo(LocalizationData.FollowersDir);
+            foreach (var file in d.GetFiles("*"))
+            {
+                users.Add(new User { _Name = file.Name });
+            }
+            CurrentUser.Get()._Followers = users.ToArray();
+        }
+        public static void UpdateFollowings()
+        {
+            List<User> users = new List<User>();
+            DirectoryInfo d = new DirectoryInfo(LocalizationData.FollowingDir);
+            foreach (var file in d.GetFiles("*"))
+            {
+                users.Add(new User { _Name = file.Name });
+            }
+            CurrentUser.Get()._Following = users.ToArray();
+        }
         public static void GetFollowers()
         {
             Credentials credentials = CurrentUser.Get().Get_Credentials();
@@ -18,6 +38,7 @@ namespace _500pxCracker
             process.StartInfo.CreateNoWindow = true;
             process.Start();
             process.WaitForExit();
+            UpdateFollowers();
         }
         public static void GetFollowings()
         {
@@ -29,6 +50,7 @@ namespace _500pxCracker
             process.StartInfo.CreateNoWindow = true;
             process.Start();
             process.WaitForExit();
+            UpdateFollowings();
         }
         public static void GetFollowersandFollowings()
         {
