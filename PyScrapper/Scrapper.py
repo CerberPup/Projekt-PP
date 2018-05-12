@@ -10,8 +10,7 @@ class Scrapper:
 
     userDir = scriptDir + '/UserInfo'
     followingDir = userDir + '/followings'
-    followersDir= userDir + '/followers'
-    followersFile = followersDir + '/file.json'
+    followersDir = userDir + '/followers'
     photosDir = scriptDir + '/photosDumps'
     galleriesDir = scriptDir + '/galleriesDumps'
     likesDir = scriptDir + '/likesForPhotos'
@@ -56,9 +55,6 @@ class Scrapper:
             if followingPage.status_code == 200:
                 self.logger.LogLine("Succesfully retrieved followings page: " + str(pageNum))
                 followingPage_json = json.loads(followingPage.text)
-                followingPageFile = Scrapper.followingDir + '/' + 'fullJson.json'
-                with open (followingPageFile, 'a') as f:
-                    f.write(json.dumps(followingPage_json))
                 following += followingPage_json['friends']
                 if pageNum == followingPage_json['friends_pages']:
                     break
@@ -77,24 +73,26 @@ class Scrapper:
         pageNum = 1
         followers = []
         self.logger.LogLine("Attempt to retrieve followers list...")
-        if os.path.isfile(Scrapper.followersFile):
-            os.remove(Scrapper.followersFile)
+        if not os.path.exists(Scrapper.followersDir):
+            os.makedirs(Scrapper.followersDir)
         while True:
             followersPage = self.requestWebPage('GET', 'https://api.500px.com/v1/users/' + str(
                 self.UserData['id']) + '/followers?fullformat=0&page=' + str(pageNum), headers=self.csrfHeaders)
             if followersPage.status_code == 200:
-                self.logger.LogLine("Succesfully retrieved followers at page: " + str(pageNum))
+                self.logger.LogLine("Succesfully retrieved followers page: " + str(pageNum))
                 followersPage_json = json.loads(followersPage.text)
-                with open(Scrapper.followersFile, 'a') as f:
-                    f.write(json.dumps(followersPage_json['followers']))
                 followers += followersPage_json['followers']
                 if pageNum == followersPage_json['followers_pages']:
                     break
                 pageNum += 1
                 time.sleep(20)
             else:
-                self.logger.LogLine("Unable to retrieve followers at page: " + str(pageNum))
+                self.logger.LogLine("Unable to retrieve followings lists at " + str(pageNum))
                 self.logger.LogLine("Error URL: " + str(followersPage.url))
+        for user in followers:
+            followerFile = Scrapper.followersDir + '/' + user['username']
+            with open (followerFile,'w') as f:
+                f.write(json.dumps(user))
         return followers
 
     def ParseFollowingsFiles(self):
@@ -348,6 +346,13 @@ class Scrapper:
             amount-=50
         return Photos
 
+    def PhotoIsLiked(self, photoID):
+        votes = self.GetVotesForPhoto(int(photoID))
+        for vote in votes:
+            if vote['username'] == self.UserData['username']:
+                return True
+        return False
+
     def VoteFreshOrUpcoming(self, fresh=True, amount=100):
         Photos=[]
         page=1
@@ -363,8 +368,6 @@ class Scrapper:
                 Photos = self.GetPhotosFromUpcoming(page, amount)
             page += int(round(amount / 50.0 + 0.499))
             for photo in Photos:
-                if photo['liked'] == False:
+                if not self.PhotoIsLiked(photo['id']):
                     if self.VoteForPhoto(photo['id']):
                         amount-=1
-                        if amount == 0:
-                            return

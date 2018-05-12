@@ -158,13 +158,11 @@ namespace _500pxCracker
             var items = nonFollowersListBox.Items;
             items.Clear();
             //here add items to the nonFollowersListBox ~~~~~~~~~~~~~~
-
-
+            //dataGetter.GetFollowersandFollowings();
             List<User> users = new List<User>();
             DirectoryInfo d = new DirectoryInfo(LocalizationData.FollowingDir);
             foreach (var file in d.GetFiles("*"))
             {
-                if(file.Name!= "fullJson.json")
                 users.Add(new User { _Name = file.Name });
             }
             CurrentUser.Get()._Following = users.ToArray();
@@ -172,8 +170,7 @@ namespace _500pxCracker
             d = new DirectoryInfo(LocalizationData.FollowersDir);
             foreach (var file in d.GetFiles("*"))
             {
-                if (file.Name != "fullJson.json")
-                    users.Add(new User { _Name = file.Name });
+                users.Add(new User { _Name = file.Name });
             }
             CurrentUser.Get()._Followers = users.ToArray();
             foreach (User u in CurrentUser.Get().OneWayFollow())

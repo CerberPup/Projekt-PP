@@ -6,6 +6,42 @@ using System.Diagnostics;
 
 namespace _500pxCracker
 {
+    public class dataGetter
+    {
+        public static void GetFollowers()
+        {
+            Credentials credentials = CurrentUser.Get().Get_Credentials();
+            Process process = new Process();
+            process.StartInfo.FileName = LocalizationData.Python;
+            process.StartInfo.Arguments = LocalizationData.MainPy + " " + credentials.login + " " + credentials.password +" -f2";
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
+            process.Start();
+            process.WaitForExit();
+        }
+        public static void GetFollowings()
+        {
+            Credentials credentials = CurrentUser.Get().Get_Credentials();
+            Process process = new Process();
+            process.StartInfo.FileName = LocalizationData.Python;
+            process.StartInfo.Arguments = LocalizationData.MainPy + " " + credentials.login + " " + credentials.password + " -f1";
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
+            process.Start();
+            process.WaitForExit();
+        }
+        public static void GetFollowersandFollowings()
+        {
+            Credentials credentials = CurrentUser.Get().Get_Credentials();
+            Process process = new Process();
+            process.StartInfo.FileName = LocalizationData.Python;
+            process.StartInfo.Arguments = LocalizationData.MainPy + " " + credentials.login + " " + credentials.password + " -f1 -f2";
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
+            process.Start();
+            process.WaitForExit();
+        }
+    }
     public class LocalizationData
     {
         static public string ScriptsDir = Directory.GetCurrentDirectory()+ "\\..\\..\\..\\..\\PyScrapper\\";
@@ -382,10 +418,9 @@ namespace _500pxCracker
             List<User> response = new List<User>();
             foreach (User u in _Following)
             {
-                if (u._StartedFollowing > DateTime.MinValue)
-                {
-                    response.Add(u);
-                }
+                User follower = FindFollowerByName(u._Name);
+                if (follower != null)
+                    response.Add(follower);
             }
             return response.ToArray();
         }

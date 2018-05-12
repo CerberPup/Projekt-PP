@@ -189,7 +189,7 @@ namespace _500pxCracker
                 File.Delete(logDir);*/
 
             Process process = new Process();
-            process.StartInfo.FileName = "python.exe";
+            process.StartInfo.FileName = LocalizationData.Python;
             process.StartInfo.Arguments = LocalizationData.MainPy + " " + credentials.login + " " + credentials.password;// + " -offline";
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = false;
