@@ -63,7 +63,7 @@ class Scrapper:
                 if pageNum == followingPage_json['friends_pages']:
                     break
                 pageNum += 1
-                time.sleep(20)
+                time.sleep(3)
             else:
                 self.logger.LogLine("Unable to retrieve followings lists at " + str(pageNum))
                 self.logger.LogLine("Error URL: " + str(followingPage.url))
@@ -93,7 +93,7 @@ class Scrapper:
                 if pageNum == followersPage_json['followers_pages']:
                     break
                 pageNum += 1
-                time.sleep(20)
+                time.sleep(3)
             else:
                 self.logger.LogLine("Unable to retrieve followings lists at " + str(pageNum))
                 self.logger.LogLine("Error URL: " + str(followersPage.url))
