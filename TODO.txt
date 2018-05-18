@@ -20,3 +20,5 @@ To do:
 	3.3 - pkt 9. - Pobranie like'ów dla zdjęcia, polubienie zdjęcia każdego z użytkowników. Todo: pobranie like'ow dla zdjęcia, dla każdego użytkownika wśród like'ów pobrać zdjęcia, polubić zdjęcie/zdjęcia.
 	
 4. Local database - Karol Marszałek, Wojciech Wrona. 
+	4.1 - Dump informacji bazodanowych do pliku .json z odniesieniem w czasie - Karol Marszalek, python
+	4.2 - Odczytanie informacji bazodanowych z pliku .json, przechowanie w pamieci aplikacji - Wojciech Wron, c#
