@@ -1,43 +1,22 @@
-1.	Pobiera: nazwa użytkownik / hasło (userA)
-2.	Wyszukuje użytkowników, których userA followuje ale którzy nie followują userA
-3.	Wyciągnąć informacje o czasie kiedy użytkownika A zaczął followować użytkownika / kiedy użytkownik zaczął followować użytkownika A
-4.	Podaje statystyki dla użytkowników, którzy followują userA (liczba polubień zdjęć użytkownika A w ciągu ostatniego miesiąca / roku)
-5.	Możliwość odfollowowania użytkownika, których użytkownik A followuje ale którzy nie followują użytkownika A (wszystkich / wybranej liczby)
-6.	Możliwość automatycznego polubienia ostatniego dodanego zdjęcia, wszystkich użytkowników, których followuje użytkownik A
-7.	Wyszukiwanie użytkowników, którzy polubili najwięcej zdjęć w całym serwisie w trakcie ostatniego dnia (?)
-8.	Automatyczne lubienie zdjęć z poziomu Fresh / Uncoming (użytkownik podaje liczbę zdjęć do polubienia np. 100)
-9.	Polubienie zdjęcie każdego kto polubił moje zdjęcie (konfigurowalna liczba zdjęć do polubienia, należy kontrolować czy zdjęcie zostało już polubione w innej sesji aby nie aktywować tej funkcji dwa razy dla tego samego zdjęcia)
+1.	Pobiera: nazwa użytkownik / hasło (userA) - done
+2.	Wyszukuje użytkowników, których userA followuje ale którzy nie followują userA - done
+3.	Wyciągnąć informacje o czasie kiedy użytkownika A zaczął followować użytkownika / kiedy użytkownik zaczął followować użytkownika A - todo: local database
+4.	Podaje statystyki dla użytkowników, którzy followują userA (liczba polubień zdjęć użytkownika A w ciągu ostatniego miesiąca / roku) - todo: local database
+5.	Możliwość odfollowowania użytkownika, których użytkownik A followuje ale którzy nie followują użytkownika A (wszystkich / wybranej liczby) - done
+6.	Możliwość automatycznego polubienia ostatniego dodanego zdjęcia, wszystkich użytkowników, których followuje użytkownik A - todo: c# implementation
+7.	Wyszukiwanie użytkowników, którzy polubili najwięcej zdjęć w całym serwisie w trakcie ostatniego dnia (?) 
+8.	Automatyczne lubienie zdjęć z poziomu Fresh / Uncoming (użytkownik podaje liczbę zdjęć do polubienia np. 100) - todo: c# implementation
+9.	Polubienie zdjęcie każdego kto polubił moje zdjęcie (konfigurowalna liczba zdjęć do polubienia, należy kontrolować czy zdjęcie zostało już polubione w innej sesji aby nie aktywować tej funkcji dwa razy dla tego samego zdjęcia) - todo: c# implementation
 
 
 To do:
 1. GUI - Małgorzata Kałek
-
-2. Implementacja statystyk - klasa Statistics - Błażej Moska, Małgorzata Kałek
-
-	1. Zdefiniowanie pól składowych klasy Statistics
-	2. Udostępnienie w interfejsie klasy metod niezbędnych do zaprezentowania danych poprzez GUI
-	3. Metody umożliwiające wyszukiwanie statystyk zgodnie z treścią zadania
-
-3. Implementacja powiazan uzytkownikow - klasy User, Credentials, FollowInfo oraz jej pochodne - Kamil Janas, Błażej Moska, Karol Marszałek
-
-	1. Implementacja klasy user	
-	2. Implementacja grafu powiązań pomiędzy użytkownikami na podstawie danych otrzymanych od parsera
-	3. Integracja powiązania powiązania z klasą Statistics
-	4. Udostępnienie w interfejsie klas metod niezbędnych do uzyskania informacji o powiązaniach użytkowników
-	5. Wyszukiwanie informacji zawartych w tresci zadania
-	6. Implementacja funkcji follow/unfollow pomiedzy uzytkownikami (klasy Follower oraz Following)
-
-4. Implementacja parsera danych wejsciowych - klasa Parser - Karol Marszałek, Wojciech Wrona
-
-	0. Parser powinien zapewniac losowy dostęp do danych w pliku za pomocą wybranego klucza wyszukiwania - np. daty zdjęcia. Tymczasowo parsowany będzie testowy plik, jednak implementacja parsera powinna zakładać możliwie prostą jego modyfikację tak, aby dało się przy jego pomocy odpytywać moduł odpowiedzialny za komunikację z WWW. 
-	1. Przygotowanie formatu tekstowego pliku wejsciowego zawierajacego wszystkie niezbedne dane dla dzialania programu. (XML?)
-	2. Stworzenie przykladowych danych testowych w zalozonym formacie
-	3. Implementacja klasy parsera pliku wejściowego. Klasa powinna realizować odczytanie danych z pliku wejściowego oraz utworzenie na ich podstawie obiektów odpowiednich klas. 
-	4. [Opcjonalnie] Umożliwienie odczytania z pliku informacji o konkretnym użytkowniku po jego nazwie/ID.
-	 
-5. Implementacja komunikacji aplikacji ze strona - klasa lub zewnętrzny skrypt/program - Wojciech Wrona, Karol Marszałek
+2. Python script - Karol Marszalek:
+	2.1. Podtrzymanie sesji
+	2.2. Wystawienie do cmd przelacznika do pobrania like'ow dla zdjęcia o zadanym ID. 
+3. C# implementation - Wojciech Wron, Kamil Janas, Błażej Moska, Małgorzata Kałek:
+	3.1 - pkt 6. - pobranie zdjęć wszystkich użytkowników, których followuje A, pobranie pierwszego zdjęcia ( kolekcja jest posortowana ), wywołanie polecenia polubienia zdjęcia o zadanym ID. 
+	3.2 - pkt 8. - wywołanie skryptu z parametrami podanymi w helpie.
+	3.3 - pkt 9. - Pobranie like'ów dla zdjęcia, polubienie zdjęcia każdego z użytkowników. Todo: pobranie like'ow dla zdjęcia, dla każdego użytkownika wśród like'ów pobrać zdjęcia, polubić zdjęcie/zdjęcia.
 	
-	1. Zapewnienie komunikacji z serwisem 500px - bez korzystania z autoryzacji OAuth serwisu
-	2. Odczytanie niezbędnych informacji ze strony
-	3. Udostępnienie funkcjonalności followowania / unfollowowania użytkowników (poprzez metodę lub wywołanie skryptu)
-	4. 
+4. Local database - Karol Marszałek, Wojciech Wrona. 
