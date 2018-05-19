@@ -115,7 +115,7 @@ namespace _500pxCracker
         {
             if (photoTypeDropDown.SelectedIndex > -1 && freshPhotosNumberTextBox.Text.Length!=0)
             {
-                //do stuff
+                CurrentUser.Get().LikeFresh(photoTypeDropDown.SelectedIndex, int.Parse(freshPhotosNumberTextBox.Text));
 
                 MessageBox.Show("Successfully liked the photos!");
                 freshPhotosNumberTextBox.Text = "";
@@ -127,6 +127,10 @@ namespace _500pxCracker
 
         private void likeLatestButton_Click(object sender, EventArgs e)
         {
+            dataGetter.GetFollowersandFollowings();
+            dataGetter.UpdateFollowers();
+            dataGetter.UpdateFollowings();
+
             CurrentUser.Get().LikeLatestPhotos();
 
             MessageBox.Show("Successfully liked all the photos!");
@@ -158,7 +162,7 @@ namespace _500pxCracker
             var items = nonFollowersListBox.Items;
             items.Clear();
             //here add items to the nonFollowersListBox ~~~~~~~~~~~~~~
-            //dataGetter.GetFollowersandFollowings();
+            dataGetter.GetFollowersandFollowings();
             dataGetter.UpdateFollowers();
             dataGetter.UpdateFollowings();
             foreach (User u in CurrentUser.Get().OneWayFollow())
@@ -179,7 +183,7 @@ namespace _500pxCracker
             var items = mutualListBox.Items;
             items.Clear();
             //here add items to mutualListBox ~~~~~~~~~~~~~~
-            //dataGetter.GetFollowersandFollowings();
+            dataGetter.GetFollowersandFollowings();
             dataGetter.UpdateFollowers();
             dataGetter.UpdateFollowings();
             foreach (User u in CurrentUser.Get().MutualFollow())

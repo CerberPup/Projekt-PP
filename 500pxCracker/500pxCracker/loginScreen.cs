@@ -190,7 +190,7 @@ namespace _500pxCracker
 
             Process process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
-            process.StartInfo.Arguments = LocalizationData.MainPy + " " + credentials.login + " " + credentials.password;// + " -offline";
+            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + credentials.login + " " + credentials.password;// + " -offline";
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = false;
             process.StartInfo.CreateNoWindow = true;
