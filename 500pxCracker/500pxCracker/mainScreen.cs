@@ -158,7 +158,9 @@ namespace _500pxCracker
             var items = nonFollowersListBox.Items;
             items.Clear();
             //here add items to the nonFollowersListBox ~~~~~~~~~~~~~~
-            dataGetter.GetFollowersandFollowings();
+            //dataGetter.GetFollowersandFollowings();
+            dataGetter.UpdateFollowers();
+            dataGetter.UpdateFollowings();
             foreach (User u in CurrentUser.Get().OneWayFollow())
             {
                 items.Add(u._Name);
@@ -177,7 +179,9 @@ namespace _500pxCracker
             var items = mutualListBox.Items;
             items.Clear();
             //here add items to mutualListBox ~~~~~~~~~~~~~~
-            dataGetter.GetFollowersandFollowings();
+            //dataGetter.GetFollowersandFollowings();
+            dataGetter.UpdateFollowers();
+            dataGetter.UpdateFollowings();
             foreach (User u in CurrentUser.Get().MutualFollow())
             {
                 items.Add(String.Format("{0,-27}{1,-27}{2,27}", 
@@ -280,8 +284,8 @@ namespace _500pxCracker
             foreach (string user in nonFollowersListBox.SelectedItems)
             {
                 current.Unfollow(current.GetUserByName(user));
-                nonFollowersListBox.Items.Remove(user);
             }
+            //nonFollowersListBox.Items.Remove(user);
         }
 
         //profile panel ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

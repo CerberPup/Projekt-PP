@@ -6,15 +6,73 @@ using System.Diagnostics;
 
 namespace _500pxCracker
 {
+    public class HttpsLink
+    {
+        public string https { get; set; }
+    }
+    public class Avatars
+    {
+        public HttpsLink @default {get; set;}
+        public HttpsLink large { get; set;}
+        public HttpsLink small { get; set;}
+        public HttpsLink tiny { get; set; }
+    }
+    public class JsonUser
+    {
+        public string username { get; set; }
+        public string city { get; set; }
+        public bool store_on { get; set; }
+        public string userpic_https_url { get; set; }
+        public string firstname { get; set; }
+        public string thumbnail_background_url { get; set; }
+        public string lastname { get; set; }
+        public int upgrade_status { get; set; }
+        public Avatars avatars { get; set; }
+        public string cover_url { get; set; }
+        public int usertype { get; set; }
+        public int followers_count { get; set; }
+        public string country { get; set; }
+        public string fullname { get; set; }
+        public int id { get; set; }
+        public int affection { get; set; }
+    }
     public class dataGetter
     {
+        public static User GetUserByFileName(string Name)
+        {
+            string json = "";
+            if (File.Exists(LocalizationData.FollowersDir + Name))
+            {
+                json = File.ReadAllText(LocalizationData.FollowersDir + Name);
+            }
+            else
+            {
+                if (File.Exists(LocalizationData.FollowingDir + Name))
+                {
+                    json = File.ReadAllText(LocalizationData.FollowingDir + Name);
+                }
+            }
+            if (json=="")
+            {
+                return new User();
+            }
+            else
+            {
+                JsonUser jsonUser = JsonConvert.DeserializeObject<JsonUser>(json);
+                User user = new User();
+                user._Id = jsonUser.id;
+                user._Name = jsonUser.username;
+                user._FullName = jsonUser.fullname;
+                return user;
+            }
+        }
         public static void UpdateFollowers()
         {
             List<User> users = new List<User>();
             DirectoryInfo d = new DirectoryInfo(LocalizationData.FollowersDir);
             foreach (var file in d.GetFiles("*"))
             {
-                users.Add(new User { _Name = file.Name });
+                users.Add(GetUserByFileName(file.Name));
             }
             CurrentUser.Get()._Followers = users.ToArray();
         }
@@ -24,7 +82,7 @@ namespace _500pxCracker
             DirectoryInfo d = new DirectoryInfo(LocalizationData.FollowingDir);
             foreach (var file in d.GetFiles("*"))
             {
-                users.Add(new User { _Name = file.Name });
+                users.Add(GetUserByFileName(file.Name));
             }
             CurrentUser.Get()._Following = users.ToArray();
         }
@@ -112,7 +170,7 @@ namespace _500pxCracker
     public class Like
     {
         public DateTime _LikeDate { get; set; }
-        public String _UserId { get; set; }
+        public int _UserId { get; set; }
     }
     public class Photo
     {
@@ -124,7 +182,8 @@ namespace _500pxCracker
     public class User
     {
         public string _Name { get; set; }
-        public string _Id { get; set; }
+        public string _FullName { get; set; }
+        public int _Id { get; set; }
         public DateTime _StartedFollowing { get; set; }
         public DateTime _FollowedSince { get; set; }
         public Photo[] _Photos { get; set; }
@@ -183,7 +242,7 @@ namespace _500pxCracker
                 _User = new User
                 {
                     _Name = "username",
-                    _Id = "ID56423196874",
+                    _Id = 2548265,
                     _Photos = new Photo[2]
                     {
                         new Photo
@@ -194,11 +253,11 @@ namespace _500pxCracker
                             {
                                 new Like{
                                     _LikeDate = DateTime.Parse("22.04.2017 00:00:00"),
-                                    _UserId = "ID56423196874"
+                                    _UserId = 96874
                                 },
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.2018 00:00:00"),
-                                    _UserId = "ID56423196874"
+                                    _UserId = 564
                                 }
                             }
                         },
@@ -209,11 +268,11 @@ namespace _500pxCracker
                             {
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID5643311874"
+                                    _UserId = 564
                                 },
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID56423196874"
+                                    _UserId = 231
                                 }
                             }
                         }
@@ -225,7 +284,7 @@ namespace _500pxCracker
                         _Name = "follower1",
                         _StartedFollowing = DateTime.Parse("04.02.1991 00:00:00"),
                         _FollowedSince = DateTime.Parse("03.02.1991 00:00:00"),
-                        _Id = "ID56423196874",
+                        _Id = 2548265,
                         _Photos = new Photo[2]
                     {
                         new Photo
@@ -236,11 +295,11 @@ namespace _500pxCracker
                             {
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID56423196874"
+                                    _UserId = 319687
                                 },
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID56423196874"
+                                    _UserId = 56423
                                 }
                             }
                         },
@@ -251,11 +310,11 @@ namespace _500pxCracker
                             {
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID5643311874"
+                                    _UserId = 311874
                                 },
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID56423196874"
+                                    _UserId = 42319
                                 }
                             }
                         }
@@ -267,7 +326,7 @@ namespace _500pxCracker
                         _Name = "follower2",
                         _StartedFollowing = DateTime.Parse("04.05.1993 00:00:00"),
                         _FollowedSince = DateTime.Parse("03.08.1992 00:00:00"),
-                        _Id = "ID56423196124",
+                        _Id = 6124,
                         _Photos = new Photo[2]
                     {
                         new Photo
@@ -278,11 +337,11 @@ namespace _500pxCracker
                             {
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID56423196874"
+                                    _UserId = 74
                                 },
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID56423196874"
+                                    _UserId = 196874
                                 }
                             }
                         },
@@ -293,11 +352,11 @@ namespace _500pxCracker
                             {
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID5643311874"
+                                    _UserId = 11874
                                 },
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID56423196874"
+                                    _UserId = 96874
                                 }
                             }
                         }
@@ -308,7 +367,7 @@ namespace _500pxCracker
                         _Name = "follower3",
                         _StartedFollowing = DateTime.Parse("13.05.1991 00:00:00"),
                         _FollowedSince = DateTime.Parse("22.06.1991 00:00:00"),
-                        _Id = "ID5643311874",
+                        _Id = 561874,
                         _Photos = new Photo[2]
                     {
                         new Photo
@@ -319,11 +378,11 @@ namespace _500pxCracker
                             {
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.2017 00:00:00"),
-                                    _UserId = "ID56423196874"
+                                    _UserId = 196874
                                 },
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.2018 00:00:00"),
-                                    _UserId = "ID56423196874"
+                                    _UserId = 64231
                                 }
                             }
                         },
@@ -334,11 +393,11 @@ namespace _500pxCracker
                             {
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID5643311874"
+                                    _UserId = 3311874
                                 },
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID56423196874"
+                                    _UserId = 42319
                                 }
                             }
                         }
@@ -351,7 +410,7 @@ namespace _500pxCracker
                     {
                         _Name = "followed1",
                         _FollowedSince = DateTime.Parse("03.02.2014 00:00:00"),
-                        _Id = "ID52222196874",
+                        _Id = 5222,
                         _Photos = new Photo[2]
                     {
                         new Photo
@@ -362,11 +421,11 @@ namespace _500pxCracker
                             {
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID56423196874"
+                                    _UserId = 3196874
                                 },
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID56423196874"
+                                    _UserId = 6423
                                 }
                             }
                         },
@@ -377,11 +436,11 @@ namespace _500pxCracker
                             {
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID5643311874"
+                                    _UserId = 11874
                                 },
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID56423196874"
+                                    _UserId = 56423196
                                 }
                             }
                         }
@@ -392,7 +451,7 @@ namespace _500pxCracker
                         _Name = "follolowed2",
                         _StartedFollowing = DateTime.Parse("05.05.2005 05:05:05"),
                         _FollowedSince = DateTime.Parse("12.12.2012 12:12:12"),
-                        _Id = "ID56423446874",
+                        _Id = 42344,
                         _Photos = new Photo[2]
                     {
                         new Photo
@@ -403,11 +462,11 @@ namespace _500pxCracker
                             {
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID56423196874"
+                                    _UserId = 231968
                                 },
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID56423196874"
+                                    _UserId = 6423
                                 }
                             }
                         },
@@ -418,11 +477,11 @@ namespace _500pxCracker
                             {
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID5643311874"
+                                    _UserId = 311874
                                 },
                                 new Like{
                                     _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = "ID56423196874"
+                                    _UserId = 423196
                                 }
                             }
                         }
@@ -506,7 +565,7 @@ namespace _500pxCracker
             return null;
         }
 
-        public User GetUserById(string id)
+        public User GetUserById(int id)
         {
             foreach (User user in _Following)
             {
@@ -566,7 +625,7 @@ namespace _500pxCracker
         public void Unfollow(User user)
         {
             Process process = new Process();
-            process.StartInfo.FileName = "python.exe";
+            process.StartInfo.FileName = LocalizationData.Python;
             process.StartInfo.Arguments = LocalizationData.MainPy + " " + _Credentials.login + " " + _Credentials.password+" -ufl " + user._Name + " -debug";
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;

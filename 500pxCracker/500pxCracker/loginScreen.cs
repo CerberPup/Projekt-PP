@@ -225,7 +225,7 @@ namespace _500pxCracker
                 return false;
             }
             CurrentUser.Get()._User = new User();
-            CurrentUser.Get()._User._Id = id;
+            CurrentUser.Get()._User._Id = int.Parse(id);
             CurrentUser.Get()._User._Name = name;
             //process.WaitForExit();
             return true;
