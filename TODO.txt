@@ -3,9 +3,9 @@
 3.	Wyciągnąć informacje o czasie kiedy użytkownika A zaczął followować użytkownika / kiedy użytkownik zaczął followować użytkownika A - todo: local database
 4.	Podaje statystyki dla użytkowników, którzy followują userA (liczba polubień zdjęć użytkownika A w ciągu ostatniego miesiąca / roku) - todo: local database
 5.	Możliwość odfollowowania użytkownika, których użytkownik A followuje ale którzy nie followują użytkownika A (wszystkich / wybranej liczby) - done
-6.	Możliwość automatycznego polubienia ostatniego dodanego zdjęcia, wszystkich użytkowników, których followuje użytkownik A - todo: c# implementation
+6.	Możliwość automatycznego polubienia ostatniego dodanego zdjęcia, wszystkich użytkowników, których followuje użytkownik A - todo: testing
 7.	Wyszukiwanie użytkowników, którzy polubili najwięcej zdjęć w całym serwisie w trakcie ostatniego dnia (?) 
-8.	Automatyczne lubienie zdjęć z poziomu Fresh / Uncoming (użytkownik podaje liczbę zdjęć do polubienia np. 100) - todo: c# implementation
+8.	Automatyczne lubienie zdjęć z poziomu Fresh / Uncoming (użytkownik podaje liczbę zdjęć do polubienia np. 100) - todo: testing
 9.	Polubienie zdjęcie każdego kto polubił moje zdjęcie (konfigurowalna liczba zdjęć do polubienia, należy kontrolować czy zdjęcie zostało już polubione w innej sesji aby nie aktywować tej funkcji dwa razy dla tego samego zdjęcia) - todo: c# implementation
 
 
