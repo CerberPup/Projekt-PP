@@ -1,22 +1,42 @@
 from Logger import *
-import requests, time, json, os
+import requests, time, json, os, shutil
 from bs4 import BeautifulSoup
 import sys
 from pprint import pprint
+import random
+import pickle
+
+
+def cleanupDir(fullpath):
+    for the_file in os.listdir(fullpath):
+        file_path = os.path.join(fullpath, the_file)
+        try:
+            if os.path.isfile(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            continue
 
 scriptDir = os.path.abspath(os.path.dirname(__file__))
 
 class Scrapper:
 
-    userDir = scriptDir + '/UserInfo'
-    followingDir = userDir + '/followings'
-    followersDir = userDir + '/followers'
+    userInfo = scriptDir + '/UserInfo'
     photosDir = scriptDir + '/photosDumps'
     galleriesDir = scriptDir + '/galleriesDumps'
     likesDir = scriptDir + '/likesForPhotos'
 
     def __init__(self, email, password, debugMode, offlineMode):
-        self.logger = Logger(Scrapper.userDir, "log_"+email, debugMode)
+        self.userDir = self.userInfo + '/' + email
+        self.followingDir = self.userDir + '/followings'
+        self.followersDir = self.userDir + '/followers'
+        self.dbDir = self.userDir + '/db'
+        self.sessionObject =  self.userDir + '/.session'
+        self.payloadObject =  self.userDir + '/.payload'
+        self.csrfObject =  self.userDir + '/.csrf'
+        self.UserDataObject= self.userDir + '/.usr'
+        self.logger = Logger(self.userDir, "log", debugMode)
         self.session = requests.Session()
         self.session.headers.update({
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
@@ -34,25 +54,71 @@ class Scrapper:
         self.web = None
         self.UserData = None
         if not offlineMode:
-            self._retrieveToken()
-            self._login()
+            if not self.readSessionObject():
+                self._retrieveToken()
+                self._login()
+            self.dumpSessionObject()
+
         if not os.path.exists(Scrapper.photosDir):
             os.makedirs(Scrapper.photosDir)
         if not os.path.exists(Scrapper.galleriesDir):
             os.makedirs(Scrapper.galleriesDir)
         if not os.path.exists(Scrapper.likesDir):
             os.makedirs(Scrapper.likesDir)
+        if not os.path.exists(self.dbDir):
+            os.makedirs(self.dbDir)
+
+    def cleanupTempFiles(self):
+        if os.path.exists(Scrapper.photosDir):
+            cleanupDir(Scrapper.photosDir)
+        if os.path.exists(Scrapper.galleriesDir):
+            cleanupDir(Scrapper.photosDir)
+        if os.path.exists(Scrapper.likesDir):
+            cleanupDir(Scrapper.photosDir)
+
+    def dumpSessionObject(self):
+        sessionDumpFile = open(self.sessionObject,'w')
+        payloadDumpFile = open(self.payloadObject,'w')
+        csrfDumpFile =  open(self.csrfObject, 'w')
+        userDataDumpFile = open(self.UserDataObject,'w')
+        pickle.dump(self.session, sessionDumpFile , pickle.HIGHEST_PROTOCOL)
+        pickle.dump(self.payload, payloadDumpFile, pickle.HIGHEST_PROTOCOL)
+        pickle.dump(self.csrfHeaders, csrfDumpFile , pickle.HIGHEST_PROTOCOL)
+        pickle.dump(self.UserData, userDataDumpFile, pickle.HIGHEST_PROTOCOL)
+
+    def readSessionObject(self):
+        self.logger.LogLine("Attempt to recover last session...")
+        try:
+            sessionDumpFile = open(self.sessionObject, 'r')
+            payloadDumpFile = open(self.payloadObject, 'r')
+            csrfDumpFile = open(self.csrfObject, 'r')
+            userDataDumpFile = open(self.UserDataObject, 'r')
+            self.session = pickle.load(sessionDumpFile)
+            self.payload = pickle.load(payloadDumpFile)
+            self.csrfHeaders = pickle.load(csrfDumpFile)
+            self.UserData= pickle.load(userDataDumpFile)
+        except IOError:
+            self.logger.LogLine("No session to recover")
+            return False
+        valid = self.requestWebPage('GET', 'https://api.500px.com/v1/users/' + str(
+                self.UserData['id']) + '/followers?fullformat=0&page=' + str(1), headers=self.csrfHeaders)
+        if valid.status_code == 200:
+            self.logger.LogLine("Session recovered successfully")
+            return True
+        else:
+            self.logger.LogLine("Session expired")
+        return False
 
     def getFollowings(self):
         pageNum = 1
         following = []
         self.logger.LogLine("Attempt to retrieve followings list...")
-        if not os.path.exists(Scrapper.followingDir):
-            os.makedirs(Scrapper.followingDir)
+        if not os.path.exists(self.followingDir):
+            os.makedirs(self.followingDir)
         else:
-            files = [f for f in os.listdir(Scrapper.followingDir) if os.path.isfile(os.path.join(Scrapper.followingDir, f))]
+            files = [f for f in os.listdir(self.followingDir) if os.path.isfile(os.path.join(self.followingDir, f))]
             for file in files:
-                os.remove(os.path.join(Scrapper.followingDir, file))
+                os.remove(os.path.join(self.followingDir, file))
         while True:
             followingPage = self.requestWebPage('GET', 'https://api.500px.com/v1/users/' + str(
                 self.UserData['id']) + '/friends?fullformat=0&page=' + str(pageNum), headers=self.csrfHeaders)
@@ -68,7 +134,7 @@ class Scrapper:
                 self.logger.LogLine("Unable to retrieve followings lists at " + str(pageNum))
                 self.logger.LogLine("Error URL: " + str(followingPage.url))
         for user in following:
-            followingFile = u"{}".format(Scrapper.followingDir + '/' + user['username'])
+            followingFile = u"{}".format(self.followingDir + '/' + user['username'])
             with open (followingFile,'w') as f:
                 f.write(json.dumps(user))
         return following
@@ -77,12 +143,12 @@ class Scrapper:
         pageNum = 1
         followers = []
         self.logger.LogLine("Attempt to retrieve followers list...")
-        if not os.path.exists(Scrapper.followersDir):
-            os.makedirs(Scrapper.followersDir)
+        if not os.path.exists(self.followersDir):
+            os.makedirs(self.followersDir)
         else:
-            files = [f for f in os.listdir(Scrapper.followersDir) if os.path.isfile(os.path.join(Scrapper.followersDir, f))]
+            files = [f for f in os.listdir(self.followersDir) if os.path.isfile(os.path.join(self.followersDir, f))]
             for file in files:
-                os.remove(os.path.join(Scrapper.followersDir, file))
+                os.remove(os.path.join(self.followersDir, file))
         while True:
             followersPage = self.requestWebPage('GET', 'https://api.500px.com/v1/users/' + str(
                 self.UserData['id']) + '/followers?fullformat=0&page=' + str(pageNum), headers=self.csrfHeaders)
@@ -98,15 +164,15 @@ class Scrapper:
                 self.logger.LogLine("Unable to retrieve followings lists at " + str(pageNum))
                 self.logger.LogLine("Error URL: " + str(followersPage.url))
         for user in followers:
-            followerFile = u"{}".format(Scrapper.followersDir + '/' + user['username'])
+            followerFile = u"{}".format(self.followersDir + '/' + user['username'])
             with open (followerFile,'w') as f:
                 f.write(json.dumps(user))
         return followers
 
     def ParseFollowingsFiles(self):
         followings = []
-        for file in os.listdir(Scrapper.followingDir):
-            filePath = os.path.join(Scrapper.followingDir, file)
+        for file in os.listdir(self.followingDir):
+            filePath = os.path.join(self.followingDir, file)
             with open (filePath, 'r') as f:
                 for line in f:
                     followings.append(json.loads(line)['username'])
@@ -256,10 +322,44 @@ class Scrapper:
         return Photos
 
     def GetPhotosForUser(self, username):
+
         ID = self.GetUserInfo(username)['id']
+        self.GetUnassignedPhotosForUser(username, ID)
         galleries = self.GetPhotosGalleriesForUser(ID)
+        retDict= {}
         for gallery in galleries:
-            self.GetItemsForGallery(ID, gallery['id'])
+            retDict[gallery['id']] = self.GetItemsForGallery(ID, gallery['id'])
+        return retDict
+
+    def GetUnassignedPhotosForUser(self, username, userID):
+
+        Photos=[]
+        dir = Scrapper.photosDir + '/User' + str(userID)
+        APIURL = 'https://api.500px.com/v1/photos?feature=user&username='
+        if not os.path.exists(dir):
+            os.makedirs(dir)
+        jsonFile = dir + '/photos_unassigned'
+        if os.path.isfile(jsonFile):
+            os.remove(jsonFile)
+        page=1
+        self.logger.LogLine("Attempt to get photos for user " + str(username))
+        while True:
+            PhotosPage = self.requestWebPage('GET', APIURL + str(username) + '&page=' + str(page) + '&rpp=100', data=self.payload)
+            if PhotosPage.status_code == 200:
+                photosPage_json = json.loads(PhotosPage.text)
+                total_pages = photosPage_json['total_pages']
+                with open(jsonFile, 'a') as f:
+                    f.write(json.dumps(photosPage_json))
+                Photos+=photosPage_json['photos']
+                self.logger.LogLine("Photos retrieved successfully")
+                if page == total_pages:
+                    break
+                self.logger.LogLine("Page " + str(page) + '/' + str(total_pages))
+                page=page+1
+            else:
+                self.logger.LogLine("Unable to get photos")
+                break
+        return Photos
 
     def GetVotesForPhoto(self, photoID):
         Votes=[]
@@ -275,7 +375,7 @@ class Scrapper:
                 with open(photoFile, 'a') as f:
                     f.write(json.dumps(likesPage_json['users']))
                 Votes+= likesPage_json['users']
-                self.logger.LogLine("Galleries retrieved succesfully")
+                self.logger.LogLine("Votes retrieved succesfully")
                 if page == likesPage_json['total_pages']:
                     break
                 page=page+1
@@ -377,5 +477,6 @@ class Scrapper:
             page += int(round(amount / 50.0 + 0.499))
             for photo in Photos:
                 if not self.PhotoIsLiked(photo['id']):
-                    if self.VoteForPhoto(photo['id']):
-                        amount-=1
+                    if random.randint(0,100) > 20:
+                        if self.VoteForPhoto(photo['id']):
+                            amount-=1

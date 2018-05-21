@@ -1,6 +1,6 @@
 from Scrapper import *
 from CmdParser import *
-
+from DatabaseManager import *
 
 
 cmdParser = CmdParser(sys.argv)
@@ -9,18 +9,18 @@ if len(cmdParser.args) > 1:
         login = cmdParser.GetLogin()
         passwd = cmdParser.GetPassword()
         scrapper = Scrapper(login, passwd, cmdParser.GetDebugMode(), cmdParser.GetOffline())
-
-        if cmdParser.GetFollowers():
-            scrapper.getFollowers()
-        if cmdParser.GetFollowings():
-            scrapper.getFollowings()
-
+        scrapper.cleanupTempFiles()
         toFollow = cmdParser.FollowUser()
         toUnfollow = cmdParser.UnfollowUser()
         if toFollow != "":
             scrapper.FollowUser(toFollow)
         if toUnfollow != "":
             scrapper.UnfollowUser(toUnfollow)
+
+        if cmdParser.GetFollowers():
+            scrapper.getFollowers()
+        if cmdParser.GetFollowings():
+            scrapper.getFollowings()
 
         if cmdParser.GetPhotosCmd():
             usersList=[]
@@ -46,3 +46,10 @@ if len(cmdParser.args) > 1:
 
         if cmdParser.VoteForUpcoming()!="":
             scrapper.VoteFreshOrUpcoming(False, int(cmdParser.VoteForUpcoming()))
+
+        if cmdParser.GetVotesForPhoto()!="":
+            scrapper.GetVotesForPhoto(int(cmdParser.GetVotesForPhoto()))
+
+        if cmdParser.GetDBUpdate():
+            dbManager = DatabaseManager(scrapper)
+            dbManager.CreateUsersList()

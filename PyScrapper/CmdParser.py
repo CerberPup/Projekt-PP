@@ -108,6 +108,15 @@ class CmdParser:
                 return next(it)
         return ""
 
+    def GetVotesForPhoto(self):
+        it = iter(self.args)
+        for arg in it:
+            if arg == "-l":
+                return next(it)
+        return ""
+
+    def GetDBUpdate(self):
+        return self.IsParameterPresent("-udb")
 
 
     def DisplayHelp(self):
@@ -124,6 +133,8 @@ class CmdParser:
         print("\t-ufl\t-\tfollows user [username]")
         print("\t-vf\t-\tvotes for photos in fresh list [amount]")
         print("\t-vu\t-\tvotes for photos in upcoming list [amount]")
+        print("\t-l\t-\tget votes for photo in [photoID]")
+        print("\t-udb\t-\tupdate local database")
         print("\t-debug\t-\tturns on debug info on std output (anyway logged to log_email file), should be used in terminal only")
         print("\nexample: email@domain.com samplepasswd -f1")
         print("\nexample: email@domain.com samplepasswd -p -u username1 username2")
