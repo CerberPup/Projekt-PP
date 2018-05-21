@@ -129,9 +129,11 @@ namespace _500pxCracker
         static public string MainPy = ScriptsDir + "Main.py";
         static public string GalleriesDir = ScriptsDir + "galleriesDumps\\";
         static public string LikesForPhotosDir = ScriptsDir + "likesForPhotos\\";
-        static public string UserInfoDir = ScriptsDir + "UserInfo\\";
+        static public string UserInfoRoot = ScriptsDir + "UserInfo\\";
+        static public string UserInfoDir = UserInfoRoot; // + user_email
         static public string FollowersDir = UserInfoDir + "followers\\";
         static public string FollowingDir = UserInfoDir + "followings\\";
+        static public string FollowingDir = UserInfoDir + "db\\";
         static public string PhotosDir = ScriptsDir + "photosDumps\\";
         static public string PythonDir = "";
         static public string Python = "";
