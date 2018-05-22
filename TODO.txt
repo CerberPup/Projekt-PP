@@ -11,14 +11,12 @@
 
 To do:
 1. GUI - Małgorzata Kałek
-2. Python script - Karol Marszalek:
-	2.1. Podtrzymanie sesji
-	2.2. Wystawienie do cmd przelacznika do pobrania like'ow dla zdjęcia o zadanym ID. 
-3. C# implementation - Wojciech Wron, Kamil Janas, Błażej Moska, Małgorzata Kałek:
-	3.1 - pkt 6. - pobranie zdjęć wszystkich użytkowników, których followuje A, pobranie pierwszego zdjęcia ( kolekcja jest posortowana ), wywołanie polecenia polubienia zdjęcia o zadanym ID. 
-	3.2 - pkt 8. - wywołanie skryptu z parametrami podanymi w helpie.
-	3.3 - pkt 9. - Pobranie like'ów dla zdjęcia, polubienie zdjęcia każdego z użytkowników. Todo: pobranie like'ow dla zdjęcia, dla każdego użytkownika wśród like'ów pobrać zdjęcia, polubić zdjęcie/zdjęcia.
+2. C# implementation - Wojciech Wron, Kamil Janas, Błażej Moska, Małgorzata Kałek:
+	2.1 - pkt 6. - pobranie zdjęć wszystkich użytkowników, których followuje A, pobranie pierwszego zdjęcia ( kolekcja jest posortowana ), wywołanie polecenia polubienia zdjęcia o zadanym ID. - Kamil Janas - done
+	2.2 - pkt 8. - wywołanie skryptu z parametrami podanymi w helpie.- Kamil Janas - done
+	2.3 - pkt 9. - Pobranie like'ów dla zdjęcia, polubienie zdjęcia każdego z użytkowników. Todo: pobranie like'ow dla zdjęcia, dla każdego użytkownika wśród like'ów pobrać zdjęcia, polubić zdjęcie/zdjęcia.
 	
-4. Local database - Karol Marszałek, Wojciech Wrona. 
-	4.1 - Dump informacji bazodanowych do pliku .json z odniesieniem w czasie - Karol Marszalek, python
-	4.2 - Odczytanie informacji bazodanowych z pliku .json, przechowanie w pamieci aplikacji - Wojciech Wron, c#
+3. Local database - Karol Marszałek, Wojciech Wrona. 
+	3.1 - Dump informacji bazodanowych do pliku .json z odniesieniem w czasie - Karol Marszalek, python - done
+	3.2 - Odczytanie informacji bazodanowych z pliku .json, przechowanie w pamieci aplikacji:
+		pkt 3, 4 - Wojciech Wrona, c#
