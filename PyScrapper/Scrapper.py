@@ -77,10 +77,10 @@ class Scrapper:
             cleanupDir(Scrapper.photosDir)
 
     def dumpSessionObject(self):
-        sessionDumpFile = open(self.sessionObject,'w')
-        payloadDumpFile = open(self.payloadObject,'w')
-        csrfDumpFile =  open(self.csrfObject, 'w')
-        userDataDumpFile = open(self.UserDataObject,'w')
+        sessionDumpFile = open(self.sessionObject,'wb')
+        payloadDumpFile = open(self.payloadObject,'wb')
+        csrfDumpFile =  open(self.csrfObject, 'wb')
+        userDataDumpFile = open(self.UserDataObject,'wb')
         pickle.dump(self.session, sessionDumpFile , pickle.HIGHEST_PROTOCOL)
         pickle.dump(self.payload, payloadDumpFile, pickle.HIGHEST_PROTOCOL)
         pickle.dump(self.csrfHeaders, csrfDumpFile , pickle.HIGHEST_PROTOCOL)
@@ -89,10 +89,10 @@ class Scrapper:
     def readSessionObject(self):
         self.logger.LogLine("Attempt to recover last session...")
         try:
-            sessionDumpFile = open(self.sessionObject, 'r')
-            payloadDumpFile = open(self.payloadObject, 'r')
-            csrfDumpFile = open(self.csrfObject, 'r')
-            userDataDumpFile = open(self.UserDataObject, 'r')
+            sessionDumpFile = open(self.sessionObject, 'rb')
+            payloadDumpFile = open(self.payloadObject, 'rb')
+            csrfDumpFile = open(self.csrfObject, 'rb')
+            userDataDumpFile = open(self.UserDataObject, 'rb')
             self.session = pickle.load(sessionDumpFile)
             self.payload = pickle.load(payloadDumpFile)
             self.csrfHeaders = pickle.load(csrfDumpFile)
