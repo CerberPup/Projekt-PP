@@ -63,8 +63,10 @@ class DatabaseManager(object):
                 for DbUser in latestRecord_json.users:
                     if CurUser == DbUser.userID:
                         user = self.usersDict[CurUser]
-                        user.following_since=DbUser.following_since
-                        user.follows_since=DbUser.follows_since
+                        if DbUser.following_since != "":
+                            user.following_since=DbUser.following_since
+                        if DbUser.follows_since != "":
+                            user.follows_since=DbUser.follows_since
                         self.usersDict[CurUser]=user
 
     def UpdatePhotoInfo(self):
