@@ -29,7 +29,7 @@ class DatabaseManager(object):
         self.dbPath = self.scrapper.dbDir
         self.usersDict = {}
         self.Users = None
-        self.recordFile = self.dbPath+'/record_'+datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+        self.recordFile = self.dbPath+'/record_'+datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
     def CreateUsersList(self):
        followers = self.scrapper.getFollowers()
