@@ -3,20 +3,18 @@
 3.	Wyciągnąć informacje o czasie kiedy użytkownika A zaczął followować użytkownika / kiedy użytkownik zaczął followować użytkownika A - todo: local database
 4.	Podaje statystyki dla użytkowników, którzy followują userA (liczba polubień zdjęć użytkownika A w ciągu ostatniego miesiąca / roku) - todo: local database
 5.	Możliwość odfollowowania użytkownika, których użytkownik A followuje ale którzy nie followują użytkownika A (wszystkich / wybranej liczby) - done
-6.	Możliwość automatycznego polubienia ostatniego dodanego zdjęcia, wszystkich użytkowników, których followuje użytkownik A - todo: testing
+6.	Możliwość automatycznego polubienia ostatniego dodanego zdjęcia, wszystkich użytkowników, których followuje użytkownik A - done
 7.	Wyszukiwanie użytkowników, którzy polubili najwięcej zdjęć w całym serwisie w trakcie ostatniego dnia (?) 
-8.	Automatyczne lubienie zdjęć z poziomu Fresh / Uncoming (użytkownik podaje liczbę zdjęć do polubienia np. 100) - todo: testing
+8.	Automatyczne lubienie zdjęć z poziomu Fresh / Uncoming (użytkownik podaje liczbę zdjęć do polubienia np. 100) - done
 9.	Polubienie zdjęcie każdego kto polubił moje zdjęcie (konfigurowalna liczba zdjęć do polubienia, należy kontrolować czy zdjęcie zostało już polubione w innej sesji aby nie aktywować tej funkcji dwa razy dla tego samego zdjęcia) - todo: c# implementation
 
 
 To do:
 1. GUI - Małgorzata Kałek
 2. C# implementation - Wojciech Wron, Kamil Janas, Błażej Moska, Małgorzata Kałek:
-	2.1 - pkt 6. - pobranie zdjęć wszystkich użytkowników, których followuje A, pobranie pierwszego zdjęcia ( kolekcja jest posortowana ), wywołanie polecenia polubienia zdjęcia o zadanym ID. - Kamil Janas - done
-	2.2 - pkt 8. - wywołanie skryptu z parametrami podanymi w helpie.- Kamil Janas - done
-	2.3 - pkt 9. - Pobranie like'ów dla zdjęcia, polubienie zdjęcia każdego z użytkowników. Todo: pobranie like'ow dla zdjęcia, dla każdego użytkownika wśród like'ów pobrać zdjęcia, polubić zdjęcie/zdjęcia.
+	2.1 - pkt 9. - Pobranie like'ów dla zdjęcia, polubienie zdjęcia każdego z użytkowników. Todo: pobranie like'ow dla zdjęcia, dla każdego użytkownika wśród like'ów pobrać zdjęcia, polubić zdjęcie/zdjęcia.
 	
 3. Local database - Karol Marszałek, Wojciech Wrona. 
-	3.1 - Dump informacji bazodanowych do pliku .json z odniesieniem w czasie - Karol Marszalek, python - done
-	3.2 - Odczytanie informacji bazodanowych z pliku .json, przechowanie w pamieci aplikacji:
+	3.1 - Odczytanie informacji bazodanowych z pliku .json, przechowanie w pamieci aplikacji:
 		pkt 3, 4 - Wojciech Wrona, c#
+4. Testing: Karol Marszalek, Wojciech Wrona, Blazej Moska
