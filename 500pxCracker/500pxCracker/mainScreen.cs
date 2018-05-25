@@ -30,6 +30,7 @@ namespace _500pxCracker
 
         private void mainScreen_Load(object sender, EventArgs e)
         {
+            dataGetter.UpdateDb();
             //followers
             nonFollowersPanel.Size = new Size(460, 185);
             mutualFollowersPanel.Size = new Size(460, 185);
@@ -128,9 +129,6 @@ namespace _500pxCracker
         private void likeLatestButton_Click(object sender, EventArgs e)
         {
             dataGetter.GetFollowersandFollowings();
-            dataGetter.UpdateFollowers();
-            dataGetter.UpdateFollowings();
-
             CurrentUser.Get().LikeLatestPhotos();
 
             MessageBox.Show("Successfully liked all the photos!");
@@ -163,11 +161,9 @@ namespace _500pxCracker
             items.Clear();
             //here add items to the nonFollowersListBox ~~~~~~~~~~~~~~
             dataGetter.GetFollowersandFollowings();
-            dataGetter.UpdateFollowers();
-            dataGetter.UpdateFollowings();
             foreach (User u in CurrentUser.Get().OneWayFollow())
             {
-                items.Add(u._Name);
+                items.Add(u._FullName);
             }
         }
 
@@ -182,14 +178,14 @@ namespace _500pxCracker
 
             var items = mutualListBox.Items;
             items.Clear();
-            //here add items to mutualListBox ~~~~~~~~~~~~~~
             dataGetter.GetFollowersandFollowings();
-            dataGetter.UpdateFollowers();
-            dataGetter.UpdateFollowings();
+            //here add items to mutualListBox ~~~~~~~~~~~~~~
             foreach (User u in CurrentUser.Get().MutualFollow())
             {
                 items.Add(String.Format("{0,-27}{1,-27}{2,27}", 
-                    u._Name, u._FollowedSince.ToShortDateString(), u._StartedFollowing.ToShortDateString()));
+                    u._FullName,
+                    u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString():"---",
+                    u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString():"---"));
             }
             //item_format = userName + \t\t + date1 + \t\t + date2
 

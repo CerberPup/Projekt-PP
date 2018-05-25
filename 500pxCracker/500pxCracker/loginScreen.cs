@@ -108,13 +108,14 @@ namespace _500pxCracker
                 process.WaitForExit();
                 if (output != "")
                 {
-                    Regex regex = new Regex(@"(bs4|beautifulsoup4|requests)\s+(((^\d|^.|\S))+)");
-                    Match match = regex.Match(output);
-                    bool shouldDownloadDependencies = !match.Success;
                     Dictionary<string, Version> requiredDependencies = new Dictionary<string, Version>();
                     requiredDependencies["beautifulsoup4"] = new Version("1.0");
                     requiredDependencies["bs4"] = new Version("0.0.1");
                     requiredDependencies["requests"] = new Version("2.18.4");
+                    requiredDependencies["jsonpickle"] = new Version("0.9.6");
+                    Regex regex = new Regex(@"("+ string.Join("|", requiredDependencies.Select(x => x.Key))+@")\s+(((^\d|^.|\S))+)");
+                    Match match = regex.Match(output);
+                    bool shouldDownloadDependencies = !match.Success;
                     int matches = 0;
                     while (match.Success)
                     {
@@ -125,7 +126,7 @@ namespace _500pxCracker
                         }
                         match = match.NextMatch();
                     }
-                    if(shouldDownloadDependencies|matches<3)
+                    if(shouldDownloadDependencies|matches< requiredDependencies.Count)
                     {
                         DialogResult dialogResult = MessageBox.Show("Would you like to install required dependecies?", "Dependencies", MessageBoxButtons.YesNo);
                         if (dialogResult == DialogResult.Yes)
@@ -184,26 +185,33 @@ namespace _500pxCracker
         {
             Credentials credentials = CurrentUser.Get().Get_Credentials();
 
-            string logDir = LocalizationData.UserInfoDir + "log_" + credentials.login;
-            /*if (File.Exists(logDir))
-                File.Delete(logDir);*/
+            LocalizationData.UserInfoDir += credentials.login+"\\";
+            LocalizationData.FollowersDir = LocalizationData.UserInfoDir + "followers\\";
+            LocalizationData.FollowingDir = LocalizationData.UserInfoDir + "followings\\";
+            LocalizationData.DbDir = LocalizationData.UserInfoDir + "db\\";
+            string logDir = LocalizationData.UserInfoDir + "log";
+            if (File.Exists(LocalizationData.UserInfoDir + ".session"))
+                File.Delete(LocalizationData.UserInfoDir + ".session");
 
             Process process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
-            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + credentials.login + " " + credentials.password;// + " -offline";
+            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + credentials.login + " " + credentials.password + " -debug";// + " -offline";
             process.StartInfo.UseShellExecute = false;
-            process.StartInfo.RedirectStandardOutput = false;
+            process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
+            string output = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
-            //string output = process.StandardOutput.ReadToEnd();
-            string output = "";
-            if (File.Exists(logDir))
-            {
-                output = File.ReadAllText(logDir);
-            }
-            Regex regex = new Regex(@"Logged in as: (\w*)");
+
+            Regex regex = new Regex("(Session recovered successfully)|(Logged in as:)");
             Match match = regex.Match(output);
+            if (!match.Success)
+            {
+                return false;
+            }
+
+            regex = new Regex(@"Logged in as: (\w*)");
+            regex.Match(output);
             string name = "";
             string id = "";
             if (match.Success)
@@ -270,7 +278,7 @@ namespace _500pxCracker
             }
             else
             {
-                MessageBox.Show("You don't have python poperly installed");
+                MessageBox.Show("Your python isn't poperly installed");
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -7,6 +8,20 @@ using System.Text.RegularExpressions;
 
 namespace _500pxCracker
 {
+    public class DBUser
+    {
+        public DateTime? follows_since { get; set; }
+        public int likes_amount { get; set; }
+        public int userID { get; set; }
+        public string username { get; set; }
+        public DateTime? following_since { get; set; }
+        public int[] likes { get; set; }
+    }
+    public class DBMain
+    {
+        public int users_amount { get; set; }
+        public DBUser[] users { get; set; }
+    }
     public class HttpsLink
     {
         public string https { get; set; }
@@ -67,15 +82,67 @@ namespace _500pxCracker
                 return user;
             }
         }
+        public static void UpdateDb()
+        {
+            DirectoryInfo d = new DirectoryInfo(LocalizationData.DbDir);
+            DateTime max = DateTime.MinValue;
+            string filename = "";
+            foreach (var file in d.GetFiles("*"))
+            {
+                string date = file.Name.Substring(7);
+                string[] s = date.Split('_'); //04.02.1926 00:00:00
+                s[1] = s[1].Replace('-', ':');
+                DateTime dateTime = DateTime.Parse(s[0] + ' ' + s[1]);
+                if (dateTime > max)
+                {
+                    max = dateTime;
+                    filename = file.FullName;
+                }
+
+            }
+            if(LocalizationData.DbCurrentDir != filename)
+            {
+                LocalizationData.DbCurrentDir = filename;
+                DBMain dBMain = JsonConvert.DeserializeObject<DBMain>(File.ReadAllText(filename));
+                List<User> followers = new List<User>();
+                List<User> following = new List<User>();
+                CurrentUser c = CurrentUser.Get();
+                c._User._Photos = new List<Photo>();
+
+                foreach (var user in dBMain.users)
+                {
+                    User u = new User()
+                    {
+                        _FollowedSince = user.follows_since,
+                        _StartedFollowing = user.following_since,
+                        _Id = user.userID,
+                        _FullName = "JeszczePusto",
+                        _Name = user.username
+                    };
+                    if(user.following_since.HasValue == true)
+                    {
+                        followers.Add(u);
+                    }
+                    if (user.follows_since.HasValue == true)
+                    {
+                        following.Add(u);
+                    }
+                }
+                c._Followers = followers;
+                c._Following = following;
+            }
+        }
         public static void UpdateFollowers()
         {
             List<User> users = new List<User>();
             DirectoryInfo d = new DirectoryInfo(LocalizationData.FollowersDir);
+            
             foreach (var file in d.GetFiles("*"))
             {
                 users.Add(GetUserByFileName(file.Name));
             }
-            CurrentUser.Get()._Followers = users.ToArray();
+
+            CurrentUser.Get()._Followers = users;
         }
         public static void UpdateFollowings()
         {
@@ -85,7 +152,7 @@ namespace _500pxCracker
             {
                 users.Add(GetUserByFileName(file.Name));
             }
-            CurrentUser.Get()._Following = users.ToArray();
+            CurrentUser.Get()._Following = users;
         }
         public static void GetFollowers()
         {
@@ -121,6 +188,8 @@ namespace _500pxCracker
             process.StartInfo.CreateNoWindow = true;
             process.Start();
             process.WaitForExit();
+            UpdateFollowers();
+            UpdateFollowings();
         }
     }
     public class LocalizationData
@@ -132,11 +201,12 @@ namespace _500pxCracker
         static public string UserInfoRoot = ScriptsDir + "UserInfo\\";
         static public string UserInfoDir = UserInfoRoot; // + user_email
         static public string FollowersDir = UserInfoDir + "followers\\";
-        static public string FollowingDir = UserInfoDir + "followings\\";
         static public string FollowingDir = UserInfoDir + "db\\";
+        static public string DbDir = UserInfoDir + "db\\";
         static public string PhotosDir = ScriptsDir + "photosDumps\\";
         static public string PythonDir = "";
         static public string Python = "";
+        static public string DbCurrentDir = "";
     }
     public class Credentials
     {
@@ -180,7 +250,7 @@ namespace _500pxCracker
     {
         public DateTime _PhotoUploadDate { get; set; }
         public string _PhotoId { get; set; }
-        public Like[] _Likes { get; set; }
+        public List<Like> _Likes { get; set; }
     }
 
     public class User
@@ -188,9 +258,9 @@ namespace _500pxCracker
         public string _Name { get; set; }
         public string _FullName { get; set; }
         public int _Id { get; set; }
-        public DateTime _StartedFollowing { get; set; }
-        public DateTime _FollowedSince { get; set; }
-        public Photo[] _Photos { get; set; }
+        public DateTime? _StartedFollowing { get; set; }
+        public DateTime? _FollowedSince { get; set; }
+        public List<Photo> _Photos { get; set; }
     }
 
     public class CurrentUser
@@ -208,8 +278,8 @@ namespace _500pxCracker
         }
 
         public User _User { get; set; }
-        public User[] _Followers { get; set; }
-        public User[] _Following { get; set; }
+        public List<User> _Followers { get; set; }
+        public List<User> _Following { get; set; }
 
         static CurrentUser instance;
         public static CurrentUser Get()
@@ -225,7 +295,6 @@ namespace _500pxCracker
 
         static public void Serialize(CurrentUser d)
         {
-            //500pxCracker/500pxCracker/mainScreen.resx         | 1582 +++++++++++++++++++++d = GenData();
             JsonSerializer serializer = new JsonSerializer();
             serializer.NullValueHandling = NullValueHandling.Ignore;
 
@@ -235,269 +304,6 @@ namespace _500pxCracker
                 serializer.Serialize(writer, d);
             }
         }
-        static public CurrentUser Deserialize()
-        {
-            return JsonConvert.DeserializeObject<CurrentUser>(File.ReadAllText("json.json"));
-        }
-        static CurrentUser GenData()
-        {
-            CurrentUser curr = new CurrentUser
-            {
-                _User = new User
-                {
-                    _Name = "username",
-                    _Id = 2548265,
-                    _Photos = new Photo[2]
-                    {
-                        new Photo
-                        {
-                            _PhotoUploadDate = DateTime.Parse("04.02.1992 00:00:00"),
-                            _PhotoId = "1212334",
-                            _Likes = new Like[2]
-                            {
-                                new Like{
-                                    _LikeDate = DateTime.Parse("22.04.2017 00:00:00"),
-                                    _UserId = 96874
-                                },
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.2018 00:00:00"),
-                                    _UserId = 564
-                                }
-                            }
-                        },
-                        new Photo{
-                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
-                            _PhotoId = "",
-                            _Likes = new Like[2]
-                            {
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 564
-                                },
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 231
-                                }
-                            }
-                        }
-                    }
-                },
-                _Followers = new User[3]
-                {
-                    new User{
-                        _Name = "follower1",
-                        _StartedFollowing = DateTime.Parse("04.02.1991 00:00:00"),
-                        _FollowedSince = DateTime.Parse("03.02.1991 00:00:00"),
-                        _Id = 2548265,
-                        _Photos = new Photo[2]
-                    {
-                        new Photo
-                        {
-                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
-                            _PhotoId = "1212334",
-                            _Likes = new Like[2]
-                            {
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 319687
-                                },
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 56423
-                                }
-                            }
-                        },
-                        new Photo{
-                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
-                            _PhotoId = "",
-                            _Likes = new Like[2]
-                            {
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 311874
-                                },
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 42319
-                                }
-                            }
-                        }
-                    }
-                    }
-                    ,
-                    new User
-                    {
-                        _Name = "follower2",
-                        _StartedFollowing = DateTime.Parse("04.05.1993 00:00:00"),
-                        _FollowedSince = DateTime.Parse("03.08.1992 00:00:00"),
-                        _Id = 6124,
-                        _Photos = new Photo[2]
-                    {
-                        new Photo
-                        {
-                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
-                            _PhotoId = "1212334",
-                            _Likes = new Like[2]
-                            {
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 74
-                                },
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 196874
-                                }
-                            }
-                        },
-                        new Photo{
-                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
-                            _PhotoId = "",
-                            _Likes = new Like[2]
-                            {
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 11874
-                                },
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 96874
-                                }
-                            }
-                        }
-                    }
-                    },
-                    new User
-                    {
-                        _Name = "follower3",
-                        _StartedFollowing = DateTime.Parse("13.05.1991 00:00:00"),
-                        _FollowedSince = DateTime.Parse("22.06.1991 00:00:00"),
-                        _Id = 561874,
-                        _Photos = new Photo[2]
-                    {
-                        new Photo
-                        {
-                            _PhotoUploadDate = DateTime.Parse("04.02.1986 00:00:00"),
-                            _PhotoId = "1212334",
-                            _Likes = new Like[2]
-                            {
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.2017 00:00:00"),
-                                    _UserId = 196874
-                                },
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.2018 00:00:00"),
-                                    _UserId = 64231
-                                }
-                            }
-                        },
-                        new Photo{
-                            _PhotoUploadDate = DateTime.Parse("04.02.1986 00:00:00"),
-                            _PhotoId = "",
-                            _Likes = new Like[2]
-                            {
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 3311874
-                                },
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 42319
-                                }
-                            }
-                        }
-                    }
-                    }
-                },
-                _Following = new User[2]
-                {
-                    new User
-                    {
-                        _Name = "followed1",
-                        _FollowedSince = DateTime.Parse("03.02.2014 00:00:00"),
-                        _Id = 5222,
-                        _Photos = new Photo[2]
-                    {
-                        new Photo
-                        {
-                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
-                            _PhotoId = "1212334",
-                            _Likes = new Like[2]
-                            {
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 3196874
-                                },
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 6423
-                                }
-                            }
-                        },
-                        new Photo{
-                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
-                            _PhotoId = "",
-                            _Likes = new Like[2]
-                            {
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 11874
-                                },
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 56423196
-                                }
-                            }
-                        }
-                    }
-                    },
-                    new User
-                    {
-                        _Name = "follolowed2",
-                        _StartedFollowing = DateTime.Parse("05.05.2005 05:05:05"),
-                        _FollowedSince = DateTime.Parse("12.12.2012 12:12:12"),
-                        _Id = 42344,
-                        _Photos = new Photo[2]
-                    {
-                        new Photo
-                        {
-                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
-                            _PhotoId = "1212334",
-                            _Likes = new Like[2]
-                            {
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 231968
-                                },
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 6423
-                                }
-                            }
-                        },
-                        new Photo{
-                            _PhotoUploadDate = DateTime.Parse("04.02.1926 00:00:00"),
-                            _PhotoId = "",
-                            _Likes = new Like[2]
-                            {
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 311874
-                                },
-                                new Like{
-                                    _LikeDate = DateTime.Parse("04.02.1996 00:00:00"),
-                                    _UserId = 423196
-                                }
-                            }
-                        }
-                    }
-                    }
-                }
-
-            };
-            curr.Set_Credentials(new Credentials("login", "password"));
-            return curr;
-        }
-
         public User[] MutualFollow()
         {
             List<User> response = new List<User>();
@@ -528,7 +334,7 @@ namespace _500pxCracker
             }
             return null;
         }
-        public User[] OneWayFollow()
+        public List<User> OneWayFollow()
         {
             List<User> response = new List<User>();
             
@@ -537,15 +343,15 @@ namespace _500pxCracker
                 if (FindFollowerByName(u._Name) == null)
                 response.Add(u);
             }
-            return response.ToArray();
+            return response;
         }
 
-        public DateTime GetStartedFollowing(User user)
+        public DateTime? GetStartedFollowing(User user)
         {
             return user._StartedFollowing;
         }
 
-        public DateTime GetFollowedSince(User user)
+        public DateTime? GetFollowedSince(User user)
         {
             return user._FollowedSince;
         }
@@ -588,41 +394,57 @@ namespace _500pxCracker
             return null;
         }
 
-        public Dictionary<User, int> GetLastLikes(DateTime since)
+        public Dictionary<string, int> GetLastLikes(DateTime since)
         {
-            Dictionary<User, int> response = new Dictionary<User, int>();
-            foreach(Photo photo in _User._Photos)
+            Dictionary<string, int> response = new Dictionary<string, int>();
+
+            DirectoryInfo d = new DirectoryInfo(LocalizationData.DbDir);
+            DateTime newest = DateTime.MinValue;
+            DateTime oldest = DateTime.MaxValue;
+            string filenameNewest = "";
+            string filenameOldest = "";
+            foreach (var file in d.GetFiles("*"))
             {
-                foreach(Like like in photo._Likes)
+                string date = file.Name.Substring(7);
+                string[] s = date.Split('_'); //04.02.1926 00:00:00
+                s[1] = s[1].Replace('-', ':');
+                DateTime dateTime = DateTime.Parse(s[0] + ' ' + s[1]);
+                if (dateTime > newest)
                 {
-                    if(like._LikeDate >= since)
-                    {
-                        User user = GetUserById(like._UserId);
-                        if (user != null)
-                        {
-                            if (response.ContainsKey(user))
-                            {
-                                response[user]++;
-                            }
-                            else
-                            {
-                                response.Add(user, 1);
-                            }
-                        }
-                    }
+                    newest = dateTime;
+                    filenameNewest = file.FullName;
                 }
+                if(oldest > dateTime && dateTime>since)
+                {
+                    oldest = dateTime;
+                    filenameOldest = file.FullName;
+                }
+
+            }
+
+            DBMain dBMainOld = JsonConvert.DeserializeObject<DBMain>(File.ReadAllText(filenameOldest));
+            DBMain dBMainNew = JsonConvert.DeserializeObject<DBMain>(File.ReadAllText(filenameNewest));
+
+            foreach (var user in dBMainNew.users)
+            {
+                response[user.username] = user.likes_amount;
+            }
+            foreach (var user in dBMainOld.users)
+            {
+                response[user.username] -= user.likes_amount;
             }
             return response;
         }
 
-        public User[] UnfollowNonMutual()
+        public List<User> UnfollowNonMutual()
         {
-            User[] unfollowed = OneWayFollow();
+            List<User> unfollowed = OneWayFollow();
             foreach(User user in unfollowed)
             {
                 //Send unfollow request to server
             }
-            _Following = Array.FindAll(_Following, u => !Array.Exists(_Following,u2=>u2==u));
+            _Following = _Following.Except(unfollowed).ToList();
+                //List<User>.FindAll(_Following, u => !List<User>.Exists(_Following,u2=>u2==u));
             return unfollowed;
         }
 
@@ -635,7 +457,7 @@ namespace _500pxCracker
             process.StartInfo.CreateNoWindow = true;
             process.Start();
             process.WaitForExit();
-            _Following = Array.FindAll(_Following, u => u!=user);
+            _Following.Remove(user);
         }
 
         public void LikeLatestPhotos()
