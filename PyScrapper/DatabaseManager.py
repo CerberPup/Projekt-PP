@@ -3,9 +3,10 @@ import os
 from datetime import datetime
 
 class User(object):
-    def __init__(self, username, userID, follows_since, following_since,likes):
+    def __init__(self, username, userID, fullname, follows_since, following_since,likes):
         self.username=username
         self.userID=userID
+        self.fullname=fullname
         self.follows_since=follows_since
         self.following_since=following_since
         self.likes=likes
@@ -23,6 +24,7 @@ class Users(object):
         self.users = users
         self.users_amount=len(users)
 
+
 class DatabaseManager(object):
     def __init__(self, scrapper):
         self.scrapper = scrapper
@@ -35,14 +37,14 @@ class DatabaseManager(object):
        followers = self.scrapper.getFollowers()
        followings = self.scrapper.getFollowings()
        for follower in followers:
-           self.usersDict[follower['id']] = User(follower['username'], follower['id'], datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),"",[])
+           self.usersDict[follower['id']] = User(follower['username'], follower['id'], follower['fullname'], datetime.now().strftime('%Y-%m-%d %H:%M:%S'),"",[])
        for following in followings:
            if following['id'] in self.usersDict.keys():
                user = self.usersDict[following['id']]
-               user.following_since=datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+               user.following_since=datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                self.usersDict[following['id']] =user
            else:
-               self.usersDict[following['id']] = User(following['username'], following['id'], "",datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),[])
+               self.usersDict[following['id']] = User(following['username'], following['id'], following['fullname'], "",datetime.now().strftime('%Y-%m-%d %H:%M:%S'),[])
 
        self.UpdateFollowInfo()
        self.UpdatePhotoInfo()

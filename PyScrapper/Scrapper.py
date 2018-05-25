@@ -104,6 +104,8 @@ class Scrapper:
                 self.UserData['id']) + '/followers?fullformat=0&page=' + str(1), headers=self.csrfHeaders)
         if valid.status_code == 200:
             self.logger.LogLine("Session recovered successfully")
+            self.logger.LogLine("Logged in as: " + self.UserData['username'])
+            self.logger.LogLine("User ID: " + str(self.UserData['id']))
             return True
         else:
             self.logger.LogLine("Session expired")
