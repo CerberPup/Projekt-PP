@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -112,9 +113,9 @@ namespace _500pxCracker
         }
 
         //likes panel ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        private void LikeFresh()
+        private void LikeFresh(int SelectedIndex, int Number)
         {
-            CurrentUser.Get().LikeFresh(photoTypeDropDown.SelectedIndex, int.Parse(freshPhotosNumberTextBox.Text));
+            CurrentUser.Get().LikeFresh(SelectedIndex, Number);
             MessageBox.Show("Successfully liked the photos!");
         }
         private void likeFreshButton_Click(object sender, EventArgs e)
@@ -123,7 +124,7 @@ namespace _500pxCracker
             {
                 if (photoTypeDropDown.SelectedIndex > -1 && freshPhotosNumberTextBox.Text.Length != 0)
                 {
-                    PythonWorker.RunWorkerAsync("LikeFresh");
+                    PythonWorker.RunWorkerAsync("LikeFresh-"+ photoTypeDropDown.SelectedIndex+"-"+ int.Parse(freshPhotosNumberTextBox.Text));
                 }
                 else
                     MessageBox.Show("Please provide all required information!");
@@ -501,7 +502,22 @@ namespace _500pxCracker
         private void PythonWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             PythonWorker.ReportProgress(1);
-            string FunctionToRun = e.Argument as string;
+            string input = e.Argument as string;
+            Regex r = new Regex(@"\w+");
+            Match match = r.Match(input);
+            string FunctionToRun = match.Value;
+            match = match.NextMatch();
+            List<int> arg = new List<int>();
+            while (match.Success)
+            {
+                int tmp = 0;
+                if (int.TryParse(match.Value, out tmp)) {
+                    arg.Add(tmp);
+                }
+                match = match.NextMatch();
+                
+            }
+
             switch (FunctionToRun)
             {
                 case "UpdateDB":
@@ -511,7 +527,7 @@ namespace _500pxCracker
                     MutualFollow();
                     break;
                 case "LikeFresh":
-                    LikeFresh();
+                    LikeFresh(arg[0], arg[1]);
                     break;
                 case "UnFollow":
                     UnFollow();
