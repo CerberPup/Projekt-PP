@@ -36,8 +36,11 @@ namespace _500pxCracker
         private void InitializePython()
         {
             string[] paths = Environment.GetEnvironmentVariable("Path").Split(';');
-            foreach (string path in paths)
+            foreach (string tmpPath in paths)
             {
+                string path = tmpPath;
+                if (path.Length>0 && path[path.Length - 1] != '\\')
+                    path += '\\';
                 if(File.Exists(path+ "python.exe"))
                 {
                     Process process = new Process();
@@ -113,7 +116,7 @@ namespace _500pxCracker
                     requiredDependencies["bs4"] = new Version("0.0.1");
                     requiredDependencies["requests"] = new Version("2.18.4");
                     requiredDependencies["jsonpickle"] = new Version("0.9.6");
-                    Regex regex = new Regex(@"("+ string.Join("|", requiredDependencies.Select(x => x.Key))+@")\s+(((^\d|^.|\S))+)");
+                    Regex regex = new Regex(@"("+ string.Join("|", requiredDependencies.Select(x => x.Key))+ @")\s+\(?(((\d|\.))+)");
                     Match match = regex.Match(output);
                     bool shouldDownloadDependencies = !match.Success;
                     int matches = 0;
