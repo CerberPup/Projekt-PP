@@ -187,15 +187,11 @@ namespace _500pxCracker
         bool tryToLogin()
         {
             Credentials credentials = CurrentUser.Get().Get_Credentials();
-
-            LocalizationData.UserInfoDir += credentials.login+"\\";
+            LocalizationData.UserInfoDir = LocalizationData.UserInfoRoot + credentials.login+"\\";
             LocalizationData.FollowersDir = LocalizationData.UserInfoDir + "followers\\";
             LocalizationData.FollowingDir = LocalizationData.UserInfoDir + "followings\\";
             LocalizationData.DbDir = LocalizationData.UserInfoDir + "db\\";
             string logDir = LocalizationData.UserInfoDir + "log";
-            if (File.Exists(LocalizationData.UserInfoDir + ".session"))
-                File.Delete(LocalizationData.UserInfoDir + ".session");
-
             Process process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
             process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + credentials.login + " " + credentials.password + " -debug";// + " -offline";
@@ -206,15 +202,8 @@ namespace _500pxCracker
             string output = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
 
-            Regex regex = new Regex("(Session recovered successfully)|(Logged in as:)");
+            Regex regex = new Regex(@"Logged in as: (\w*)");
             Match match = regex.Match(output);
-            if (!match.Success)
-            {
-                return false;
-            }
-
-            regex = new Regex(@"Logged in as: (\w*)");
-            regex.Match(output);
             string name = "";
             string id = "";
             if (match.Success)

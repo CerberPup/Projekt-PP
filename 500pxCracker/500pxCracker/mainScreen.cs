@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace _500pxCracker
@@ -31,12 +26,11 @@ namespace _500pxCracker
         private void mainScreen_Load(object sender, EventArgs e)
         {
             dataGetter.UpdateDb();
+            followersComboBox.SelectedIndex = 0;
             //followers
-            nonFollowersPanel.Size = new Size(460, 185);
             followersSearchPanel.Size = new Size(580, 240);
             topUsersPanel.Size = new Size(440, 185);
 
-            nonFollowersPanel.Location = new Point(30, 160);
             followersSearchPanel.Location = new Point(21, 118);
             topUsersPanel.Location = new Point(30, 160);
 
@@ -52,6 +46,12 @@ namespace _500pxCracker
         private void frm2_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.Close();
+        }
+        private bool isPythonRunning;
+        private void SetPythonRunning(bool val)
+        {
+            isPythonRunning = val;
+            PythonLabel.Visible = val;
         }
 
         private void profileButton_Click(object sender, EventArgs e)
@@ -112,121 +112,83 @@ namespace _500pxCracker
         }
 
         //likes panel ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        private void LikeFresh()
+        {
+            CurrentUser.Get().LikeFresh(photoTypeDropDown.SelectedIndex, int.Parse(freshPhotosNumberTextBox.Text));
+            MessageBox.Show("Successfully liked the photos!");
+        }
         private void likeFreshButton_Click(object sender, EventArgs e)
         {
-            if (photoTypeDropDown.SelectedIndex > -1 && freshPhotosNumberTextBox.Text.Length!=0)
+            if (!isPythonRunning)
             {
-                CurrentUser.Get().LikeFresh(photoTypeDropDown.SelectedIndex, int.Parse(freshPhotosNumberTextBox.Text));
-
-                MessageBox.Show("Successfully liked the photos!");
-                freshPhotosNumberTextBox.Text = "";
-                photoTypeDropDown.SelectedIndex = -1;
+                if (photoTypeDropDown.SelectedIndex > -1 && freshPhotosNumberTextBox.Text.Length != 0)
+                {
+                    PythonWorker.RunWorkerAsync("LikeFresh");
+                }
+                else
+                    MessageBox.Show("Please provide all required information!");
             }
-            else
-                MessageBox.Show("Please provide all required information!");
         }
 
-        private void likeLatestButton_Click(object sender, EventArgs e)
+        private void LikeLatestPhotos()
         {
             dataGetter.GetFollowersandFollowings();
             CurrentUser.Get().LikeLatestPhotos();
 
             MessageBox.Show("Successfully liked all the photos!");
         }
+        private void likeLatestButton_Click(object sender, EventArgs e)
+        {
+            if (!isPythonRunning)
+            {
+                PythonWorker.RunWorkerAsync("LikeLatestPhotos");
+            }
+        }
 
         private void likePhotosButton_Click(object sender, EventArgs e)
         {
-            if(photosNumberTextBox.Text.Length!=0)
+            if (!isPythonRunning)
             {
-                CurrentUser.Get().LikeLikingMe(int.Parse(photosNumberTextBox.Text));
+                if (photosNumberTextBox.Text.Length != 0)
+                {
+                    CurrentUser.Get().LikeLikingMe(int.Parse(photosNumberTextBox.Text));
 
-                MessageBox.Show("Successfully liked all the photos");
-                photosNumberTextBox.Text = "";
+                    MessageBox.Show("Successfully liked all the photos");
+                    photosNumberTextBox.Text = "";
+                }
+                else
+                    MessageBox.Show("Please provide all required information!");
             }
-            else
-                MessageBox.Show("Please provide all required information!");
         }
 
-        //followers panel ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        private void nonFolButton_Click(object sender, EventArgs e)
+        private void MutualFollow()
         {
-            if (!nonFollowersPanel.Visible)
-                nonFollowersPanel.Visible = true;
-            if (followersSearchPanel.Visible)
-                followersSearchPanel.Visible = false;
-            if (topUsersPanel.Visible)
-                topUsersPanel.Visible = false;
-
-            var items = nonFollowersListBox.Items;
-            items.Clear();
-            //here add items to the nonFollowersListBox ~~~~~~~~~~~~~~
             dataGetter.GetFollowersandFollowings();
-            foreach (User u in CurrentUser.Get().OneWayFollow())
-            {
-                items.Add(u._FullName);
-            }
+            dataGetter.UpdateDb();
         }
 
         private void mutualFolButton_Click(object sender, EventArgs e)
         {
-            if (followersComboBox.SelectedIndex > -1) { 
-
-                if (nonFollowersPanel.Visible)
-                    nonFollowersPanel.Visible = false;
-                if (!followersSearchPanel.Visible)
-                    followersSearchPanel.Visible = true;
-                if (topUsersPanel.Visible)
-                topUsersPanel.Visible = false;
-
-                if (followersComboBox.SelectedIndex == 0)
+            if (!isPythonRunning)
+            {
+                if (followersComboBox.SelectedIndex > -1)
                 {
-                    //wyswietlamy wszystkich
+                    if (!followersSearchPanel.Visible)
+                        followersSearchPanel.Visible = true;
+                    if (topUsersPanel.Visible)
+                        topUsersPanel.Visible = false;
+
+                    PythonWorker.RunWorkerAsync("MutualFollow");
                 }
-
-                if (followersComboBox.SelectedIndex == 1)
-                {
-                    //wyswietlamy followersow
-                }
-
-                if (followersComboBox.SelectedIndex == 2)
-                {
-                    //wyswietlamy following
-                }
-
-                if (followersComboBox.SelectedIndex == 3)
-                {
-                    //wyswietlamy mutuals
-                    //do przerobki na ListView (?)
-
-                    var items = usersListView.Items;
-                    items.Clear();
-                    dataGetter.GetFollowersandFollowings();
-                    //here add items to mutualListBox ~~~~~~~~~~~~~~
-                    foreach (User u in CurrentUser.Get().MutualFollow())
-                    {
-                        items.Add(String.Format("{0,-27}{1,-27}{2,27}",
-                            u._FullName,
-                            u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---",
-                            u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---"));
-                    }
-                    //item_format = userName + \t\t + date1 + \t\t + date2
-
-                    //date1 = since when I have been following user B
-                    //date2 = since when user B has been following me
-                    //date_format = dd-mm-yy
-                }
-                
+                else
+                    MessageBox.Show("Please choose one of the available options!");
             }
-            else
-                MessageBox.Show("Please choose one of the available options!");
         }
 
         private void topUsersButton_Click(object sender, EventArgs e)
         {
             if (numberOfTopUsersTextBox.Text.Length != 0)
             {
-                if (nonFollowersPanel.Visible)
-                    nonFollowersPanel.Visible = false;
                 if (followersSearchPanel.Visible)
                     followersSearchPanel.Visible = false;
                 if (!topUsersPanel.Visible)
@@ -249,7 +211,7 @@ namespace _500pxCracker
             {
                 int numberProvided = 0;
                 Int32.TryParse(usersToBeSelectedNumber.Text, out numberProvided);
-                if (numberProvided > nonFollowersListBox.Items.Count)
+                if (numberProvided > usersListView.Items.Count)
                 {
                     MessageBox.Show("The number you have provided is larger than the number of users on the list!");
                     usersToBeSelectedNumber.Text = "";
@@ -260,10 +222,10 @@ namespace _500pxCracker
                     Random random = new Random();
                     while (numberProvided != 0)
                     {
-                        int randomInt = random.Next(nonFollowersListBox.Items.Count);
-                        if (!nonFollowersListBox.GetItemChecked(randomInt))
+                        int randomInt = random.Next(usersListView.Items.Count);
+                        if (!usersListView.Items[randomInt].Checked)
                         {
-                            nonFollowersListBox.SetItemChecked(randomInt, true);
+                            usersListView.Items[randomInt].Checked = true;
                             numberProvided--;
                         }
                     }
@@ -283,36 +245,58 @@ namespace _500pxCracker
 
         private void selectAllUsersButton_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < nonFollowersListBox.Items.Count; i++)
+            for (int i = 0; i < usersListView.Items.Count; i++)
             {
-                nonFollowersListBox.SetItemChecked(i, true);
+                usersListView.Items[i].Checked = true;
             }
         }
 
         private void deselectAllUsersButton_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < nonFollowersListBox.Items.Count; i++)
+            for (int i = 0; i < usersListView.Items.Count; i++)
             {
-                nonFollowersListBox.SetItemChecked(i, false);
+                usersListView.Items[i].Checked = false;
             }
         }
 
         private void invertSelectionButton_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < nonFollowersListBox.Items.Count; i++)
+            for (int i = 0; i < usersListView.Items.Count; i++)
             {
-                nonFollowersListBox.SetItemChecked(i, !nonFollowersListBox.GetItemChecked(i));
+                usersListView.Items[i].Checked = !usersListView.Items[i].Checked;
+            }
+        }
+        private void UnFollow()
+        {
+            CurrentUser current = CurrentUser.Get();
+            foreach (string user in usersListView.SelectedItems)
+            {
+                current.Unfollow(current.GetUserByFullName(user));
             }
         }
 
         private void unfollowButton_Click(object sender, EventArgs e)
         {
-            CurrentUser current = CurrentUser.Get();
-            foreach (string user in nonFollowersListBox.SelectedItems)
+            if (!isPythonRunning)
             {
-                current.Unfollow(current.GetUserByName(user));
+                PythonWorker.RunWorkerAsync("UnFollow");
             }
             //nonFollowersListBox.Items.Remove(user);
+        }
+        private void Follow()
+        {
+            CurrentUser current = CurrentUser.Get();
+            foreach (string user in usersListView.SelectedItems)
+            {
+                current.Follow(current.GetUserByFullName(user));
+            }
+        }
+        private void followButton_Click(object sender, EventArgs e)
+        {
+            if (!isPythonRunning)
+            {
+                PythonWorker.RunWorkerAsync("Follow");
+            }
         }
 
         //profile panel ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -388,20 +372,167 @@ namespace _500pxCracker
             //+ log out
             this.Close();
         }
-
+        private void UpdateDB()
+        {
+            dataGetter.GetDb();
+        }
         private void updateDBButton_Click(object sender, EventArgs e)
         {
-
+            if (!isPythonRunning)
+            {
+                DialogResult dialogResult = MessageBox.Show("Are you sure you want to download DataBase? ", "", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    PythonWorker.RunWorkerAsync("UpdateDB");
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+                    //do nothing
+                }
+            }
         }
 
-        private void updateBDButton2_Click(object sender, EventArgs e)
+        private void followersComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (followersSearchPanel.Visible && !isPythonRunning)
+            {
+                List<ListViewItem> listViewItems = new List<ListViewItem>();
+                string followedsince = "";
+                string followingsince = "";
+                if (followersComboBox.SelectedIndex == 0)//all
+                {
+                    foreach (User u in CurrentUser.Get()._Followers)
+                    {
+                        ListViewItem item = new ListViewItem(u._FullName);
+                        followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
+                        followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
+                        if (followedsince == "---" && followingsince == "---")
+                        {
+                            followingsince = "No DB Data";
+                            followedsince = followingsince;
+                        }
+                        item.SubItems.Add(followedsince);
+                        item.SubItems.Add(followingsince);
+                        listViewItems.Add(item);
+                    }
+                    foreach (User u in CurrentUser.Get()._Followers)
+                    {
+                        if (CurrentUser.Get()._Following.Find(x => x._Id == u._Id) == null)
+                        {
+                            ListViewItem item = new ListViewItem(u._FullName);
+                            followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
+                            followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
+                            if (followedsince == "---" && followingsince == "---")
+                            {
+                                followingsince = "No DB Data";
+                                followedsince = followingsince;
+                            }
+                            item.SubItems.Add(followedsince);
+                            item.SubItems.Add(followingsince);
+                            listViewItems.Add(item);
+                        }
+                    }
+                }
 
+                if (followersComboBox.SelectedIndex == 1)//followers
+                {
+                    foreach (User u in CurrentUser.Get()._Followers)
+                    {
+                        ListViewItem item = new ListViewItem(u._FullName);
+                        followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
+                        followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
+                        if (followedsince == "---" && followingsince == "---")
+                        {
+                            followingsince = "No DB Data";
+                            followedsince = followingsince;
+                        }
+                        item.SubItems.Add(followedsince);
+                        item.SubItems.Add(followingsince);
+                        listViewItems.Add(item);
+                    }
+                }
+
+                if (followersComboBox.SelectedIndex == 2)//followings
+                {
+                    foreach (User u in CurrentUser.Get()._Following)
+                    {
+                        ListViewItem item = new ListViewItem(u._FullName);
+                        followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
+                        followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
+                        if (followedsince == "---" && followingsince == "---")
+                        {
+                            followingsince = "No DB Data";
+                            followedsince = followingsince;
+                        }
+                        item.SubItems.Add(followedsince);
+                        item.SubItems.Add(followingsince);
+                        listViewItems.Add(item);
+                    }
+                }
+
+                if (followersComboBox.SelectedIndex == 3)//mutual
+                {
+                    foreach (User u in CurrentUser.Get().MutualFollow())
+                    {
+                        ListViewItem item = new ListViewItem(u._FullName);
+                        followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
+                        followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
+                        if (followedsince == "---" && followingsince == "---")
+                        {
+                            followingsince = "No DB Data";
+                            followedsince = followingsince;
+                        }
+                        item.SubItems.Add(followedsince);
+                        item.SubItems.Add(followingsince);
+                        listViewItems.Add(item);
+                    }
+                }
+                //listViewItems.Sort();// Crash przy jakims userze
+                usersListView.Items.Clear();
+                usersListView.Items.AddRange(listViewItems.ToArray());
+            }
         }
 
-        private void updateBDButton3_Click(object sender, EventArgs e)
+        private void PythonLabel_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("Still running :)");
+        }
 
+        private void PythonWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            PythonWorker.ReportProgress(1);
+            string FunctionToRun = e.Argument as string;
+            switch (FunctionToRun)
+            {
+                case "UpdateDB":
+                    UpdateDB();
+                    break;
+                case "MutualFollow":
+                    MutualFollow();
+                    break;
+                case "LikeFresh":
+                    LikeFresh();
+                    break;
+                case "UnFollow":
+                    UnFollow();
+                    break;
+                case "Follow":
+                    Follow();
+                    break;
+                case "LikeLatestPhotos":
+                    LikeLatestPhotos();
+                    break;
+
+                default:
+                    break;
+            }
+            PythonWorker.ReportProgress(0);
+        }
+
+        private void PythonWorker_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        {
+            SetPythonRunning(e.ProgressPercentage == 1);
+            followersComboBox_SelectedIndexChanged(this, new EventArgs());
         }
     }
 }
