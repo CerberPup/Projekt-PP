@@ -33,11 +33,11 @@ namespace _500pxCracker
             dataGetter.UpdateDb();
             //followers
             nonFollowersPanel.Size = new Size(460, 185);
-            mutualFollowersPanel.Size = new Size(460, 185);
+            followersSearchPanel.Size = new Size(580, 240);
             topUsersPanel.Size = new Size(440, 185);
 
             nonFollowersPanel.Location = new Point(30, 160);
-            mutualFollowersPanel.Location = new Point(30, 160);
+            followersSearchPanel.Location = new Point(21, 118);
             topUsersPanel.Location = new Point(30, 160);
 
             //likes
@@ -152,8 +152,8 @@ namespace _500pxCracker
         {
             if (!nonFollowersPanel.Visible)
                 nonFollowersPanel.Visible = true;
-            if (mutualFollowersPanel.Visible)
-                mutualFollowersPanel.Visible = false;
+            if (followersSearchPanel.Visible)
+                followersSearchPanel.Visible = false;
             if (topUsersPanel.Visible)
                 topUsersPanel.Visible = false;
 
@@ -169,29 +169,56 @@ namespace _500pxCracker
 
         private void mutualFolButton_Click(object sender, EventArgs e)
         {
-            if (nonFollowersPanel.Visible)
-                nonFollowersPanel.Visible = false;
-            if (!mutualFollowersPanel.Visible)
-                mutualFollowersPanel.Visible = true;
-            if (topUsersPanel.Visible)
+            if (followersComboBox.SelectedIndex > -1) { 
+
+                if (nonFollowersPanel.Visible)
+                    nonFollowersPanel.Visible = false;
+                if (!followersSearchPanel.Visible)
+                    followersSearchPanel.Visible = true;
+                if (topUsersPanel.Visible)
                 topUsersPanel.Visible = false;
 
-            var items = mutualListBox.Items;
-            items.Clear();
-            dataGetter.GetFollowersandFollowings();
-            //here add items to mutualListBox ~~~~~~~~~~~~~~
-            foreach (User u in CurrentUser.Get().MutualFollow())
-            {
-                items.Add(String.Format("{0,-27}{1,-27}{2,27}", 
-                    u._FullName,
-                    u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString():"---",
-                    u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString():"---"));
-            }
-            //item_format = userName + \t\t + date1 + \t\t + date2
+                if (followersComboBox.SelectedIndex == 0)
+                {
+                    //wyswietlamy wszystkich
+                }
 
-            //date1 = since when I have been following user B
-            //date2 = since when user B has been following me
-            //date_format = dd-mm-yy
+                if (followersComboBox.SelectedIndex == 1)
+                {
+                    //wyswietlamy followersow
+                }
+
+                if (followersComboBox.SelectedIndex == 2)
+                {
+                    //wyswietlamy following
+                }
+
+                if (followersComboBox.SelectedIndex == 3)
+                {
+                    //wyswietlamy mutuals
+                    //do przerobki na ListView (?)
+
+                    var items = usersListView.Items;
+                    items.Clear();
+                    dataGetter.GetFollowersandFollowings();
+                    //here add items to mutualListBox ~~~~~~~~~~~~~~
+                    foreach (User u in CurrentUser.Get().MutualFollow())
+                    {
+                        items.Add(String.Format("{0,-27}{1,-27}{2,27}",
+                            u._FullName,
+                            u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---",
+                            u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---"));
+                    }
+                    //item_format = userName + \t\t + date1 + \t\t + date2
+
+                    //date1 = since when I have been following user B
+                    //date2 = since when user B has been following me
+                    //date_format = dd-mm-yy
+                }
+                
+            }
+            else
+                MessageBox.Show("Please choose one of the available options!");
         }
 
         private void topUsersButton_Click(object sender, EventArgs e)
@@ -200,8 +227,8 @@ namespace _500pxCracker
             {
                 if (nonFollowersPanel.Visible)
                     nonFollowersPanel.Visible = false;
-                if (mutualFollowersPanel.Visible)
-                    mutualFollowersPanel.Visible = false;
+                if (followersSearchPanel.Visible)
+                    followersSearchPanel.Visible = false;
                 if (!topUsersPanel.Visible)
                     topUsersPanel.Visible = true;
 
@@ -362,5 +389,19 @@ namespace _500pxCracker
             this.Close();
         }
 
+        private void updateDBButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void updateBDButton2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void updateBDButton3_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
