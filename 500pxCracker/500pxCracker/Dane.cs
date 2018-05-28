@@ -15,6 +15,7 @@ namespace _500pxCracker
         public int userID { get; set; }
         public string username { get; set; }
         public DateTime? following_since { get; set; }
+        public string fullname { get; set; }
         public int[] likes { get; set; }
     }
     public class DBMain
@@ -82,54 +83,85 @@ namespace _500pxCracker
                 return user;
             }
         }
+        public static void GetDb()
+        {
+            Credentials _Credentials = CurrentUser.Get().Get_Credentials();
+            Process process = new Process();
+            process.StartInfo.FileName = LocalizationData.Python;
+            process.StartInfo.Arguments = LocalizationData.MainPy + " " + _Credentials.login + " " + _Credentials.password + " -udb";
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
+            process.Start();
+            process.WaitForExit();
+            UpdateDb();
+        }
         public static void UpdateDb()
         {
-            DirectoryInfo d = new DirectoryInfo(LocalizationData.DbDir);
-            DateTime max = DateTime.MinValue;
-            string filename = "";
-            foreach (var file in d.GetFiles("*"))
+            if (Directory.Exists(LocalizationData.DbDir) && Directory.EnumerateFileSystemEntries(LocalizationData.DbDir).Any())
             {
-                string date = file.Name.Substring(7);
-                string[] s = date.Split('_'); //04.02.1926 00:00:00
-                s[1] = s[1].Replace('-', ':');
-                DateTime dateTime = DateTime.Parse(s[0] + ' ' + s[1]);
-                if (dateTime > max)
+                DirectoryInfo d = new DirectoryInfo(LocalizationData.DbDir);
+                DateTime max = DateTime.MinValue;
+                string filename = "";
+                foreach (var file in d.GetFiles("*"))
                 {
-                    max = dateTime;
-                    filename = file.FullName;
-                }
+                    string date = file.Name.Substring(7);
+                    string[] s = date.Split('_'); //04.02.1926 00:00:00
+                    s[1] = s[1].Replace('-', ':');
+                    DateTime dateTime = DateTime.Parse(s[0] + ' ' + s[1]);
+                    if (dateTime > max)
+                    {
+                        max = dateTime;
+                        filename = file.FullName;
+                    }
 
-            }
-            if(LocalizationData.DbCurrentDir != filename)
-            {
-                LocalizationData.DbCurrentDir = filename;
+                }
                 DBMain dBMain = JsonConvert.DeserializeObject<DBMain>(File.ReadAllText(filename));
-                List<User> followers = new List<User>();
-                List<User> following = new List<User>();
                 CurrentUser c = CurrentUser.Get();
                 c._User._Photos = new List<Photo>();
 
                 foreach (var user in dBMain.users)
                 {
-                    User u = new User()
+                    int uFollowing = c._Following.FindIndex(x => x._Id == user.userID);
+                    int uFollower = c._Followers.FindIndex(x => x._Id == user.userID);
+                    if (uFollowing != -1)
                     {
-                        _FollowedSince = user.follows_since,
-                        _StartedFollowing = user.following_since,
-                        _Id = user.userID,
-                        _FullName = "JeszczePusto",
-                        _Name = user.username
-                    };
-                    if(user.following_since.HasValue == true)
-                    {
-                        followers.Add(u);
+                        c._Following[uFollowing]._FollowedSince = user.follows_since;
+                        c._Following[uFollowing]._StartedFollowing = user.following_since;
+                        c._Following[uFollowing]._Id = user.userID;
+                        c._Following[uFollowing]._FullName = user.fullname;
+                        c._Following[uFollowing]._Name = user.username;
                     }
-                    if (user.follows_since.HasValue == true)
+                    if (uFollower != -1)
                     {
-                        following.Add(u);
+                        c._Followers[uFollower]._FollowedSince = user.follows_since;
+                        c._Followers[uFollower]._StartedFollowing = user.following_since;
+                        c._Followers[uFollower]._Id = user.userID;
+                        c._Followers[uFollower]._FullName = user.fullname;
+                        c._Followers[uFollower]._Name = user.username;
+                    }
+                    if (user.following_since.HasValue == true && uFollowing == -1)
+                    {
+                        c._Following.Add(new User()
+                        {
+                            _FollowedSince = user.follows_since,
+                            _StartedFollowing = user.following_since,
+                            _Id = user.userID,
+                            _FullName = user.fullname,
+                            _Name = user.username
+                        });
+                    }
+                    if (user.follows_since.HasValue == true && uFollower == -1)
+                    {
+                        c._Followers.Add(new User()
+                        {
+                            _FollowedSince = user.follows_since,
+                            _StartedFollowing = user.following_since,
+                            _Id = user.userID,
+                            _FullName = user.fullname,
+                            _Name = user.username
+                        });
                     }
                 }
-                c._Followers = followers;
-                c._Following = following;
             }
         }
         public static void UpdateFollowers()
@@ -287,8 +319,9 @@ namespace _500pxCracker
             if(instance == null)
             {
                 instance = new CurrentUser();
-                //Serialize(GenData());
-                //instance = Deserialize();
+                instance._Followers = new List<User>();
+                instance._Following = new List<User>();
+                instance._User = new User();
             }
             return instance;
         }
@@ -356,18 +389,18 @@ namespace _500pxCracker
             return user._FollowedSince;
         }
 
-        public User GetUserByName(string name)
+        public User GetUserByFullName(string name)
         {
             foreach (User user in _Following)
             {
-                if (user._Name == name)
+                if (user._FullName == name)
                 {
                     return user;
                 }
             }
             foreach (User user in _Followers)
             {
-                if (user._Name == name)
+                if (user._FullName == name)
                 {
                     return user;
                 }
@@ -422,16 +455,21 @@ namespace _500pxCracker
 
             }
 
-            DBMain dBMainOld = JsonConvert.DeserializeObject<DBMain>(File.ReadAllText(filenameOldest));
-            DBMain dBMainNew = JsonConvert.DeserializeObject<DBMain>(File.ReadAllText(filenameNewest));
+            if (filenameOldest != "" && filenameNewest != "")
+            {
 
-            foreach (var user in dBMainNew.users)
-            {
-                response[user.username] = user.likes_amount;
-            }
-            foreach (var user in dBMainOld.users)
-            {
-                response[user.username] -= user.likes_amount;
+                DBMain dBMainOld = JsonConvert.DeserializeObject<DBMain>(File.ReadAllText(filenameOldest));
+                DBMain dBMainNew = JsonConvert.DeserializeObject<DBMain>(File.ReadAllText(filenameNewest));
+
+                foreach (var user in dBMainNew.users)
+                {
+                    response[user.username] = user.likes_amount;
+                }
+                foreach (var user in dBMainOld.users)
+                {
+                    response[user.username] -= user.likes_amount;
+                }
+               
             }
             return response;
         }
@@ -452,12 +490,23 @@ namespace _500pxCracker
         {
             Process process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
-            process.StartInfo.Arguments = LocalizationData.MainPy + " " + _Credentials.login + " " + _Credentials.password+" -ufl " + user._Name + " -debug";
+            process.StartInfo.Arguments = LocalizationData.MainPy + " " + _Credentials.login + " " + _Credentials.password+" -ufl " + user._Name;
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
             process.WaitForExit();
             _Following.Remove(user);
+        }
+        public void Follow(User user)
+        {
+            Process process = new Process();
+            process.StartInfo.FileName = LocalizationData.Python;
+            process.StartInfo.Arguments = LocalizationData.MainPy + " " + _Credentials.login + " " + _Credentials.password + " -fl " + user._Name;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
+            process.Start();
+            process.WaitForExit();
+            _Following[_Following.FindIndex(x=> x._Id == user._Id)]._FollowedSince = DateTime.Now;
         }
 
         public void LikeLatestPhotos()

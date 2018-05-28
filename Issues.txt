@@ -1,0 +1,12 @@
+1. Statistics does not show correct data with data from just one day ( or period, just a guess, needs to be checked)
+2. Requesting web page takes a lot of time.
+3. Listbox in form with information about following relation shows wrong data for followers/following combo item selected.
+4. The "Search for top (x) liking users from the last day"...brokes the things up and is not implemented.
+5. "Like (x) photos from users who liked mine" - not implemented.
+6. "Like all latest photos of the users I follow" takes too long - need to add the cmd for script to download 1 page of photos for each gallery for each user and change the call parameter. 
+7. Related to 4. - since it brokes GUI on this page, if you use this option, go to another one and run some time-consuming action the GUI is broken as long as scripts does its job which makes the app useless.
+8. I think the GUI should be scalable - windows of this size is useless if you want to show a lot of users in follow infomartion tab.
+9. We should think about a button to kill the python execution. 
+10. Maybe some icon ? :)
+11. Add some graphics effect to the button which are under user's mouse cursor. 
+12. Dropdown lists should have default values on create. 
