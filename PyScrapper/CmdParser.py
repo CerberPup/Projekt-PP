@@ -36,6 +36,9 @@ class CmdParser:
                     self.Users.append(arg)
         return self.Users
 
+    def GetHoldCleanup(self):
+        return self.IsParameterPresent('-noCleanup')
+
     def GetLogin(self):
         return self.Credentials['login']
 

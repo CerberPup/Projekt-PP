@@ -9,7 +9,8 @@ if len(cmdParser.args) > 1:
         login = cmdParser.GetLogin()
         passwd = cmdParser.GetPassword()
         scrapper = Scrapper(login, passwd, cmdParser.GetDebugMode(), cmdParser.GetOffline())
-        scrapper.cleanupTempFiles()
+        if not cmdParser.GetHoldCleanup():
+            scrapper.cleanupTempFiles()
         toFollow = cmdParser.FollowUser()
         toUnfollow = cmdParser.UnfollowUser()
         if toFollow != "":
