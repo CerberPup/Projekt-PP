@@ -1,20 +1,13 @@
-1.	Pobiera: nazwa użytkownik / hasło (userA) - done
-2.	Wyszukuje użytkowników, których userA followuje ale którzy nie followują userA - done
+1.	Pobiera: nazwa użytkownik / hasło (userA)
+2.	Wyszukuje użytkowników, których userA followuje ale którzy nie followują userA
 3.	Wyciągnąć informacje o czasie kiedy użytkownika A zaczął followować użytkownika / kiedy użytkownik zaczął followować użytkownika A - todo: local database
 4.	Podaje statystyki dla użytkowników, którzy followują userA (liczba polubień zdjęć użytkownika A w ciągu ostatniego miesiąca / roku) - todo: local database
-5.	Możliwość odfollowowania użytkownika, których użytkownik A followuje ale którzy nie followują użytkownika A (wszystkich / wybranej liczby) - done
-6.	Możliwość automatycznego polubienia ostatniego dodanego zdjęcia, wszystkich użytkowników, których followuje użytkownik A - done
-7.	Wyszukiwanie użytkowników, którzy polubili najwięcej zdjęć w całym serwisie w trakcie ostatniego dnia (?) 
-8.	Automatyczne lubienie zdjęć z poziomu Fresh / Uncoming (użytkownik podaje liczbę zdjęć do polubienia np. 100) - done
-9.	Polubienie zdjęcie każdego kto polubił moje zdjęcie (konfigurowalna liczba zdjęć do polubienia, należy kontrolować czy zdjęcie zostało już polubione w innej sesji aby nie aktywować tej funkcji dwa razy dla tego samego zdjęcia) - todo: c# implementation
+5.	Możliwość odfollowowania użytkownika, których użytkownik A followuje ale którzy nie followują użytkownika A (wszystkich / wybranej liczby) 
+6.	Możliwość automatycznego polubienia ostatniego dodanego zdjęcia, wszystkich użytkowników, których followuje użytkownik A 
+7.	Automatyczne lubienie zdjęć z poziomu Fresh / Uncoming (użytkownik podaje liczbę zdjęć do polubienia np. 100) 
+8.	Polubienie zdjęcie każdego kto polubił moje (ostatnio dodane) zdjęcie (konfigurowalna liczba zdjęć do polubienia, należy kontrolować czy zdjęcie zostało już polubione w innej sesji aby nie aktywować tej funkcji dwa razy dla tego samego zdjęcia) - todo: c# implementation
 
 
-To do:
-1. GUI - Małgorzata Kałek
-2. C# implementation - Wojciech Wron, Kamil Janas, Błażej Moska, Małgorzata Kałek:
-	2.1 - pkt 9. - Pobranie like'ów dla zdjęcia, polubienie zdjęcia każdego z użytkowników. Todo: pobranie like'ow dla zdjęcia, dla każdego użytkownika wśród like'ów pobrać zdjęcia, polubić zdjęcie/zdjęcia.
-	
-3. Local database - Karol Marszałek, Wojciech Wrona. 
-	3.1 - Odczytanie informacji bazodanowych z pliku .json, przechowanie w pamieci aplikacji:
-		pkt 3, 4 - Wojciech Wrona, c#
-4. Testing: Karol Marszalek, Wojciech Wrona, Blazej Moska
+To do : 
+1. Database - extended control mechanism or some kind of server.
+2. Testing, fixing found isues. 
