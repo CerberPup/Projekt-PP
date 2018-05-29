@@ -23,11 +23,11 @@ Wojciech Wrona:
 
 Małgorzata Kałek:
 0. Point 4 - GUI part 
-0. Point 7 - GUI part (abort operation button, available on every tab of app)
 0. Point 13 - GUI part
-1. Point 2
-2. Point 3
-3. Point 10.
+1. Point 7 - GUI part (abort operation button, available on every tab of app)
+2. Point 2
+3. Point 3
+4. Point 10.
 ------------------- can be done after the deadline
 4. Point 6
 5. Point 9
