@@ -271,9 +271,11 @@ class Scrapper:
         else:
             self.logger.LogLine("Unable to get info about user")
 
-    def GetPhotosGalleriesForUser(self, id):
+    def GetPhotosGalleriesForUser(self, id, pagesAmount=-1):
         Galleries = []
         page=1
+        if pagesAmount==0:
+            return Galleries
         jsonFile = Scrapper.galleriesDir + '/' + str(id) + '_galleries'
         if os.path.isfile(jsonFile):
             os.remove(jsonFile)
@@ -286,6 +288,8 @@ class Scrapper:
                     f.write(json.dumps(galleryPage_json['galleries']))
                 Galleries += galleryPage_json['galleries']
                 self.logger.LogLine("Galleries retrieved succesfully")
+                if page == pagesAmount:
+                    break
                 if page == galleryPage_json['total_pages']:
                     break
                 page=page+1
@@ -294,9 +298,11 @@ class Scrapper:
                 break
         return Galleries
 
-    def GetItemsForGallery(self, UserId, GalleryId):
+    def GetItemsForGallery(self, UserId, GalleryId, pagesAmount=-1):
         Photos=[]
         page=1
+        if pagesAmount==0:
+            return Photos
         dir = Scrapper.photosDir + '/User' + str(UserId)
         if not os.path.exists(dir):
             os.makedirs(dir)
@@ -315,6 +321,8 @@ class Scrapper:
                     f.write(json.dumps(photosPage_json))
                 Photos += photosPage_json['photos']
                 self.logger.LogLine("Galleries retrieved succesfully")
+                if page == pagesAmount:
+                    break
                 if page == photosPage_json['total_pages']:
                     break
                 page=page+1
@@ -323,19 +331,27 @@ class Scrapper:
                 break
         return Photos
 
-    def GetPhotosForUser(self, username):
+    def GetPhotosForUser(self, username, galleriesAmount=-1, pagesAmount=-1):
 
         ID = self.GetUserInfo(username)['id']
-        self.GetUnassignedPhotosForUser(username, ID)
-        galleries = self.GetPhotosGalleriesForUser(ID)
+        self.GetUnassignedPhotosForUser(username, ID, pagesAmount)
+        galleries = self.GetPhotosGalleriesForUser(ID, galleriesAmount)
         retDict= {}
+        if galleriesAmount == 0:
+            return retDict
+        ctr=1
         for gallery in galleries:
-            retDict[gallery['id']] = self.GetItemsForGallery(ID, gallery['id'])
+            retDict[gallery['id']] = self.GetItemsForGallery(ID, gallery['id'], pagesAmount)
+            if ctr == galleriesAmount:
+                break
+            ctr+=1
         return retDict
 
-    def GetUnassignedPhotosForUser(self, username, userID):
+    def GetUnassignedPhotosForUser(self, username, userID, pagesAmount=-1):
 
         Photos=[]
+        if pagesAmount==0:
+            return Photos
         dir = Scrapper.photosDir + '/User' + str(userID)
         APIURL = 'https://api.500px.com/v1/photos?feature=user&username='
         if not os.path.exists(dir):
@@ -354,6 +370,8 @@ class Scrapper:
                     f.write(json.dumps(photosPage_json))
                 Photos+=photosPage_json['photos']
                 self.logger.LogLine("Photos retrieved successfully")
+                if page == pagesAmount:
+                    break
                 if page == total_pages:
                     break
                 self.logger.LogLine("Page " + str(page) + '/' + str(total_pages))

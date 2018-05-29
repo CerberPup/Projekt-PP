@@ -24,13 +24,21 @@ if len(cmdParser.args) > 1:
 
         if cmdParser.GetPhotosCmd():
             usersList=[]
+            try:
+                galleriesAmount = int(cmdParser.GetGalleriesAmount())
+            except ValueError:
+                galleriesAmount=-1
+            try:
+                pagesAmount = int(cmdParser.GetPhotosPages())
+            except ValueError:
+                pagesAmount=-1
             if cmdParser.UseFollowingsList():
                 usersList=scrapper.ParseFollowingsFiles()
             else:
                 usersList = cmdParser.GetUsers()
             if len(usersList) > 0:
                for user in usersList:
-                   scrapper.GetPhotosForUser(user)
+                   scrapper.GetPhotosForUser(user, galleriesAmount, pagesAmount)
 
         if cmdParser.GetVote():
             if scrapper.PhotoIsLiked(cmdParser.VoteForPhoto()):

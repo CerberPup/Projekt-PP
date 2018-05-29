@@ -118,6 +118,26 @@ class CmdParser:
     def GetDBUpdate(self):
         return self.IsParameterPresent("-udb")
 
+    def GetGalleriesAndPhotosFilter(self):
+        it = iter(self.args)
+        for arg in it:
+            if arg == "-filter":
+                return next(it)
+        return ""
+
+    def GetPhotosPages(self):
+        it = iter(self.args)
+        for arg in it:
+            if arg == "-pages":
+                return next(it)
+        return ""
+
+    def GetGalleriesAmount(self):
+        it = iter(self.args)
+        for arg in it:
+            if arg == "-galleries":
+                return next(it)
+        return ""
 
     def DisplayHelp(self):
         print("Cmd args: <email> <password> [<args>]")
