@@ -11,6 +11,7 @@
 11. Crash when try to follow/unfollow users using GUI.
 12. When you use the "Show all" button and then, change the tab and wait for the results on other tab, the text view is empty and data needs to be downloaded once more (we should fill this element anyway, store the result somewhere and show it when data is available).
 13. Add two new drop down list items for "Show"  drop down list for showing only users who are not following us (following since filled, follower since empty) and who we are not following but who are following us ( follower since filled, following since empty), implement it. 
+14. "Like all lastest photos of the users I follow " - does not work for the users who has it's photos unassigned to any gallery - need to handle situation when the files are stored in unassignedPhotos file. 
 
 Assignment:
 Karol Marszałek: 
@@ -40,3 +41,4 @@ Błażej Moska:
 
 Kamil Janas:
 1. Point 12.
+2. Point 14. 
