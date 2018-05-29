@@ -487,7 +487,7 @@
             this.followersSearchPanel.Controls.Add(this.profilePic2);
             this.followersSearchPanel.Location = new System.Drawing.Point(21, 118);
             this.followersSearchPanel.Name = "followersSearchPanel";
-            this.followersSearchPanel.Size = new System.Drawing.Size(580, 240);
+            this.followersSearchPanel.Size = new System.Drawing.Size(580, 281);
             this.followersSearchPanel.TabIndex = 38;
             this.followersSearchPanel.Visible = false;
             // 
@@ -496,7 +496,7 @@
             this.followButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.followButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.followButton.Image = ((System.Drawing.Image)(resources.GetObject("followButton.Image")));
-            this.followButton.Location = new System.Drawing.Point(537, 175);
+            this.followButton.Location = new System.Drawing.Point(538, 223);
             this.followButton.Name = "followButton";
             this.followButton.Size = new System.Drawing.Size(25, 25);
             this.followButton.TabIndex = 53;
@@ -511,7 +511,7 @@
             this.textBox12.Enabled = false;
             this.textBox12.Font = new System.Drawing.Font("Segoe UI", 9.25F);
             this.textBox12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox12.Location = new System.Drawing.Point(391, 183);
+            this.textBox12.Location = new System.Drawing.Point(392, 231);
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(125, 17);
             this.textBox12.TabIndex = 52;
@@ -526,9 +526,9 @@
             this.Usesrname,
             this.FollowingSince,
             this.FollowerSince});
-            this.usersListView.Location = new System.Drawing.Point(22, 50);
+            this.usersListView.Location = new System.Drawing.Point(12, 50);
             this.usersListView.Name = "usersListView";
-            this.usersListView.Size = new System.Drawing.Size(340, 150);
+            this.usersListView.Size = new System.Drawing.Size(359, 215);
             this.usersListView.TabIndex = 40;
             this.usersListView.UseCompatibleStateImageBehavior = false;
             this.usersListView.View = System.Windows.Forms.View.Details;
@@ -553,7 +553,7 @@
             this.invertSelectionButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.invertSelectionButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.invertSelectionButton.Image = ((System.Drawing.Image)(resources.GetObject("invertSelectionButton.Image")));
-            this.invertSelectionButton.Location = new System.Drawing.Point(537, 85);
+            this.invertSelectionButton.Location = new System.Drawing.Point(538, 133);
             this.invertSelectionButton.Name = "invertSelectionButton";
             this.invertSelectionButton.Size = new System.Drawing.Size(25, 25);
             this.invertSelectionButton.TabIndex = 51;
@@ -568,7 +568,7 @@
             this.textBox5.Enabled = false;
             this.textBox5.Font = new System.Drawing.Font("Segoe UI", 9.25F);
             this.textBox5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox5.Location = new System.Drawing.Point(389, 91);
+            this.textBox5.Location = new System.Drawing.Point(390, 139);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(125, 17);
             this.textBox5.TabIndex = 50;
@@ -579,7 +579,7 @@
             this.unfollowButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.unfollowButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.unfollowButton.Image = ((System.Drawing.Image)(resources.GetObject("unfollowButton.Image")));
-            this.unfollowButton.Location = new System.Drawing.Point(537, 145);
+            this.unfollowButton.Location = new System.Drawing.Point(538, 193);
             this.unfollowButton.Name = "unfollowButton";
             this.unfollowButton.Size = new System.Drawing.Size(25, 25);
             this.unfollowButton.TabIndex = 49;
@@ -591,7 +591,7 @@
             this.selectAllUsersButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.selectAllUsersButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.selectAllUsersButton.Image = ((System.Drawing.Image)(resources.GetObject("selectAllUsersButton.Image")));
-            this.selectAllUsersButton.Location = new System.Drawing.Point(537, 25);
+            this.selectAllUsersButton.Location = new System.Drawing.Point(538, 73);
             this.selectAllUsersButton.Name = "selectAllUsersButton";
             this.selectAllUsersButton.Size = new System.Drawing.Size(25, 25);
             this.selectAllUsersButton.TabIndex = 48;
@@ -603,7 +603,7 @@
             this.deselectAllUsersButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.deselectAllUsersButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.deselectAllUsersButton.Image = ((System.Drawing.Image)(resources.GetObject("deselectAllUsersButton.Image")));
-            this.deselectAllUsersButton.Location = new System.Drawing.Point(537, 55);
+            this.deselectAllUsersButton.Location = new System.Drawing.Point(538, 103);
             this.deselectAllUsersButton.Name = "deselectAllUsersButton";
             this.deselectAllUsersButton.Size = new System.Drawing.Size(25, 25);
             this.deselectAllUsersButton.TabIndex = 47;
@@ -618,7 +618,7 @@
             this.textBox6.Enabled = false;
             this.textBox6.Font = new System.Drawing.Font("Segoe UI", 9.25F);
             this.textBox6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox6.Location = new System.Drawing.Point(389, 61);
+            this.textBox6.Location = new System.Drawing.Point(390, 109);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(125, 17);
             this.textBox6.TabIndex = 46;
@@ -632,7 +632,7 @@
             this.textBox7.Enabled = false;
             this.textBox7.Font = new System.Drawing.Font("Segoe UI", 9.25F);
             this.textBox7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox7.Location = new System.Drawing.Point(389, 31);
+            this.textBox7.Location = new System.Drawing.Point(390, 79);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(125, 17);
             this.textBox7.TabIndex = 45;
@@ -643,7 +643,7 @@
             this.selectRandomButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.selectRandomButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.selectRandomButton.Image = ((System.Drawing.Image)(resources.GetObject("selectRandomButton.Image")));
-            this.selectRandomButton.Location = new System.Drawing.Point(537, 115);
+            this.selectRandomButton.Location = new System.Drawing.Point(538, 163);
             this.selectRandomButton.Name = "selectRandomButton";
             this.selectRandomButton.Size = new System.Drawing.Size(25, 25);
             this.selectRandomButton.TabIndex = 40;
@@ -658,7 +658,7 @@
             this.textBox8.Enabled = false;
             this.textBox8.Font = new System.Drawing.Font("Segoe UI", 9.25F);
             this.textBox8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox8.Location = new System.Drawing.Point(391, 153);
+            this.textBox8.Location = new System.Drawing.Point(392, 201);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(125, 17);
             this.textBox8.TabIndex = 41;
@@ -672,7 +672,7 @@
             this.textBox9.Enabled = false;
             this.textBox9.Font = new System.Drawing.Font("Segoe UI", 9.25F);
             this.textBox9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox9.Location = new System.Drawing.Point(456, 121);
+            this.textBox9.Location = new System.Drawing.Point(457, 169);
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(75, 17);
             this.textBox9.TabIndex = 44;
@@ -686,7 +686,7 @@
             this.textBox10.Enabled = false;
             this.textBox10.Font = new System.Drawing.Font("Segoe UI", 9.25F);
             this.textBox10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox10.Location = new System.Drawing.Point(389, 121);
+            this.textBox10.Location = new System.Drawing.Point(390, 169);
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(35, 17);
             this.textBox10.TabIndex = 42;
@@ -699,7 +699,7 @@
             this.usersToBeSelectedNumber.Cursor = System.Windows.Forms.Cursors.Default;
             this.usersToBeSelectedNumber.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.usersToBeSelectedNumber.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.usersToBeSelectedNumber.Location = new System.Drawing.Point(425, 117);
+            this.usersToBeSelectedNumber.Location = new System.Drawing.Point(426, 165);
             this.usersToBeSelectedNumber.MaxLength = 2;
             this.usersToBeSelectedNumber.Name = "usersToBeSelectedNumber";
             this.usersToBeSelectedNumber.Size = new System.Drawing.Size(25, 22);

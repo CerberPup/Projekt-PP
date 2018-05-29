@@ -29,7 +29,7 @@ namespace _500pxCracker
             dataGetter.UpdateDb();
             followersComboBox.SelectedIndex = 0;
             //followers
-            followersSearchPanel.Size = new Size(580, 240);
+            followersSearchPanel.Size = new Size(580, 281);
             topUsersPanel.Size = new Size(440, 185);
 
             followersSearchPanel.Location = new Point(21, 118);
