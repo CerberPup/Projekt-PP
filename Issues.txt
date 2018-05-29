@@ -15,7 +15,7 @@
 
 Assignment:
 Karol Marszałek: 
-1. Point 5
+1. Point 5 - fixed
 
 Wojciech Wrona:
 1. Point 11
