@@ -24,7 +24,7 @@ Assignment:
 - [x] 3. Point 13 - implementation part
 -------------------
 # Małgorzata Kałek:
-- [ ] 0. Point 4 - GUI part 
+- [x] 0. Point 4 - GUI part 
 - [x] 0. Point 13 - GUI part
 - [ ] 1. Point 7 - GUI part (abort operation button, available on every tab of app)
 - [ ] 2. Point 2
