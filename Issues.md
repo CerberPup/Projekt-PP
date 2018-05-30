@@ -15,15 +15,15 @@
 - 14. "Like all lastest photos of the users I follow " - does not work for the users who has it's photos unassigned to any gallery - need to handle situation when the files are stored in unassignedPhotos file. 
 
 Assignment:
-#Karol Marszałek: 
+# Karol Marszałek: 
 - [x] 1. Point 5 - fixed
-
-#Wojciech Wrona:
+-------------------
+# Wojciech Wrona:
 - [x] 1. Point 11
 - [x] 2. Point 1 - fixed
 - [x] 3. Point 13 - implementation part
-
-#Małgorzata Kałek:
+-------------------
+# Małgorzata Kałek:
 - [ ] 0. Point 4 - GUI part 
 - [x] 0. Point 13 - GUI part
 - [ ] 1. Point 7 - GUI part (abort operation button, available on every tab of app)
@@ -35,11 +35,10 @@ Assignment:
 - [ ] 5. Point 9
 - [ ] 6. Point 8 - optional
 -------------------
-
-#Błażej Moska:
+# Błażej Moska:
 - [ ] 1. Point 4 - implementation part
 - [ ] 2. Point 7 - implementation part
-
-#Kamil Janas:
+-------------------
+# Kamil Janas:
 - [ ] 1. Point 12.
 - [ ] 2. Point 14. 
