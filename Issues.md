@@ -1,4 +1,4 @@
-#Issues
+# Issues
 - 1. Statistics does not show correct data with data from just one day
 - 2. Listbox in form with information about following relation shows wrong data for followers/following combo item selected.
 - 3. Delete the "Search for top (x) liking users from the last day" label and button.
