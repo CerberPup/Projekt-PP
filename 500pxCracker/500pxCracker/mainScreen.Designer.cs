@@ -513,7 +513,7 @@
             this.textBox12.Enabled = false;
             this.textBox12.Font = new System.Drawing.Font("Segoe UI", 9.25F);
             this.textBox12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox12.Location = new System.Drawing.Point(392, 231);
+            this.textBox12.Location = new System.Drawing.Point(379, 231);
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(125, 17);
             this.textBox12.TabIndex = 52;
@@ -570,7 +570,7 @@
             this.textBox5.Enabled = false;
             this.textBox5.Font = new System.Drawing.Font("Segoe UI", 9.25F);
             this.textBox5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox5.Location = new System.Drawing.Point(390, 139);
+            this.textBox5.Location = new System.Drawing.Point(377, 139);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(125, 17);
             this.textBox5.TabIndex = 50;
@@ -620,7 +620,7 @@
             this.textBox6.Enabled = false;
             this.textBox6.Font = new System.Drawing.Font("Segoe UI", 9.25F);
             this.textBox6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox6.Location = new System.Drawing.Point(390, 109);
+            this.textBox6.Location = new System.Drawing.Point(377, 109);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(125, 17);
             this.textBox6.TabIndex = 46;
@@ -634,7 +634,7 @@
             this.textBox7.Enabled = false;
             this.textBox7.Font = new System.Drawing.Font("Segoe UI", 9.25F);
             this.textBox7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox7.Location = new System.Drawing.Point(390, 79);
+            this.textBox7.Location = new System.Drawing.Point(377, 79);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(125, 17);
             this.textBox7.TabIndex = 45;
@@ -660,7 +660,7 @@
             this.textBox8.Enabled = false;
             this.textBox8.Font = new System.Drawing.Font("Segoe UI", 9.25F);
             this.textBox8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox8.Location = new System.Drawing.Point(392, 201);
+            this.textBox8.Location = new System.Drawing.Point(379, 201);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(125, 17);
             this.textBox8.TabIndex = 41;
@@ -688,7 +688,7 @@
             this.textBox10.Enabled = false;
             this.textBox10.Font = new System.Drawing.Font("Segoe UI", 9.25F);
             this.textBox10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox10.Location = new System.Drawing.Point(390, 169);
+            this.textBox10.Location = new System.Drawing.Point(377, 169);
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(35, 17);
             this.textBox10.TabIndex = 42;
@@ -698,13 +698,13 @@
             // 
             this.usersToBeSelectedNumber.BackColor = System.Drawing.Color.LightGray;
             this.usersToBeSelectedNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.usersToBeSelectedNumber.Cursor = System.Windows.Forms.Cursors.Default;
+            this.usersToBeSelectedNumber.Cursor = System.Windows.Forms.Cursors.Hand;
             this.usersToBeSelectedNumber.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.usersToBeSelectedNumber.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.usersToBeSelectedNumber.Location = new System.Drawing.Point(426, 165);
-            this.usersToBeSelectedNumber.MaxLength = 2;
+            this.usersToBeSelectedNumber.Location = new System.Drawing.Point(418, 165);
+            this.usersToBeSelectedNumber.MaxLength = 8;
             this.usersToBeSelectedNumber.Name = "usersToBeSelectedNumber";
-            this.usersToBeSelectedNumber.Size = new System.Drawing.Size(25, 22);
+            this.usersToBeSelectedNumber.Size = new System.Drawing.Size(33, 22);
             this.usersToBeSelectedNumber.TabIndex = 43;
             this.usersToBeSelectedNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -774,11 +774,11 @@
             // 
             this.numberOfTopUsersTextBox.BackColor = System.Drawing.Color.LightGray;
             this.numberOfTopUsersTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.numberOfTopUsersTextBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.numberOfTopUsersTextBox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.numberOfTopUsersTextBox.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.numberOfTopUsersTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
             this.numberOfTopUsersTextBox.Location = new System.Drawing.Point(129, 89);
-            this.numberOfTopUsersTextBox.MaxLength = 2;
+            this.numberOfTopUsersTextBox.MaxLength = 4;
             this.numberOfTopUsersTextBox.Name = "numberOfTopUsersTextBox";
             this.numberOfTopUsersTextBox.Size = new System.Drawing.Size(25, 22);
             this.numberOfTopUsersTextBox.TabIndex = 15;
@@ -920,7 +920,7 @@
             this.likePhotosButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.likePhotosButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.likePhotosButton.Image = ((System.Drawing.Image)(resources.GetObject("likePhotosButton.Image")));
-            this.likePhotosButton.Location = new System.Drawing.Point(322, 117);
+            this.likePhotosButton.Location = new System.Drawing.Point(331, 118);
             this.likePhotosButton.Name = "likePhotosButton";
             this.likePhotosButton.Size = new System.Drawing.Size(25, 25);
             this.likePhotosButton.TabIndex = 23;
@@ -931,7 +931,7 @@
             // 
             this.photosNumberTextBox.BackColor = System.Drawing.Color.LightGray;
             this.photosNumberTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.photosNumberTextBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.photosNumberTextBox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.photosNumberTextBox.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.photosNumberTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
             this.photosNumberTextBox.Location = new System.Drawing.Point(59, 122);
@@ -954,7 +954,7 @@
             this.photosText2.Name = "photosText2";
             this.photosText2.Size = new System.Drawing.Size(230, 19);
             this.photosText2.TabIndex = 21;
-            this.photosText2.Text = "photos from users who liked mine";
+            this.photosText2.Text = "photos from users who like mine last photo";
             // 
             // likeText3
             // 
@@ -975,7 +975,7 @@
             this.likeLatestButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.likeLatestButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.likeLatestButton.Image = ((System.Drawing.Image)(resources.GetObject("likeLatestButton.Image")));
-            this.likeLatestButton.Location = new System.Drawing.Point(322, 88);
+            this.likeLatestButton.Location = new System.Drawing.Point(331, 88);
             this.likeLatestButton.Name = "likeLatestButton";
             this.likeLatestButton.Size = new System.Drawing.Size(25, 25);
             this.likeLatestButton.TabIndex = 19;
@@ -1001,7 +1001,7 @@
             this.likeFreshButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.likeFreshButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.likeFreshButton.Image = ((System.Drawing.Image)(resources.GetObject("likeFreshButton.Image")));
-            this.likeFreshButton.Location = new System.Drawing.Point(322, 57);
+            this.likeFreshButton.Location = new System.Drawing.Point(331, 57);
             this.likeFreshButton.Name = "likeFreshButton";
             this.likeFreshButton.Size = new System.Drawing.Size(25, 25);
             this.likeFreshButton.TabIndex = 14;
@@ -1027,7 +1027,7 @@
             // 
             this.freshPhotosNumberTextBox.BackColor = System.Drawing.Color.LightGray;
             this.freshPhotosNumberTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.freshPhotosNumberTextBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.freshPhotosNumberTextBox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.freshPhotosNumberTextBox.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.freshPhotosNumberTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
             this.freshPhotosNumberTextBox.Location = new System.Drawing.Point(59, 59);
