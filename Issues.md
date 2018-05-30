@@ -16,11 +16,11 @@
 
 Assignment:
 # Karol Marszałek: 
-- [x] 1. Point 5 - fixed
+- [x] 1. Point 5
 -------------------
 # Wojciech Wrona:
 - [x] 1. Point 11
-- [x] 2. Point 1 - fixed
+- [x] 2. Point 1
 - [x] 3. Point 13 - implementation part
 -------------------
 # Małgorzata Kałek:
@@ -40,5 +40,5 @@ Assignment:
 - [ ] 2. Point 7 - implementation part
 -------------------
 # Kamil Janas:
-- [ ] 1. Point 12.
-- [ ] 2. Point 14. 
+- [x] 1. Point 12.
+- [x] 2. Point 14. 
