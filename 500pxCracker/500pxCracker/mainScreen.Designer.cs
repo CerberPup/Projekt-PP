@@ -405,10 +405,12 @@
             this.followersComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
             this.followersComboBox.FormattingEnabled = true;
             this.followersComboBox.Items.AddRange(new object[] {
-            "all",
-            "followers",
-            "following",
-            "mutuals"});
+            "All",
+            "Only Followers",
+            "Only Following",
+            "Followers",
+            "Following",
+            "Mutuals"});
             this.followersComboBox.Location = new System.Drawing.Point(73, 60);
             this.followersComboBox.Name = "followersComboBox";
             this.followersComboBox.Size = new System.Drawing.Size(121, 21);

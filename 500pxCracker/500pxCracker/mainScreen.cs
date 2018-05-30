@@ -18,7 +18,18 @@ namespace _500pxCracker
 
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
+        private bool isPythonRunning;
+        private List<string> SelectedUsers = new List<string>();
+        private enum FollowersComboBoxState
+        {
+            All = 0,
+            OnlyFollowers,
+            OnlyFollowing,
+            Followers,
+            Following,
+            Mutuals
 
+        };
         public mainScreen()
         {
             InitializeComponent();
@@ -48,7 +59,6 @@ namespace _500pxCracker
         {
             this.Close();
         }
-        private bool isPythonRunning;
         private void SetPythonRunning(bool val)
         {
             isPythonRunning = val;
@@ -268,35 +278,88 @@ namespace _500pxCracker
                 usersListView.Items[i].Checked = !usersListView.Items[i].Checked;
             }
         }
+        private void UpdateUsersListViewAfterUnfollow()
+        {
+            CurrentUser current = CurrentUser.Get();
+            foreach (string user in current.UsersToRemove)
+            {
+                User u = current.GetUserByFullName(user);
+                if (u!=null){
+                    u._StartedFollowing = null;
+                    if (u._StartedFollowing == null)
+                    {
+                        current._Followers.Remove(u);
+                    }
+                    if (u._FollowedSince == null)
+                    {
+                        current._Following.Remove(u);
+                    }
+                }
+                usersListView.Items.RemoveByKey(user);
+            }
+            current.UsersToRemove.Clear();
+        }
         private void UnFollow()
         {
             CurrentUser current = CurrentUser.Get();
-            foreach (string user in usersListView.SelectedItems)
+            foreach (string user in SelectedUsers)
             {
+                current.UsersToRemove.Add(user);
                 current.Unfollow(current.GetUserByFullName(user));
             }
         }
-
         private void unfollowButton_Click(object sender, EventArgs e)
         {
             if (!isPythonRunning)
             {
+                CurrentUser current = CurrentUser.Get();
+                foreach (ListViewItem item in usersListView.CheckedItems)
+                {
+                    SelectedUsers.Add(item.Text);
+                }
                 PythonWorker.RunWorkerAsync("UnFollow");
             }
             //nonFollowersListBox.Items.Remove(user);
         }
+        private void UpdateUsersListViewAfterFollow()
+        {
+            CurrentUser current = CurrentUser.Get();
+            foreach (var user in current.UsersToAdd)
+            {
+                User u = current.GetUserByFullName(user);
+                u._StartedFollowing = DateTime.Now;
+                ListViewItem item = new ListViewItem(u._FullName);
+                string followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
+                string followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
+                if (followedsince == "---" && followingsince == "---")
+                {
+                    followingsince = "No DB Data";
+                    followedsince = followingsince;
+                }
+                item.SubItems.Add(followingsince);
+                item.SubItems.Add(followedsince);
+                usersListView.Items.Add(item);
+            }
+            current.UsersToAdd.Clear();
+        }
         private void Follow()
         {
             CurrentUser current = CurrentUser.Get();
-            foreach (string user in usersListView.SelectedItems)
+            foreach (string user in SelectedUsers)
             {
                 current.Follow(current.GetUserByFullName(user));
+                current.UsersToAdd.Add(user);
             }
         }
         private void followButton_Click(object sender, EventArgs e)
         {
             if (!isPythonRunning)
             {
+                CurrentUser current = CurrentUser.Get();
+                foreach (ListViewItem item in usersListView.CheckedItems)
+                {
+                    SelectedUsers.Add(item.Text);
+                }
                 PythonWorker.RunWorkerAsync("Follow");
             }
         }
@@ -401,25 +464,10 @@ namespace _500pxCracker
                 List<ListViewItem> listViewItems = new List<ListViewItem>();
                 string followedsince = "";
                 string followingsince = "";
-                if (followersComboBox.SelectedIndex == 0)//all
+                switch ((FollowersComboBoxState)followersComboBox.SelectedIndex)
                 {
-                    foreach (User u in CurrentUser.Get()._Following)
-                    {
-                        ListViewItem item = new ListViewItem(u._FullName);
-                        followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
-                        followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
-                        if (followedsince == "---" && followingsince == "---")
-                        {
-                            followingsince = "No DB Data";
-                            followedsince = followingsince;
-                        }
-                        item.SubItems.Add(followedsince);
-                        item.SubItems.Add(followingsince);
-                        listViewItems.Add(item);
-                    }
-                    foreach (User u in CurrentUser.Get()._Followers)
-                    {
-                        if (CurrentUser.Get()._Following.Find(x => x._Id == u._Id) == null)
+                    case FollowersComboBoxState.All:
+                        foreach (User u in CurrentUser.Get()._Following)
                         {
                             ListViewItem item = new ListViewItem(u._FullName);
                             followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
@@ -429,65 +477,116 @@ namespace _500pxCracker
                                 followingsince = "No DB Data";
                                 followedsince = followingsince;
                             }
-                            item.SubItems.Add(followedsince);
                             item.SubItems.Add(followingsince);
+                            item.SubItems.Add(followedsince);
                             listViewItems.Add(item);
                         }
-                    }
-                }
-
-                if (followersComboBox.SelectedIndex == 1)//followers
-                {
-                    foreach (User u in CurrentUser.Get()._Followers)
-                    {
-                        ListViewItem item = new ListViewItem(u._FullName);
-                        followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
-                        followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
-                        if (followedsince == "---" && followingsince == "---")
+                        foreach (User u in CurrentUser.Get()._Followers)
                         {
-                            followingsince = "No DB Data";
-                            followedsince = followingsince;
+                            if (CurrentUser.Get()._Following.Find(x => x._Id == u._Id) == null)
+                            {
+                                ListViewItem item = new ListViewItem(u._FullName);
+                                followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
+                                followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
+                                if (followedsince == "---" && followingsince == "---")
+                                {
+                                    followingsince = "No DB Data";
+                                    followedsince = followingsince;
+                                }
+                                item.SubItems.Add(followingsince);
+                                item.SubItems.Add(followedsince);
+                                listViewItems.Add(item);
+                            }
                         }
-                        item.SubItems.Add(followedsince);
-                        item.SubItems.Add(followingsince);
-                        listViewItems.Add(item);
-                    }
-                }
-
-                if (followersComboBox.SelectedIndex == 2)//followings
-                {
-                    foreach (User u in CurrentUser.Get()._Following)
-                    {
-                        ListViewItem item = new ListViewItem(u._FullName);
-                        followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
-                        followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
-                        if (followedsince == "---" && followingsince == "---")
+                        break;
+                    case FollowersComboBoxState.OnlyFollowers:
+                        foreach (User u in CurrentUser.Get()._Followers)
                         {
-                            followingsince = "No DB Data";
-                            followedsince = followingsince;
+                            if (CurrentUser.Get()._Following.Find(x => x._Id == u._Id) == null)
+                            {
+                                ListViewItem item = new ListViewItem(u._FullName);
+                                followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
+                                followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
+                                if (followedsince == "---" && followingsince == "---")
+                                {
+                                    followingsince = "No DB Data";
+                                    followedsince = followingsince;
+                                }
+                                item.SubItems.Add(followingsince);
+                                item.SubItems.Add(followedsince);
+                                listViewItems.Add(item);
+                            }
                         }
-                        item.SubItems.Add(followedsince);
-                        item.SubItems.Add(followingsince);
-                        listViewItems.Add(item);
-                    }
-                }
-
-                if (followersComboBox.SelectedIndex == 3)//mutual
-                {
-                    foreach (User u in CurrentUser.Get().MutualFollow())
-                    {
-                        ListViewItem item = new ListViewItem(u._FullName);
-                        followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
-                        followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
-                        if (followedsince == "---" && followingsince == "---")
+                        break;
+                    case FollowersComboBoxState.OnlyFollowing:
+                        foreach (User u in CurrentUser.Get()._Following)
                         {
-                            followingsince = "No DB Data";
-                            followedsince = followingsince;
+                            if (CurrentUser.Get()._Followers.Find(x => x._Id == u._Id) == null)
+                            {
+                                ListViewItem item = new ListViewItem(u._FullName);
+                                followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
+                                followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
+                                if (followedsince == "---" && followingsince == "---")
+                                {
+                                    followingsince = "No DB Data";
+                                    followedsince = followingsince;
+                                }
+                                item.SubItems.Add(followingsince);
+                                item.SubItems.Add(followedsince);
+                                listViewItems.Add(item);
+                            }
                         }
-                        item.SubItems.Add(followedsince);
-                        item.SubItems.Add(followingsince);
-                        listViewItems.Add(item);
-                    }
+                        break;
+                    case FollowersComboBoxState.Followers:
+                        foreach (User u in CurrentUser.Get()._Followers)
+                        {
+                            ListViewItem item = new ListViewItem(u._FullName);
+                            followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
+                            followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
+                            if (followedsince == "---" && followingsince == "---")
+                            {
+                                followingsince = "No DB Data";
+                                followedsince = followingsince;
+                            }
+                            item.SubItems.Add(followingsince);
+                            item.SubItems.Add(followedsince);
+                            listViewItems.Add(item);
+                        }
+                        break;
+                    case FollowersComboBoxState.Following:
+                        foreach (User u in CurrentUser.Get()._Following)
+                        {
+                            ListViewItem item = new ListViewItem(u._FullName);
+                            followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
+                            followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
+                            if (followedsince == "---" && followingsince == "---")
+                            {
+                                followingsince = "No DB Data";
+                                followedsince = followingsince;
+                            }
+                            item.SubItems.Add(followingsince);
+                            item.SubItems.Add(followedsince);
+                            listViewItems.Add(item);
+                        }
+                        break;
+                    case FollowersComboBoxState.Mutuals:
+                        foreach (User u in CurrentUser.Get().MutualFollow())
+                        {
+                            ListViewItem item = new ListViewItem(u._FullName);
+                            followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
+                            followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
+                            if (followedsince == "---" && followingsince == "---")
+                            {
+                                followingsince = "No DB Data";
+                                followedsince = followingsince;
+                            }
+                            item.SubItems.Add(followingsince);
+                            item.SubItems.Add(followedsince);
+                            listViewItems.Add(item);
+                        }
+                        break;
+                    default:
+                        return;
                 }
                 //listViewItems.Sort();// Crash przy jakims userze
                 usersListView.Items.Clear();
@@ -549,7 +648,15 @@ namespace _500pxCracker
         private void PythonWorker_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
             SetPythonRunning(e.ProgressPercentage == 1);
-            followersComboBox_SelectedIndexChanged(this, new EventArgs());
+            if (e.ProgressPercentage == 0) {
+                CurrentUser current = CurrentUser.Get();
+                followersComboBox_SelectedIndexChanged(this, new EventArgs());
+                if (current.UsersToRemove.Count != 0)
+                    UpdateUsersListViewAfterUnfollow();
+                if (current.UsersToAdd.Count != 0)
+                    UpdateUsersListViewAfterFollow();
+                SelectedUsers.Clear();
+            }
         }
     }
 }

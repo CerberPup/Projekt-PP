@@ -139,6 +139,7 @@ namespace _500pxCracker
                         c._Followers[uFollower]._FullName = user.fullname;
                         c._Followers[uFollower]._Name = user.username;
                     }
+                    /*Nie dodajemy z bd tylko nakładamy daty
                     if (user.following_since.HasValue == true && uFollowing == -1)
                     {
                         c._Following.Add(new User()
@@ -160,7 +161,7 @@ namespace _500pxCracker
                             _FullName = user.fullname,
                             _Name = user.username
                         });
-                    }
+                    }*/
                 }
             }
         }
@@ -231,46 +232,24 @@ namespace _500pxCracker
         static public string GalleriesDir = ScriptsDir + "galleriesDumps\\";
         static public string LikesForPhotosDir = ScriptsDir + "likesForPhotos\\";
         static public string UserInfoRoot = ScriptsDir + "UserInfo\\";
-        static public string UserInfoDir = UserInfoRoot; // + user_email
+        static public string UserInfoDir = UserInfoRoot; // set at login
         static public string FollowersDir = UserInfoDir + "followers\\";
-        static public string FollowingDir = UserInfoDir + "db\\";
+        static public string FollowingDir = UserInfoDir + "followings\\";
         static public string DbDir = UserInfoDir + "db\\";
         static public string PhotosDir = ScriptsDir + "photosDumps\\";
-        static public string PythonDir = "";
-        static public string Python = "";
-        static public string DbCurrentDir = "";
+        static public string PythonDir = ""; // set at login
+        static public string Python = ""; // set at login
+        static public string DbCurrentDir = ""; // set at login
     }
     public class Credentials
     {
-        private string _login;
-        private string _passwd;
         public Credentials(string login, string password)
         {
-            _login = login;
-            _passwd = password;
+            this.login = login;
+            this.password = password;
         }
-        public string login
-        {
-            set
-            {
-                _login = value;
-            }
-            get
-            {
-                return _login;
-            }
-        }
-        public string password
-        {
-            set
-            {
-                _passwd = value;
-            }
-            get
-            {
-                return _passwd;
-            }
-        }
+        public string login { set; get; }
+        public string password { set; get; }
 
     }
     public class Like
@@ -297,6 +276,8 @@ namespace _500pxCracker
 
     public class CurrentUser
     {
+        public List<string> UsersToRemove = new List<string>();
+        public List<string> UsersToAdd = new List<string>();
         private Credentials _Credentials;
 
         public Credentials Get_Credentials()
@@ -454,6 +435,10 @@ namespace _500pxCracker
                 }
 
             }
+            if (oldest==DateTime.MaxValue)
+            {
+                filenameOldest = filenameNewest;
+            }
 
             if (filenameOldest != "" && filenameNewest != "")
             {
@@ -465,11 +450,13 @@ namespace _500pxCracker
                 {
                     response[user.username] = user.likes_amount;
                 }
-                foreach (var user in dBMainOld.users)
+                if (filenameOldest != filenameNewest)
                 {
-                    response[user.username] -= user.likes_amount;
-                }
-               
+                    foreach (var user in dBMainOld.users)
+                    {
+                        response[user.username] -= user.likes_amount;
+                    }
+                } 
             }
             return response;
         }
@@ -506,7 +493,17 @@ namespace _500pxCracker
             process.StartInfo.CreateNoWindow = true;
             process.Start();
             process.WaitForExit();
-            _Following[_Following.FindIndex(x=> x._Id == user._Id)]._FollowedSince = DateTime.Now;
+            int i = _Following.FindIndex(x => x._Id == user._Id);
+            if (i!=-1)
+            {
+                _Following[_Following.FindIndex(x => x._Id == user._Id)]._FollowedSince = DateTime.Now;
+            }
+            else
+            {
+                user._FollowedSince = DateTime.Now;
+                _Following.Add(user);
+            }
+           
         }
 
         public void LikeLatestPhotos()
