@@ -522,18 +522,31 @@ namespace _500pxCracker
             {
                 Dictionary<string, DateTime> photos = new Dictionary<string, DateTime>();
                 DirectoryInfo d = new DirectoryInfo(LocalizationData.PhotosDir+"User"+u._Id.ToString());
-                if(d.Exists)
+                if (d.Exists)
+                {
                     foreach (var gallery in d.GetDirectories())
                     {
-                        string file = File.ReadAllText(d+"\\"+gallery.Name + "\\photos");
+                        string file = File.ReadAllText(d + "\\" + gallery.Name + "\\photos");
                         Regex regex = new Regex("\"liked\":(.*?),.*?\"feature_date\": \"(.*?)\".*?\"id\":(.*?),");
                         Match match = regex.Match(file);
-                        if(match.Success && !bool.Parse(match.Groups[1].Value))
+                        if (match.Success && !bool.Parse(match.Groups[1].Value))
                         {
-                            if(!photos.ContainsKey(match.Groups[3].Value))
+                            if (!photos.ContainsKey(match.Groups[3].Value))
                                 photos.Add(match.Groups[3].Value, DateTime.Parse(match.Groups[2].Value));
                         }
                     }
+                    if(File.Exists(d+"\\photos_unassigned"))
+                    {
+                        string file = File.ReadAllText(d + "\\photos_unassigned");
+                        Regex regex = new Regex("\"liked\":(.*?),.*?\"feature_date\": \"(.*?)\".*?\"id\":(.*?),");
+                        Match match = regex.Match(file);
+                        if (match.Success && !bool.Parse(match.Groups[1].Value))
+                        {
+                            if (!photos.ContainsKey(match.Groups[3].Value))
+                                photos.Add(match.Groups[3].Value, DateTime.Parse(match.Groups[2].Value));
+                        }
+                    }
+                }
                 KeyValuePair<string, DateTime> newestPhoto = new KeyValuePair<string,DateTime>(null,DateTime.MinValue);
                 foreach (var p in photos)
                 {

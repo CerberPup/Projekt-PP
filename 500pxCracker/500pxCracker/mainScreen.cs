@@ -73,6 +73,7 @@ namespace _500pxCracker
                 profilePanel.Visible = false;
             if (likesPanel.Visible)
                 likesPanel.Visible = false;
+            followersComboBox_SelectedIndexChanged(this, new EventArgs());
         }
 
         private void likeButton_Click(object sender, EventArgs e)
@@ -402,7 +403,7 @@ namespace _500pxCracker
                 string followingsince = "";
                 if (followersComboBox.SelectedIndex == 0)//all
                 {
-                    foreach (User u in CurrentUser.Get()._Followers)
+                    foreach (User u in CurrentUser.Get()._Following)
                     {
                         ListViewItem item = new ListViewItem(u._FullName);
                         followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
