@@ -147,6 +147,8 @@
             // 
             // killingPythonButton
             // 
+            this.killingPythonButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.killingPythonButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.killingPythonButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.killingPythonButton.Image = ((System.Drawing.Image)(resources.GetObject("killingPythonButton.Image")));
@@ -172,6 +174,8 @@
             // 
             // pythonRunningPic
             // 
+            this.pythonRunningPic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pythonRunningPic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pythonRunningPic.Cursor = System.Windows.Forms.Cursors.Default;
             this.pythonRunningPic.Enabled = false;
@@ -185,6 +189,8 @@
             // 
             // PythonLabel
             // 
+            this.PythonLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.PythonLabel.AutoSize = true;
             this.PythonLabel.Font = new System.Drawing.Font("Segoe UI", 6.75F);
             this.PythonLabel.Location = new System.Drawing.Point(13, 433);
@@ -379,6 +385,9 @@
             // 
             // followersPanel
             // 
+            this.followersPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.followersPanel.Controls.Add(this.followersComboBox);
             this.followersPanel.Controls.Add(this.followersSearchPanel);
             this.followersPanel.Controls.Add(this.mutualFolButton);
@@ -386,7 +395,7 @@
             this.followersPanel.Controls.Add(this.followersPic);
             this.followersPanel.Location = new System.Drawing.Point(119, 12);
             this.followersPanel.Name = "followersPanel";
-            this.followersPanel.Size = new System.Drawing.Size(617, 430);
+            this.followersPanel.Size = new System.Drawing.Size(617, 433);
             this.followersPanel.TabIndex = 2;
             this.followersPanel.Visible = false;
             this.followersPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
@@ -413,6 +422,9 @@
             // 
             // followersSearchPanel
             // 
+            this.followersSearchPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.followersSearchPanel.Controls.Add(this.followButton);
             this.followersSearchPanel.Controls.Add(this.textBox12);
             this.followersSearchPanel.Controls.Add(this.usersListView);
@@ -434,7 +446,7 @@
             this.followersSearchPanel.Controls.Add(this.profilePic2);
             this.followersSearchPanel.Location = new System.Drawing.Point(21, 86);
             this.followersSearchPanel.Name = "followersSearchPanel";
-            this.followersSearchPanel.Size = new System.Drawing.Size(580, 341);
+            this.followersSearchPanel.Size = new System.Drawing.Size(580, 344);
             this.followersSearchPanel.TabIndex = 38;
             this.followersSearchPanel.Visible = false;
             // 
@@ -466,6 +478,9 @@
             // 
             // usersListView
             // 
+            this.usersListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.usersListView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
             this.usersListView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.usersListView.CheckBoxes = true;
@@ -475,7 +490,7 @@
             this.FollowerSince});
             this.usersListView.Location = new System.Drawing.Point(12, 35);
             this.usersListView.Name = "usersListView";
-            this.usersListView.Size = new System.Drawing.Size(359, 303);
+            this.usersListView.Size = new System.Drawing.Size(359, 297);
             this.usersListView.TabIndex = 40;
             this.usersListView.UseCompatibleStateImageBehavior = false;
             this.usersListView.View = System.Windows.Forms.View.Details;
@@ -926,7 +941,7 @@
             this.closeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.closeButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.closeButton.Image = ((System.Drawing.Image)(resources.GetObject("closeButton.Image")));
-            this.closeButton.Location = new System.Drawing.Point(742, 3);
+            this.closeButton.Location = new System.Drawing.Point(746, 2);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(25, 25);
             this.closeButton.TabIndex = 40;
@@ -944,7 +959,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.ClientSize = new System.Drawing.Size(1260, 454);
+            this.ClientSize = new System.Drawing.Size(773, 454);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.likesPanel);
             this.Controls.Add(this.followersPanel);
@@ -952,6 +967,7 @@
             this.Controls.Add(this.profilePanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(773, 454);
             this.Name = "mainScreen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "mainScreen";
