@@ -26,14 +26,14 @@ Assignment:
 # Małgorzata Kałek:
 - [x] 0. Point 4 - GUI part 
 - [x] 0. Point 13 - GUI part
-- [ ] 1. Point 7 - GUI part (abort operation button, available on every tab of app)
+- [x] 1. Point 7 - GUI part (abort operation button, available on every tab of app)
 - [x] 2. Point 2 - My bad ~Wojtek
-- [ ] 3. Point 3
-- [ ] 4. Point 10.
+- [x] 3. Point 3
+- [x] 4. Point 10.
 ------------------- can be done after the deadline
 - [ ] 4. Point 6
-- [ ] 5. Point 9
-- [ ] 6. Point 8 - optional
+- [x] 5. Point 9
+- [x] 6. Point 8 - optional
 -------------------
 # Błażej Moska:
 - [ ] 1. Point 4 - implementation part
