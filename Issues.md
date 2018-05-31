@@ -8,7 +8,7 @@
 - 7. We really want a button to kill the python execution - it should also clean up the python's temp files to make sure that they will not be used in program. ( temp files I mean galleriesDumps, likesForPhotos, photosDumps directories)
 - 8. ~~Maybe some icon ? :)~~
 - 9. ~~Add some graphics effect to the button which are under user's mouse cursor (shadow, fill the box with some color or something).~~
-- 10. ~~Dropdown lists should have default values on create. ~~
+- 10. ~~Dropdown lists should have default values on create.~~
 - 11. ~~Crash when try to follow/unfollow users using GUI.~~
 - 12. ~~When you use the "Show all" button and then, change the tab and wait for the results on other tab, the text view is empty and data needs to be downloaded once more (we should fill this element anyway, store the result somewhere and show it when data is available).~~
 - 13. ~~Add two new drop down list items for "Show"  drop down list for showing only users who are not following us (following since filled, follower since empty) and who we are not following but who are following us ( follower since filled, following since empty), implement it.~~
