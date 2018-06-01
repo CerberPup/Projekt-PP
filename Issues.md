@@ -1,10 +1,10 @@
 # Issues
 - 1. ~~Statistics does not show correct data with data from just one day~~
 - 2. ~~Listbox in form with information about following relation shows wrong data for followers/following combo item selected.~~
-- 3. ~~Delete the "Search for top (x) liking users from the last day" label and button.~~
+- 3. Delete the "Search for top (x) liking users from the last day" label and button.
 - 4. ~~"Like (x) photos from users who liked mine" - change message to "Like (x) photos from users who like mine last photo" and implement it.~~
 - 5. ~~"Like all latest photos of the users I follow" is not working due to cleaning up the tmp files by script on relaunch causing loss of data.~~
-- 6. ~~I think the GUI should be scalable - window of this size is useless if you want to show a lot of users in follow infomartion tab.~~
+- 6. I think the GUI should be scalable - window of this size is useless if you want to show a lot of users in follow infomartion tab.
 - 7. We really want a button to kill the python execution - it should also clean up the python's temp files to make sure that they will not be used in program. ( temp files I mean galleriesDumps, likesForPhotos, photosDumps directories)
 - 8. ~~Maybe some icon ? :)~~
 - 9. ~~Add some graphics effect to the button which are under user's mouse cursor (shadow, fill the box with some color or something).~~
