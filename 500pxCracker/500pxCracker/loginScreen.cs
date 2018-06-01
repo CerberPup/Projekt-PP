@@ -21,7 +21,31 @@ namespace _500pxCracker
         {
             InitializeComponent();
             LocalizationData.ScriptsDir = Path.GetFullPath(LocalizationData.ScriptsDir);
+
+            logInButton.MouseEnter += OnMouseEnterlogInButton;
+            logInButton.MouseLeave += OnMouseLeavelogInButton;
+            pictureBox1.MouseEnter += OnMouseEnterpictureBox1;
+            pictureBox1.MouseLeave += OnMouseLeavepictureBox1;
+
             InitializePython();
+        }
+
+        private void OnMouseEnterlogInButton(object sender, EventArgs e)
+        {
+            logInButton.BackColor = Color.FromArgb(255, 160, 160);
+        }
+        private void OnMouseLeavelogInButton(object sender, EventArgs e)
+        {
+            logInButton.BackColor = Color.FromArgb(255, 205, 205);
+        }
+
+        private void OnMouseEnterpictureBox1(object sender, EventArgs e)
+        {
+            pictureBox1.BackColor = Color.FromArgb(255, 160, 160);
+        }
+        private void OnMouseLeavepictureBox1(object sender, EventArgs e)
+        {
+            pictureBox1.BackColor = Color.FromArgb(255, 205, 205);
         }
 
         [DllImportAttribute("user32.dll")]

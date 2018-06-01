@@ -33,18 +33,283 @@ namespace _500pxCracker
         public mainScreen()
         {
             InitializeComponent();
+            { 
+                profileButton.MouseEnter += OnMouseEnterprofileButton;
+                profileButton.MouseLeave += OnMouseLeaveprofileButton;
+                followersButton.MouseEnter += OnMouseEnterfollowersButton;
+                followersButton.MouseLeave += OnMouseLeavefollowersButton;
+                likeButton.MouseEnter += OnMouseEnterlikeButton;
+                likeButton.MouseLeave += OnMouseLeavelikeButton;
+                updateDBButton.MouseEnter += OnMouseEnterupdateDBButton;
+                updateDBButton.MouseLeave += OnMouseLeaveupdateDBButton;
+                exitButton.MouseEnter += OnMouseEnterexitButton;
+                exitButton.MouseLeave += OnMouseLeaveexitButton;
+                killingPythonButton.MouseEnter += OnMouseEnterkillingPythonButton;
+                killingPythonButton.MouseLeave += OnMouseLeavekillingPythonButton;
+
+            
+                closeButton.MouseEnter += OnMouseEntercloseButton;
+                closeButton.MouseLeave += OnMouseLeavecloseButton;
+                mutualFolButton.MouseEnter += OnMouseEntermutualFolButton;
+                mutualFolButton.MouseLeave += OnMouseLeavemutualFolButton;
+                selectAllUsersButton.MouseEnter += OnMouseEnterselectAllUsersButton;
+                selectAllUsersButton.MouseLeave += OnMouseLeaveselectAllUsersButton;
+                deselectAllUsersButton.MouseEnter += OnMouseEnterdeselectAllUsersButton;
+                deselectAllUsersButton.MouseLeave += OnMouseLeavedeselectAllUsersButton;
+                invertSelectionButton.MouseEnter += OnMouseEnterinvertSelectionButton;
+                invertSelectionButton.MouseLeave += OnMouseLeaveinvertSelectionButton;
+                selectRandomButton.MouseEnter += OnMouseEnterselectRandomButton;
+                selectRandomButton.MouseLeave += OnMouseLeaveselectRandomButton;
+                unfollowButton.MouseEnter += OnMouseEnterunfollowButton;
+                unfollowButton.MouseLeave += OnMouseLeaveunfollowButton;
+                followButton.MouseEnter += OnMouseEnterfollowButton;
+                followButton.MouseLeave += OnMouseLeavefollowButton;
+
+                statsButton.MouseEnter += OnMouseEnterstatsButton;
+                statsButton.MouseLeave += OnMouseLeavestatsButton;
+                likeFreshButton.MouseEnter += OnMouseEnterlikeFreshButton;
+                likeFreshButton.MouseLeave += OnMouseLeavelikeFreshButton;
+                likeLatestButton.MouseEnter += OnMouseEnterlikeLatestButton;
+                likeLatestButton.MouseLeave += OnMouseLeavelikeLatestButton;
+                likePhotosButton.MouseEnter += OnMouseEnterlikePhotosButton;
+                likePhotosButton.MouseLeave += OnMouseLeavelikePhotosButton;
+            }
+
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.ResizeRedraw, true); // this is to avoid visual artifacts
         }
+        
+        private const int
+            HTLEFT = 10,
+            HTRIGHT = 11,
+            HTTOP = 12,
+            HTTOPLEFT = 13,
+            HTTOPRIGHT = 14,
+            HTBOTTOM = 15,
+            HTBOTTOMLEFT = 16,
+            HTBOTTOMRIGHT = 17;
+
+        const int _ = 10; // you can rename this variable if you like
+
+        Rectangle Top { get { return new Rectangle(0, 0, this.ClientSize.Width, _); } }
+        //Rectangle Left { get { return new Rectangle(0, 0, _, this.ClientSize.Height); } }
+        Rectangle Bottom { get { return new Rectangle(0, this.ClientSize.Height - _, this.ClientSize.Width, _); } }
+        //Rectangle Right { get { return new Rectangle(this.ClientSize.Width - _, 0, _, this.ClientSize.Height); } }
+        /*
+        Rectangle TopLeft { get { return new Rectangle(0, 0, _, _); } }
+        Rectangle TopRight { get { return new Rectangle(this.ClientSize.Width - _, 0, _, _); } }
+        Rectangle BottomLeft { get { return new Rectangle(0, this.ClientSize.Height - _, _, _); } }
+        Rectangle BottomRight { get { return new Rectangle(this.ClientSize.Width - _, this.ClientSize.Height - _, _, _); } }
+        */
+
+        protected override void WndProc(ref Message message)
+        {
+            base.WndProc(ref message);
+
+            if (message.Msg == 0x84) // WM_NCHITTEST
+            {
+                var cursor = this.PointToClient(Cursor.Position);
+
+                //if (TopLeft.Contains(cursor)) message.Result = (IntPtr)HTTOPLEFT;
+                //else if (TopRight.Contains(cursor)) message.Result = (IntPtr)HTTOPRIGHT;
+                //else if (BottomLeft.Contains(cursor)) message.Result = (IntPtr)HTBOTTOMLEFT;
+                //else if (BottomRight.Contains(cursor)) message.Result = (IntPtr)HTBOTTOMRIGHT;
+
+                if (Top.Contains(cursor)) message.Result = (IntPtr)HTTOP;
+                //else if (Left.Contains(cursor)) message.Result = (IntPtr)HTLEFT;
+                //else if (Right.Contains(cursor)) message.Result = (IntPtr)HTRIGHT;
+                else if (Bottom.Contains(cursor)) message.Result = (IntPtr)HTBOTTOM;
+            }
+        }
+
+
+    private void OnMouseEnterprofileButton(object sender, EventArgs e)
+        {
+            profileButton.BackColor = Color.FromArgb(196, 196, 196);
+        }
+
+        private void OnMouseLeaveprofileButton(object sender, EventArgs e)
+        {
+            profileButton.BackColor = Color.White;
+        }
+
+        private void OnMouseEnterfollowersButton(object sender, EventArgs e)
+        {
+            followersButton.BackColor = Color.FromArgb(196, 196, 196);
+        }
+
+        private void OnMouseLeavefollowersButton(object sender, EventArgs e)
+        {
+            followersButton.BackColor = Color.White;
+        }
+
+        private void OnMouseEnterlikeButton(object sender, EventArgs e)
+        {
+            likeButton.BackColor = Color.FromArgb(196, 196, 196);
+        }
+
+        private void OnMouseLeavelikeButton(object sender, EventArgs e)
+        {
+            likeButton.BackColor = Color.White;
+        }
+        private void OnMouseEnterupdateDBButton(object sender, EventArgs e)
+        {
+            updateDBButton.BackColor = Color.FromArgb(196, 196, 196);
+        }
+
+        private void OnMouseLeaveupdateDBButton(object sender, EventArgs e)
+        {
+            updateDBButton.BackColor = Color.White;
+        }
+
+        private void OnMouseEnterexitButton(object sender, EventArgs e)
+        {
+            exitButton.BackColor = Color.FromArgb(196, 196, 196);
+        }
+
+        private void OnMouseLeaveexitButton(object sender, EventArgs e)
+        {
+            exitButton.BackColor = Color.White;
+        }
+
+        private void OnMouseEnterkillingPythonButton(object sender, EventArgs e)
+        {
+            killingPythonButton.BackColor = Color.FromArgb(196, 196, 196);
+        }
+
+        private void OnMouseLeavekillingPythonButton(object sender, EventArgs e)
+        {
+            killingPythonButton.BackColor = Color.White;
+        }
+
+        //--------------------------------------------------------------------------------------
+
+        private void OnMouseEntercloseButton(object sender, EventArgs e)
+        {
+            closeButton.BackColor = Color.FromArgb(255, 160, 160);
+        }
+        private void OnMouseLeavecloseButton(object sender, EventArgs e)
+        {
+            closeButton.BackColor = Color.FromArgb(255, 205, 205);
+        }
+
+        private void OnMouseEntermutualFolButton(object sender, EventArgs e)
+        {
+            mutualFolButton.BackColor = Color.FromArgb(255, 160, 160);
+        }
+        private void OnMouseLeavemutualFolButton(object sender, EventArgs e)
+        {
+            mutualFolButton.BackColor = Color.FromArgb(255, 205, 205);
+        }
+        
+        private void OnMouseEnterselectAllUsersButton(object sender, EventArgs e)
+        {
+            selectAllUsersButton.BackColor = Color.FromArgb(255, 160, 160);
+        }
+        private void OnMouseLeaveselectAllUsersButton(object sender, EventArgs e)
+        {
+            selectAllUsersButton.BackColor = Color.FromArgb(255, 205, 205);
+        }
+
+        private void OnMouseEnterdeselectAllUsersButton(object sender, EventArgs e)
+        {
+            deselectAllUsersButton.BackColor = Color.FromArgb(255, 160, 160);
+        }
+        private void OnMouseLeavedeselectAllUsersButton(object sender, EventArgs e)
+        {
+            deselectAllUsersButton.BackColor = Color.FromArgb(255, 205, 205);
+        }
+
+        private void OnMouseEnterinvertSelectionButton(object sender, EventArgs e)
+        {
+            invertSelectionButton.BackColor = Color.FromArgb(255, 160, 160);
+        }
+        private void OnMouseLeaveinvertSelectionButton(object sender, EventArgs e)
+        {
+            invertSelectionButton.BackColor = Color.FromArgb(255, 205, 205);
+        }
+
+        private void OnMouseEnterselectRandomButton(object sender, EventArgs e)
+        {
+            selectRandomButton.BackColor = Color.FromArgb(255, 160, 160);
+        }
+        private void OnMouseLeaveselectRandomButton(object sender, EventArgs e)
+        {
+            selectRandomButton.BackColor = Color.FromArgb(255, 205, 205);
+        }
+
+        private void OnMouseEnterunfollowButton(object sender, EventArgs e)
+        {
+            unfollowButton.BackColor = Color.FromArgb(255, 160, 160);
+        }
+        private void OnMouseLeaveunfollowButton(object sender, EventArgs e)
+        {
+            unfollowButton.BackColor = Color.FromArgb(255, 205, 205);
+        }
+
+        private void OnMouseEnterfollowButton(object sender, EventArgs e)
+        {
+            followButton.BackColor = Color.FromArgb(255, 160, 160);
+        }
+        private void OnMouseLeavefollowButton(object sender, EventArgs e)
+        {
+            followButton.BackColor = Color.FromArgb(255, 205, 205);
+        }
+        //----------------------------------------------------------------------------------------
+
+        private void OnMouseEnterstatsButton(object sender, EventArgs e)
+        {
+            statsButton.BackColor = Color.FromArgb(255, 160, 160);
+        }
+        private void OnMouseLeavestatsButton(object sender, EventArgs e)
+        {
+            statsButton.BackColor = Color.FromArgb(255, 205, 205);
+        }
+
+        private void OnMouseEnterlikeFreshButton(object sender, EventArgs e)
+        {
+            likeFreshButton.BackColor = Color.FromArgb(255, 160, 160);
+        }
+        private void OnMouseLeavelikeFreshButton(object sender, EventArgs e)
+        {
+            likeFreshButton.BackColor = Color.FromArgb(255, 205, 205);
+        }
+
+        private void OnMouseEnterlikeLatestButton(object sender, EventArgs e)
+        {
+            likeLatestButton.BackColor = Color.FromArgb(255, 160, 160);
+        }
+        private void OnMouseLeavelikeLatestButton(object sender, EventArgs e)
+        {
+            likeLatestButton.BackColor = Color.FromArgb(255, 205, 205);
+        }
+
+        private void OnMouseEnterlikePhotosButton(object sender, EventArgs e)
+        {
+            likePhotosButton.BackColor = Color.FromArgb(255, 160, 160);
+        }
+        private void OnMouseLeavelikePhotosButton(object sender, EventArgs e)
+        {
+            likePhotosButton.BackColor = Color.FromArgb(255, 205, 205);
+        }
+
+        //-----------------------------------------------------------------------------------------
 
         private void mainScreen_Load(object sender, EventArgs e)
         {
             dataGetter.UpdateDb();
             followersComboBox.SelectedIndex = 0;
-            //followers
-            followersSearchPanel.Size = new Size(580, 281);
-            topUsersPanel.Size = new Size(440, 185);
 
-            followersSearchPanel.Location = new Point(21, 118);
-            topUsersPanel.Location = new Point(30, 160);
+            //this.Size = new Size(771, 454);
+            //this.StartPosition = FormStartPosition.CenterParent;
+
+            //followers
+            followersPanel.Size = new Size(617, 433);
+            followersPanel.Location = new Point(119, 12);
+
+            followersSearchPanel.Size = new Size(580, 344);
+            followersSearchPanel.Location = new Point(21, 86);
 
             //likes
             likesPanel.Location = new Point(119, 12);
@@ -53,6 +318,10 @@ namespace _500pxCracker
             //profile
             profilePanel.Location = new Point(119, 12);
             profilePanel.Size = new Size(440, 185);
+
+            photoTypeDropDown.SelectedIndex = 0;
+            timeDropDown.SelectedIndex = 0;
+            followersComboBox.SelectedIndex = 0;
         }
 
         private void frm2_FormClosed(object sender, FormClosedEventArgs e)
@@ -63,6 +332,10 @@ namespace _500pxCracker
         {
             isPythonRunning = val;
             PythonLabel.Visible = val;
+            pythonRunningPic.Visible = val;
+            killingPythonButton.Visible = val;
+            if (val == false)
+                MessageBox.Show("Python successfully ended");
         }
 
         private void profileButton_Click(object sender, EventArgs e)
@@ -113,15 +386,7 @@ namespace _500pxCracker
                 photosNumberTextBox.Text = photosNumberTextBox.Text.Remove(photosNumberTextBox.Text.Length - 1);
             }
         }
-
-        private void numberOfTopUsersTextBox_TextChanged(object sender, EventArgs e)
-        {
-            if (System.Text.RegularExpressions.Regex.IsMatch(numberOfTopUsersTextBox.Text, "[^0-9]"))
-            {
-                MessageBox.Show("Please enter only numbers.");
-                numberOfTopUsersTextBox.Text = numberOfTopUsersTextBox.Text.Remove(numberOfTopUsersTextBox.Text.Length - 1);
-            }
-        }
+        
 
         //likes panel ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         private void LikeFresh(int SelectedIndex, int Number)
@@ -187,8 +452,6 @@ namespace _500pxCracker
                 {
                     if (!followersSearchPanel.Visible)
                         followersSearchPanel.Visible = true;
-                    if (topUsersPanel.Visible)
-                        topUsersPanel.Visible = false;
 
                     PythonWorker.RunWorkerAsync("MutualFollow");
                 }
@@ -196,26 +459,7 @@ namespace _500pxCracker
                     MessageBox.Show("Please choose one of the available options!");
             }
         }
-
-        private void topUsersButton_Click(object sender, EventArgs e)
-        {
-            if (numberOfTopUsersTextBox.Text.Length != 0)
-            {
-                if (followersSearchPanel.Visible)
-                    followersSearchPanel.Visible = false;
-                if (!topUsersPanel.Visible)
-                    topUsersPanel.Visible = true;
-
-                int numberProvided = 0;
-                Int32.TryParse(numberOfTopUsersTextBox.Text, out numberProvided);
-                for(int i = 0; i < numberProvided - 1; i++)
-                {
-                    //set items of topUsersListBox
-                }
-            }
-            else
-                MessageBox.Show("Please provide all required information!");
-        }
+        
 
         private void selectRandomButton_Click(object sender, EventArgs e)
         {
@@ -656,6 +900,36 @@ namespace _500pxCracker
                 if (current.UsersToAdd.Count != 0)
                     UpdateUsersListViewAfterFollow();
                 SelectedUsers.Clear();
+            }
+        }
+
+        private void updateDBButton_Click_1(object sender, EventArgs e)
+        {
+            if (!isPythonRunning)
+            {
+                DialogResult dialogResult = MessageBox.Show("Are you sure you want to download DataBase? ", "", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    PythonWorker.RunWorkerAsync("UpdateDB");
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+                    //do nothing
+                }
+            }
+        }
+
+
+        private void killingPythonButton_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to stop Python? ", "", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                //tu prosze ubic pythona
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                //do nothing
             }
         }
     }
