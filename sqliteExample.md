@@ -1,3 +1,9 @@
+# Wymagane
+
+```cs
+using System.Data.SQLite;
+```
+
 # Wykonanie kwerendy która nic nie zwraca:
 
 ```cs
