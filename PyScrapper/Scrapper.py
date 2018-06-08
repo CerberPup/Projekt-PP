@@ -197,6 +197,9 @@ class Scrapper:
                     self.logger.LogLine(url + " " + str(retriesCounter))
             if retriesCounter > Retries:
                 return response
+            if response.status_code == 403:
+                self.logger.LogLine("Incorrect request - aborting...")
+                return response
             if response.status_code == 429:
                 self.logger.LogLine("Too many requests in time, please shut down scrapper and try again later")
                 time.sleep(600)
@@ -333,7 +336,10 @@ class Scrapper:
 
     def GetPhotosForUser(self, username, galleriesAmount=-1, pagesAmount=-1):
 
-        ID = self.GetUserInfo(username)['id']
+        UserInfo = self.GetUserInfo(username)
+        if UserInfo is None:
+            return {}
+        ID = UserInfo['id']
         self.GetUnassignedPhotosForUser(username, ID, pagesAmount)
         galleries = self.GetPhotosGalleriesForUser(ID, galleriesAmount)
         retDict= {}
