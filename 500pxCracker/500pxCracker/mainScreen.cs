@@ -12,7 +12,7 @@ namespace _500pxCracker
     {
         [DllImportAttribute("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-
+        
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
 
@@ -298,9 +298,8 @@ namespace _500pxCracker
 
         private void mainScreen_Load(object sender, EventArgs e)
         {
-            dataGetter.UpdateDb();
             followersComboBox.SelectedIndex = 0;
-
+            timeDropDown.SelectedIndex = 0;
             //this.Size = new Size(771, 454);
             //this.StartPosition = FormStartPosition.CenterParent;
 
@@ -438,26 +437,19 @@ namespace _500pxCracker
             }
         }
 
-        private void MutualFollow()
-        {
-            dataGetter.GetFollowersandFollowings();
-            dataGetter.UpdateDb();
-        }
 
         private void mutualFolButton_Click(object sender, EventArgs e)
         {
-            if (!isPythonRunning)
-            {
                 if (followersComboBox.SelectedIndex > -1)
                 {
                     if (!followersSearchPanel.Visible)
                         followersSearchPanel.Visible = true;
+                    followersComboBox_SelectedIndexChanged(this, new EventArgs());
 
-                    PythonWorker.RunWorkerAsync("MutualFollow");
-                }
-                else
-                    MessageBox.Show("Please choose one of the available options!");
+                //PythonWorker.RunWorkerAsync("MutualFollow");
             }
+            else
+                    MessageBox.Show("Please choose one of the available options!");
         }
         
 
@@ -522,35 +514,28 @@ namespace _500pxCracker
                 usersListView.Items[i].Checked = !usersListView.Items[i].Checked;
             }
         }
-        private void UpdateUsersListViewAfterUnfollow()
-        {
-            CurrentUser current = CurrentUser.Get();
-            foreach (string user in current.UsersToRemove)
-            {
-                User u = current.GetUserByFullName(user);
-                if (u!=null){
-                    u._StartedFollowing = null;
-                    if (u._StartedFollowing == null)
-                    {
-                        current._Followers.Remove(u);
-                    }
-                    if (u._FollowedSince == null)
-                    {
-                        current._Following.Remove(u);
-                    }
-                }
-                usersListView.Items.RemoveByKey(user);
-            }
-            current.UsersToRemove.Clear();
-        }
         private void UnFollow()
         {
             CurrentUser current = CurrentUser.Get();
+            SQLiteConnection m_dbConnection = new SQLiteConnection("Data Source = " + LocalizationData.DbDir + "scrapper.db" + "; Version = 3; UseUTF16Encoding = True;");
+            m_dbConnection.Open();
+            string where = " where ";
             foreach (string user in SelectedUsers)
             {
-                current.UsersToRemove.Add(user);
-                current.Unfollow(current.GetUserByFullName(user));
+                where += "fullname = '"+ user+"' or ";
             }
+            where = where.Remove(where.Length - 4, 4);
+            SQLiteCommand command = new SQLiteCommand("select * from Users "+where, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                current.Unfollow(reader["name"].ToString());
+            }
+            command = new SQLiteCommand("Update Users set following_since = ''"+where, m_dbConnection);
+            command.ExecuteNonQuery();
+            command = new SQLiteCommand("DELETE from Users where follower_since='' AND following_since=''", m_dbConnection);
+            command.ExecuteNonQuery();
+            m_dbConnection.Close();
         }
         private void unfollowButton_Click(object sender, EventArgs e)
         {
@@ -565,35 +550,26 @@ namespace _500pxCracker
             }
             //nonFollowersListBox.Items.Remove(user);
         }
-        private void UpdateUsersListViewAfterFollow()
-        {
-            CurrentUser current = CurrentUser.Get();
-            foreach (var user in current.UsersToAdd)
-            {
-                User u = current.GetUserByFullName(user);
-                u._StartedFollowing = DateTime.Now;
-                ListViewItem item = new ListViewItem(u._FullName);
-                string followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
-                string followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
-                if (followedsince == "---" && followingsince == "---")
-                {
-                    followingsince = "No DB Data";
-                    followedsince = followingsince;
-                }
-                item.SubItems.Add(followingsince);
-                item.SubItems.Add(followedsince);
-                usersListView.Items.Add(item);
-            }
-            current.UsersToAdd.Clear();
-        }
         private void Follow()
         {
             CurrentUser current = CurrentUser.Get();
+            SQLiteConnection m_dbConnection = new SQLiteConnection("Data Source = " + LocalizationData.DbDir + "scrapper.db" + "; Version = 3; UseUTF16Encoding = True;");
+            m_dbConnection.Open();
+            string where = " where ";
             foreach (string user in SelectedUsers)
             {
-                current.Follow(current.GetUserByFullName(user));
-                current.UsersToAdd.Add(user);
+                where += "fullname = '" + user + "' or ";
             }
+            where = where.Remove(where.Length - 4, 4);
+            SQLiteCommand command = new SQLiteCommand("select * from Users " + where, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                current.Follow(reader["name"].ToString());
+            }
+            command = new SQLiteCommand("Update Users set following_since = '"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") +"'" + where, m_dbConnection);
+            command.ExecuteNonQuery();
+            m_dbConnection.Close();
         }
         private void followButton_Click(object sender, EventArgs e)
         {
@@ -640,15 +616,16 @@ namespace _500pxCracker
                         since -= new TimeSpan(DateTime.IsLeapYear(since.Year-1)?1:0 +365, 0, 0, 0);
                         break;
                 }
-                var likes = CurrentUser.Get().GetLastLikes(since);
+                SQLiteConnection m_dbConnection = new SQLiteConnection("Data Source = " + LocalizationData.DbDir + "scrapper.db" + "; Version = 3; UseUTF16Encoding = True;");
+                m_dbConnection.Open();
+                SQLiteCommand command = new SQLiteCommand("select * from Likes", m_dbConnection);
+                SQLiteDataReader reader = command.ExecuteReader();
                 int count = 0;
-                foreach(var user in likes)
+                while (reader.Read())
                 {
-                    count += user.Value;
+                    count += DateTime.Parse(reader["liked"].ToString()).CompareTo(since) > -1 ? 1 : 0;
                 }
                 statsLikes.Text = count.ToString();
-
-                timeDropDown.SelectedIndex = -1;
             }
             else
                 MessageBox.Show("Please choose one of the available options!");
@@ -706,132 +683,42 @@ namespace _500pxCracker
             if (followersSearchPanel.Visible && !isPythonRunning)
             {
                 List<ListViewItem> listViewItems = new List<ListViewItem>();
-                string followedsince = "";
-                string followingsince = "";
+                SQLiteConnection m_dbConnection = new SQLiteConnection("Data Source = " + LocalizationData.DbDir + "scrapper.db" + "; Version = 3; UseUTF16Encoding = True;");
+                m_dbConnection.Open();
+                string sql = "select * from Users";
                 switch ((FollowersComboBoxState)followersComboBox.SelectedIndex)
                 {
                     case FollowersComboBoxState.All:
-                        foreach (User u in CurrentUser.Get()._Following)
-                        {
-                            ListViewItem item = new ListViewItem(u._FullName);
-                            followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
-                            followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
-                            if (followedsince == "---" && followingsince == "---")
-                            {
-                                followingsince = "No DB Data";
-                                followedsince = followingsince;
-                            }
-                            item.SubItems.Add(followingsince);
-                            item.SubItems.Add(followedsince);
-                            listViewItems.Add(item);
-                        }
-                        foreach (User u in CurrentUser.Get()._Followers)
-                        {
-                            if (CurrentUser.Get()._Following.Find(x => x._Id == u._Id) == null)
-                            {
-                                ListViewItem item = new ListViewItem(u._FullName);
-                                followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
-                                followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
-                                if (followedsince == "---" && followingsince == "---")
-                                {
-                                    followingsince = "No DB Data";
-                                    followedsince = followingsince;
-                                }
-                                item.SubItems.Add(followingsince);
-                                item.SubItems.Add(followedsince);
-                                listViewItems.Add(item);
-                            }
-                        }
+                        sql = "select * from Users";
                         break;
                     case FollowersComboBoxState.OnlyFollowers:
-                        foreach (User u in CurrentUser.Get()._Followers)
-                        {
-                            if (CurrentUser.Get()._Following.Find(x => x._Id == u._Id) == null)
-                            {
-                                ListViewItem item = new ListViewItem(u._FullName);
-                                followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
-                                followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
-                                if (followedsince == "---" && followingsince == "---")
-                                {
-                                    followingsince = "No DB Data";
-                                    followedsince = followingsince;
-                                }
-                                item.SubItems.Add(followingsince);
-                                item.SubItems.Add(followedsince);
-                                listViewItems.Add(item);
-                            }
-                        }
+                        sql = "select * from Users WHERE follower_since!='' AND following_since=''";
                         break;
                     case FollowersComboBoxState.OnlyFollowing:
-                        foreach (User u in CurrentUser.Get()._Following)
-                        {
-                            if (CurrentUser.Get()._Followers.Find(x => x._Id == u._Id) == null)
-                            {
-                                ListViewItem item = new ListViewItem(u._FullName);
-                                followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
-                                followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
-                                if (followedsince == "---" && followingsince == "---")
-                                {
-                                    followingsince = "No DB Data";
-                                    followedsince = followingsince;
-                                }
-                                item.SubItems.Add(followingsince);
-                                item.SubItems.Add(followedsince);
-                                listViewItems.Add(item);
-                            }
-                        }
+                        sql = "select * from Users WHERE following_since!='' AND follower_since=''";
                         break;
                     case FollowersComboBoxState.Followers:
-                        foreach (User u in CurrentUser.Get()._Followers)
-                        {
-                            ListViewItem item = new ListViewItem(u._FullName);
-                            followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
-                            followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
-                            if (followedsince == "---" && followingsince == "---")
-                            {
-                                followingsince = "No DB Data";
-                                followedsince = followingsince;
-                            }
-                            item.SubItems.Add(followingsince);
-                            item.SubItems.Add(followedsince);
-                            listViewItems.Add(item);
-                        }
+                        sql = "select * from Users WHERE follower_since!=''";
                         break;
                     case FollowersComboBoxState.Following:
-                        foreach (User u in CurrentUser.Get()._Following)
-                        {
-                            ListViewItem item = new ListViewItem(u._FullName);
-                            followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
-                            followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
-                            if (followedsince == "---" && followingsince == "---")
-                            {
-                                followingsince = "No DB Data";
-                                followedsince = followingsince;
-                            }
-                            item.SubItems.Add(followingsince);
-                            item.SubItems.Add(followedsince);
-                            listViewItems.Add(item);
-                        }
+                        sql = "select * from Users WHERE following_since!=''";
                         break;
                     case FollowersComboBoxState.Mutuals:
-                        foreach (User u in CurrentUser.Get().MutualFollow())
-                        {
-                            ListViewItem item = new ListViewItem(u._FullName);
-                            followedsince = u._FollowedSince.HasValue == true ? u._FollowedSince.Value.ToShortDateString() : "---";
-                            followingsince = u._StartedFollowing.HasValue == true ? u._StartedFollowing.Value.ToShortDateString() : "---";
-                            if (followedsince == "---" && followingsince == "---")
-                            {
-                                followingsince = "No DB Data";
-                                followedsince = followingsince;
-                            }
-                            item.SubItems.Add(followingsince);
-                            item.SubItems.Add(followedsince);
-                            listViewItems.Add(item);
-                        }
+                        sql = "select * from Users WHERE follower_since!='' AND following_since!=''";
                         break;
                     default:
                         return;
                 }
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                SQLiteDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    ListViewItem item = new ListViewItem(reader["fullname"].ToString());
+                    item.SubItems.Add(reader["following_since"].ToString());
+                    item.SubItems.Add(reader["follower_since"].ToString());
+                    listViewItems.Add(item);
+                }
+                m_dbConnection.Close();
                 //listViewItems.Sort();// Crash przy jakims userze
                 usersListView.Items.Clear();
                 usersListView.Items.AddRange(listViewItems.ToArray());
@@ -867,9 +754,6 @@ namespace _500pxCracker
                 case "UpdateDB":
                     UpdateDB();
                     break;
-                case "MutualFollow":
-                    MutualFollow();
-                    break;
                 case "LikeFresh":
                     LikeFresh(arg[0], arg[1]);
                     break;
@@ -895,10 +779,6 @@ namespace _500pxCracker
             if (e.ProgressPercentage == 0) {
                 CurrentUser current = CurrentUser.Get();
                 followersComboBox_SelectedIndexChanged(this, new EventArgs());
-                if (current.UsersToRemove.Count != 0)
-                    UpdateUsersListViewAfterUnfollow();
-                if (current.UsersToAdd.Count != 0)
-                    UpdateUsersListViewAfterFollow();
                 SelectedUsers.Clear();
             }
         }

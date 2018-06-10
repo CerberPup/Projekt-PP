@@ -214,7 +214,7 @@ namespace _500pxCracker
             LocalizationData.UserInfoDir = LocalizationData.UserInfoRoot + credentials.login+"\\";
             LocalizationData.FollowersDir = LocalizationData.UserInfoDir + "followers\\";
             LocalizationData.FollowingDir = LocalizationData.UserInfoDir + "followings\\";
-            LocalizationData.DbDir = LocalizationData.UserInfoDir + "db\\";
+            //LocalizationData.DbDir = LocalizationData.UserInfoDir + "db\\";
             string logDir = LocalizationData.UserInfoDir + "log";
             Process process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;

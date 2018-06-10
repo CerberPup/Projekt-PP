@@ -1,0 +1,18 @@
+12:00:30 - Executed: CREATE TABLE IF NOT EXISTS Users (userID INTEGER PRIMARY KEY, name text, fullname text, following_since text, follower_since text)
+12:00:30 - Executed: CREATE TABLE IF NOT EXISTS Likes (userID INTEGER, photoID INTEGER, liked text, FOREIGN KEY (userID) REFERENCES Users(userID), UNIQUE (userID, photoID))
+12:00:30 - SELECT userID FROM Users WHERE follower_since!=''
+12:00:34 - SELECT * FROM Users WHERE follower_since=''
+12:00:34 - Users replace commited
+12:00:34 - SELECT userID FROM Users WHERE following_since!=''
+12:00:37 - SELECT * FROM Users WHERE following_since=''
+12:00:38 - Users replace commited
+12:00:55 - Likes commited
+12:02:42 - Executed: CREATE TABLE IF NOT EXISTS Users (userID INTEGER PRIMARY KEY, name text, fullname text, following_since text, follower_since text)
+12:02:42 - Executed: CREATE TABLE IF NOT EXISTS Likes (userID INTEGER, photoID INTEGER, liked text, FOREIGN KEY (userID) REFERENCES Users(userID), UNIQUE (userID, photoID))
+12:02:42 - SELECT userID FROM Users WHERE follower_since!=''
+12:02:46 - SELECT * FROM Users WHERE follower_since=''
+12:02:46 - Users replace commited
+12:02:46 - SELECT userID FROM Users WHERE following_since!=''
+12:02:49 - SELECT * FROM Users WHERE following_since=''
+12:02:49 - Users replace commited
+12:03:07 - Likes commited
