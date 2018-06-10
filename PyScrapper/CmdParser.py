@@ -1,3 +1,4 @@
+import re
 class CmdParser:
 
     def __init__(self, argv):
@@ -30,7 +31,7 @@ class CmdParser:
                 present=True
                 continue
             if(present):
-                if '-' in arg:
+                if re.match('^[-].*', arg):
                     return self.Users
                 else:
                     self.Users.append(arg)
