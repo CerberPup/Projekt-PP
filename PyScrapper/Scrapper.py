@@ -68,6 +68,11 @@ class Scrapper:
         if not os.path.exists(self.dbDir):
             os.makedirs(self.dbDir)
 
+    def _relogin(self):
+        self._retrieveToken()
+        self._login()
+        self.dumpSessionObject()
+
     def cleanupTempFiles(self):
         if os.path.exists(Scrapper.photosDir):
             cleanupDir(Scrapper.photosDir)
@@ -131,7 +136,6 @@ class Scrapper:
                 if pageNum == followingPage_json['friends_pages']:
                     break
                 pageNum += 1
-                time.sleep(3)
             else:
                 self.logger.LogLine("Unable to retrieve followings lists at " + str(pageNum))
                 self.logger.LogLine("Error URL: " + str(followingPage.url))
@@ -161,7 +165,6 @@ class Scrapper:
                 if pageNum == followersPage_json['followers_pages']:
                     break
                 pageNum += 1
-                time.sleep(3)
             else:
                 self.logger.LogLine("Unable to retrieve followings lists at " + str(pageNum))
                 self.logger.LogLine("Error URL: " + str(followersPage.url))
@@ -191,6 +194,9 @@ class Scrapper:
                 self.logger.LogLine('Requested page is not responding, retrying...')
                 time.sleep(5)
                 continue
+            if response.status_code == 401:
+                self.logger.LogLine("Unauthorized, relogin...")
+                self._relogin()
             if Retries>0:
                 if retriesCounter > Retries:
                     self.logger.LogLine("Request web page reached limit of retries.")
@@ -388,8 +394,8 @@ class Scrapper:
         if os.path.isfile(photoFile):
             os.remove(photoFile)
         while True:
-            likesPage = self.requestWebPage('GET', 'https://api.500px.com/v1/photos/' + str(photoID) + '/votes?page='+ str(page), data=self.payload)
             self.logger.LogLine("Attempt to get votes for photo " + str(photoID))
+            likesPage = self.requestWebPage('GET', 'https://api.500px.com/v1/photos/' + str(photoID) + '/votes?page='+ str(page), Retries=1, data=self.payload)
             if likesPage.status_code == 200:
                 likesPage_json= json.loads(likesPage.text)
                 with open(photoFile, 'a') as f:
@@ -399,8 +405,11 @@ class Scrapper:
                 if page == likesPage_json['total_pages']:
                     break
                 page=page+1
+            elif likesPage.status_code == 404:
+                self.logger.LogLine("No votes for photo")
+                break
             else:
-                self.logger.LogLine("Unable to get galleries")
+                self.logger.LogLine("Unable to get votes")
                 break
         return Votes
 

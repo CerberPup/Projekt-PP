@@ -3,7 +3,7 @@ class CmdParser:
     def __init__(self, argv):
         self.Users = []
         self.args = argv
-        if(len(self.args)==1):
+        if(len(self.args)<3):
             self.DisplayHelp()
             return
         elif self.GetHelp():

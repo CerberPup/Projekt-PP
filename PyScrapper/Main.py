@@ -1,10 +1,11 @@
 from Scrapper import *
 from CmdParser import *
 from DatabaseManager import *
+from SQLManager import *
 
 
 cmdParser = CmdParser(sys.argv)
-if len(cmdParser.args) > 1:
+if len(cmdParser.args) > 3:
     if not cmdParser.GetHelp():
         login = cmdParser.GetLogin()
         passwd = cmdParser.GetPassword()
@@ -60,5 +61,7 @@ if len(cmdParser.args) > 1:
             scrapper.GetVotesForPhoto(int(cmdParser.GetVotesForPhoto()))
 
         if cmdParser.GetDBUpdate():
-            dbManager = DatabaseManager(scrapper)
-            dbManager.CreateUsersList()
+            sqlManager = SQLManager('../scrapper.db', '../dbLog', True, scrapper )
+            sqlManager.UpdateFollowers()
+            sqlManager.UpdateFollowings()
+            sqlManager.UpdatePhotoInfo()
