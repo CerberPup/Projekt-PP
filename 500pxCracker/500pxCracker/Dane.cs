@@ -151,9 +151,8 @@ namespace _500pxCracker
         static public string UserInfoDir = UserInfoRoot; // set at login
         static public string FollowersDir = UserInfoDir + "followers\\";
         static public string FollowingDir = UserInfoDir + "followings\\";
-        //static public string DbDir = UserInfoDir + "db\\";
-        static public string DbDir = Directory.GetCurrentDirectory() + "\\..\\..\\..\\..\\";
         static public string PhotosDir = ScriptsDir + "photosDumps\\";
+        static public string DbDir = "";
         static public string PythonDir = ""; // set at login
         static public string Python = ""; // set at login
         static public string DbCurrentDir = ""; // set at login
@@ -588,7 +587,6 @@ namespace _500pxCracker
                     }                    
                 }
             }
-
             //adding user who liked our most recent photos, key-username, value-id
             foreach (var like in likesForNewestPhoto)
             {        
