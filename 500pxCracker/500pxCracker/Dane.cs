@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Data.SQLite;
 
 namespace _500pxCracker
 {
@@ -102,77 +103,6 @@ namespace _500pxCracker
             process.StartInfo.CreateNoWindow = true;
             process.Start();
             process.WaitForExit();
-            UpdateDb();
-        }
-        public static void UpdateDb()
-        {
-            if (Directory.Exists(LocalizationData.DbDir) && Directory.EnumerateFileSystemEntries(LocalizationData.DbDir).Any())
-            {
-                DirectoryInfo d = new DirectoryInfo(LocalizationData.DbDir);
-                DateTime max = DateTime.MinValue;
-                string filename = "";
-                foreach (var file in d.GetFiles("*"))
-                {
-                    string date = file.Name.Substring(7);
-                    string[] s = date.Split('_'); //04.02.1926 00:00:00
-                    s[1] = s[1].Replace('-', ':');
-                    DateTime dateTime = DateTime.Parse(s[0] + ' ' + s[1]);
-                    if (dateTime > max)
-                    {
-                        max = dateTime;
-                        filename = file.FullName;
-                    }
-
-                }
-                DBMain dBMain = JsonConvert.DeserializeObject<DBMain>(File.ReadAllText(filename));
-                CurrentUser c = CurrentUser.Get();
-                c._User._Photos = new List<Photo>();
-
-                foreach (var user in dBMain.users)
-                {
-                    int uFollowing = c._Following.FindIndex(x => x._Id == user.userID);
-                    int uFollower = c._Followers.FindIndex(x => x._Id == user.userID);
-                    if (uFollowing != -1)
-                    {
-                        c._Following[uFollowing]._FollowedSince = user.follows_since;
-                        c._Following[uFollowing]._StartedFollowing = user.following_since;
-                        c._Following[uFollowing]._Id = user.userID;
-                        c._Following[uFollowing]._FullName = user.fullname;
-                        c._Following[uFollowing]._Name = user.username;
-                    }
-                    if (uFollower != -1)
-                    {
-                        c._Followers[uFollower]._FollowedSince = user.follows_since;
-                        c._Followers[uFollower]._StartedFollowing = user.following_since;
-                        c._Followers[uFollower]._Id = user.userID;
-                        c._Followers[uFollower]._FullName = user.fullname;
-                        c._Followers[uFollower]._Name = user.username;
-                    }
-                    /*Nie dodajemy z bd tylko nakładamy daty
-                    if (user.following_since.HasValue == true && uFollowing == -1)
-                    {
-                        c._Following.Add(new User()
-                        {
-                            _FollowedSince = user.follows_since,
-                            _StartedFollowing = user.following_since,
-                            _Id = user.userID,
-                            _FullName = user.fullname,
-                            _Name = user.username
-                        });
-                    }
-                    if (user.follows_since.HasValue == true && uFollower == -1)
-                    {
-                        c._Followers.Add(new User()
-                        {
-                            _FollowedSince = user.follows_since,
-                            _StartedFollowing = user.following_since,
-                            _Id = user.userID,
-                            _FullName = user.fullname,
-                            _Name = user.username
-                        });
-                    }*/
-                }
-            }
         }
         public static void UpdateFollowers()
         {
@@ -195,30 +125,6 @@ namespace _500pxCracker
                 users.Add(GetUserByFileName(file.Name));
             }
             CurrentUser.Get()._Following = users;
-        }
-        public static void GetFollowers()
-        {
-            Credentials credentials = CurrentUser.Get().Get_Credentials();
-             process = new Process();
-            process.StartInfo.FileName = LocalizationData.Python;
-            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + credentials.login + " " + credentials.password +" -f2";
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.CreateNoWindow = true;
-            process.Start();
-            process.WaitForExit();
-            UpdateFollowers();
-        }
-        public static void GetFollowings()
-        {
-            Credentials credentials = CurrentUser.Get().Get_Credentials();
-             process = new Process();
-            process.StartInfo.FileName = LocalizationData.Python;
-            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + credentials.login + " " + credentials.password + " -f1";
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.CreateNoWindow = true;
-            process.Start();
-            process.WaitForExit();
-            UpdateFollowings();
         }
         public static void GetFollowersandFollowings()
         {
@@ -245,7 +151,8 @@ namespace _500pxCracker
         static public string UserInfoDir = UserInfoRoot; // set at login
         static public string FollowersDir = UserInfoDir + "followers\\";
         static public string FollowingDir = UserInfoDir + "followings\\";
-        static public string DbDir = UserInfoDir + "db\\";
+        //static public string DbDir = UserInfoDir + "db\\";
+        static public string DbDir = Directory.GetCurrentDirectory() + "\\..\\..\\..\\..\\";
         static public string PhotosDir = ScriptsDir + "photosDumps\\";
         static public string PythonDir = ""; // set at login
         static public string Python = ""; // set at login
@@ -472,54 +379,27 @@ namespace _500pxCracker
             return response;
         }
 
-        public List<User> UnfollowNonMutual()
+        public void Unfollow(string userName)
         {
-            List<User> unfollowed = OneWayFollow();
-            foreach(User user in unfollowed)
-            {
-                //Send unfollow request to server
-            }
-            _Following = _Following.Except(unfollowed).ToList();
-                //List<User>.FindAll(_Following, u => !List<User>.Exists(_Following,u2=>u2==u));
-            return unfollowed;
-        }
-
-        public void Unfollow(User user)
-        {
-           
             Process process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
-            process.StartInfo.Arguments = LocalizationData.MainPy + " " + _Credentials.login + " " + _Credentials.password+" -ufl " + user._Name;
+            process.StartInfo.Arguments = LocalizationData.MainPy + " " + _Credentials.login + " " + _Credentials.password+" -ufl " + userName;
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
             Pids.pids.Add(process.Id);
-
             process.WaitForExit();
-            _Following.Remove(user);
         }
-        public void Follow(User user)
+        public void Follow(string userName)
         {
             Process process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
-            process.StartInfo.Arguments = LocalizationData.MainPy + " " + _Credentials.login + " " + _Credentials.password + " -fl " + user._Name;
+            process.StartInfo.Arguments = LocalizationData.MainPy + " " + _Credentials.login + " " + _Credentials.password + " -fl " + userName;
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
             Pids.pids.Add(process.Id);
-
-            process.WaitForExit();
-            int i = _Following.FindIndex(x => x._Id == user._Id);
-            if (i!=-1)
-            {
-                _Following[_Following.FindIndex(x => x._Id == user._Id)]._FollowedSince = DateTime.Now;
-            }
-            else
-            {
-                user._FollowedSince = DateTime.Now;
-                _Following.Add(user);
-            }
-           
+            process.WaitForExit();  
         }
 
         public void LikeLatestPhotos()
@@ -592,6 +472,8 @@ namespace _500pxCracker
 
        public void getLocalUserPhotos()
         {
+            if (_User._Photos == null)
+                _User._Photos = new List<Photo>();
             Photo photo = null;
             Process process;
             process = new Process();
@@ -656,8 +538,10 @@ namespace _500pxCracker
         public void LikeLikingMe(int number)
         {
             Dictionary<string, string> liking = new Dictionary<string, string>();
-            Photo newestPhoto = new Photo();
-            newestPhoto._PhotoUploadDate = DateTime.MinValue;
+            Photo newestPhoto = new Photo
+            {
+                _PhotoUploadDate = DateTime.MinValue
+            };
             Process process;
             DirectoryInfo dir;
             getLocalUserPhotos();
