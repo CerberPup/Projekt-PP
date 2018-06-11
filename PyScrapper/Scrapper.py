@@ -1,10 +1,17 @@
-from Logger import *
-import requests, time, json, os, shutil
-from bs4 import BeautifulSoup
-import sys
-from pprint import pprint
-import random
-import pickle
+try:
+    from Logger import *
+    import requests, time, json, os, shutil
+    from bs4 import BeautifulSoup
+    import sys
+    from pprint import pprint
+    import random
+    import pickle
+except ImportError:
+    try:
+        with open ("error.log", 'a+') as f:
+            f.write("Import error in Scrapper.py")
+    except Exception:
+        print("Import error in Scrapper.py")
 
 
 def cleanupDir(fullpath):

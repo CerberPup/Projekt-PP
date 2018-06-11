@@ -1,8 +1,15 @@
-import sqlite3
-from Logger import Logger
-import os
-import datetime
-from collections import OrderedDict
+try:
+    import sqlite3
+    from Logger import Logger
+    import os
+    import datetime
+    from collections import OrderedDict
+except ImportError:
+    try:
+        with open ("error.log", 'a+') as f:
+            f.write("Import error in SQLManager.py")
+    except Exception:
+        print("Import error in SQLManager.py")
 
 scriptDir = os.path.abspath(os.path.dirname(__file__))
 

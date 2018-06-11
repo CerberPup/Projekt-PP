@@ -1,4 +1,11 @@
-import os, time
+try:
+    import os, time
+except ImportError:
+    try:
+        with open ("error.log", 'a+') as f:
+            f.write("Import error in Logger.py")
+    except Exception:
+        print("Import error in Logger.py")
 
 class Logger:
     def __init__(self, path, name, debugMode):

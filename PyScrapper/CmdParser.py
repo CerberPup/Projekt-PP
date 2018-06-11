@@ -1,4 +1,12 @@
-import re
+try:
+    import re
+except ImportError:
+    try:
+        with open ("error.log", 'a+') as f:
+            f.write("Import error in CmdParser.py")
+    except Exception:
+        print("Import error in CmdParser.py")
+
 class CmdParser:
 
     def __init__(self, argv):
