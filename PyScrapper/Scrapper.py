@@ -481,7 +481,7 @@ class Scrapper:
             os.remove(file)
         page = startPage
         while amount>0:
-            URL = 'https://api.500px.com/v1/photos?rpp=50&feature=upcoming&image_size[]=1&image_size[]=2&image_size[]=32&image_size[]=31&image_size[]=33&image_size[]=34&image_size[]=35&image_size[]=36&image_size[]=2048&image_size[]=4&image_size[]=14&sort=&include_states=true&include_licensing=false&formats=jpeg,lytro&only=&exclude=&personalized_categories=false&page='+ str(page) + '&rpp=50'
+            URL = 'https://api.500px.com/v1/photos?rpp=50&feature=upcoming&image_size[]=1&image_size[]=2&image_size[]=32&image_size[]=31&image_size[]=33&image_size[]=34&image_size[]=35&image_size[]=36&image_size[]=2048&image_size[]=4&image_size[]=14&sort=&include_states=true&include_licensing=false&formats=jpeg,lytro&only=&exclude=&personalized_categories=false&page='+ str(page) + '&rpp=' + str(amount)
             self.logger.LogLine("Attempt to get photos from Upcoming, page " + str(page))
             response = self.requestWebPage("GET", URL, data=self.payload)
             if response.status_code == 200:
