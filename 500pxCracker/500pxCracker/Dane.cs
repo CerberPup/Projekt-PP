@@ -223,7 +223,7 @@ namespace _500pxCracker
         public static void GetFollowersandFollowings()
         {
             Credentials credentials = CurrentUser.Get().Get_Credentials();
-             process = new Process();
+            process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
             process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + credentials.login + " " + credentials.password + " -f1 -f2";
             process.StartInfo.UseShellExecute = false;
@@ -652,7 +652,6 @@ namespace _500pxCracker
             }
         }
 
-
         public void LikeLikingMe(int number)
         {
             Dictionary<string, string> liking = new Dictionary<string, string>();
@@ -665,6 +664,7 @@ namespace _500pxCracker
             //getting likes for our photos
             foreach (Photo pht in _User._Photos)
             {
+                
                 process = new Process();
                 process.StartInfo.FileName = LocalizationData.Python;
                 process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -l "+ pht._PhotoId+ " -noCleanup";
@@ -672,7 +672,6 @@ namespace _500pxCracker
                 process.StartInfo.CreateNoWindow = true;
                 process.Start();
                 Pids.pids.Add(process.Id);
-
                 process.WaitForExit();
             }
 
@@ -726,7 +725,6 @@ namespace _500pxCracker
 
             process.WaitForExit();
 
-            int iterMax;
             //parsing downloaded json into photos collection
             foreach (var user in liking)
             {
@@ -734,11 +732,13 @@ namespace _500pxCracker
                 DirectoryInfo d = new DirectoryInfo(LocalizationData.PhotosDir + "User" + user.Value);
                 if (d.Exists)
                 {
-                    foreach (var gallery in dir.GetDirectories())
+                    foreach (var gallery in d.GetDirectories())
                     {
-                        string likingFiles = File.ReadAllText(dir + "\\" + gallery.Name + "\\photos");
-                        Regex regexp = new Regex("\"liked\":(.*?),.*?\"feature_date\": \"(.*?)\".*?\"id\":(.*?),");
+                        string likingFiles = File.ReadAllText(d + "\\" + gallery.Name + "\\photos");
+                        //   Regex regexp = new Regex("\"liked\":(.*?),.*?\"feature_date\": \"(.*?)\".*?\"id\":(.*?),");
+                        Regex regexp = new Regex(" \"liked\":(.*?),.*?\"id\":(.*?),");
                         MatchCollection likingMatches = regex.Matches(likingFiles);
+                        int iterMax;
 
                         if (likingMatches.Count >= number)
                         {
@@ -749,70 +749,67 @@ namespace _500pxCracker
                         {
                             iterMax = likingMatches.Count;
                         }
-
                         for (int i = 0; i < iterMax; i++)
                         {
+                            /*
                             if (likingMatches[i].Success && !bool.Parse(likingMatches[i].Groups[1].Value))
                             {
                                 process = new Process();
                                 process.StartInfo.FileName = LocalizationData.Python;
-                                process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -v " + likingMatches[i].Groups[3].Value + " -noCleanup"; ;
+                                process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -v " + likingMatches[i].Groups[2].Value + " -noCleanup"; ;
                                 process.StartInfo.UseShellExecute = false;
                                 process.StartInfo.CreateNoWindow = true;
                                 process.Start();
                                 Pids.pids.Add(process.Id);
-
                                 process.WaitForExit();
-
                             }
+                            */
                         }   
                     }
-
 
                     if (File.Exists(d + "\\photos_unassigned"))
                     {
                         string likingFiles = File.ReadAllText(d + "\\photos_unassigned");
                         Regex regexp = new Regex("\"liked\":(.*?),.*?\"feature_date\": \"(.*?)\".*?\"id\":(.*?),");
                         MatchCollection likingMatches = regexp.Matches(likingFiles);
+                        int iterMax;
+
                         if (likingMatches.Count >= number)
+
                         {
                             iterMax = number;
-
                         }
                         else
                         {
                             iterMax = likingMatches.Count;
                         }
-                        /*  
+                          
                         for (int i = 0; i < iterMax; i++)
                         {
                             if (likingMatches[i].Success && !bool.Parse(likingMatches[i].Groups[1].Value))
                             {
+                                
                                 process = new Process();
                                 process.StartInfo.FileName = LocalizationData.Python;
                                 process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -v " + likingMatches[i].Groups[3].Value + " -noCleanup"; ;
                                 process.StartInfo.UseShellExecute = false;
                                 process.StartInfo.CreateNoWindow = true;
                                 process.Start();
-                                Pids.pids.Add(process.Id);
-
+                              //  Pids.pids.Add(process.Id);                        
                                 process.WaitForExit();
+                               
                             }
-
-                        }
-                      */  
+                        }                      
                     }
                 }
-
             }
-                process = new Process();
-                process.StartInfo.FileName = LocalizationData.Python;
-                process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -offline";
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.CreateNoWindow = true;
-                process.Start();
-                Pids.pids.Add(process.Id);
-
+            process = new Process();
+            process.StartInfo.FileName = LocalizationData.Python;
+            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -offline";
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
+            process.Start();
+            Pids.pids.Add(process.Id);
             process.WaitForExit();
               
         }

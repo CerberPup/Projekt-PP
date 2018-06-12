@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -30,6 +32,8 @@ namespace _500pxCracker
             Mutuals
 
         };
+
+
         public mainScreen()
         {
             InitializeComponent();
@@ -422,16 +426,23 @@ namespace _500pxCracker
             }
         }
 
+        private void LikeLikingMe(int number)
+        {
+            CurrentUser.Get().LikeLikingMe(number);
+            MessageBox.Show("Successfully liked all the photos");
+        }
+
+
+
         private void likePhotosButton_Click(object sender, EventArgs e)
         {
             if (!isPythonRunning)
             {
                 if (photosNumberTextBox.Text.Length != 0)
                 {
-                    CurrentUser.Get().LikeLikingMe(int.Parse(photosNumberTextBox.Text));
+                      PythonWorker.RunWorkerAsync("LikeLikingMe-"+ int.Parse(photosNumberTextBox.Text));
 
-                    MessageBox.Show("Successfully liked all the photos");
-                    photosNumberTextBox.Text = "";
+                      photosNumberTextBox.Text = "";
                 }
                 else
                     MessageBox.Show("Please provide all required information!");
@@ -685,6 +696,9 @@ namespace _500pxCracker
         {
             dataGetter.GetDb();
         }
+
+       
+
         private void updateDBButton_Click(object sender, EventArgs e)
         {
             if (!isPythonRunning)
@@ -882,7 +896,9 @@ namespace _500pxCracker
                 case "LikeLatestPhotos":
                     LikeLatestPhotos();
                     break;
-
+                case "LikeLikingMe":
+                    LikeLikingMe(arg[0]);
+                    break;
                 default:
                     break;
             }
@@ -911,6 +927,7 @@ namespace _500pxCracker
                 if (dialogResult == DialogResult.Yes)
                 {
                     PythonWorker.RunWorkerAsync("UpdateDB");
+                 
                 }
                 else if (dialogResult == DialogResult.No)
                 {
@@ -925,8 +942,38 @@ namespace _500pxCracker
             DialogResult dialogResult = MessageBox.Show("Are you sure you want to stop Python? ", "", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                //tu prosze ubic pythona
-            }
+               
+                PythonWorker.CancelAsync();      
+                
+                         
+                if (PythonWorker.IsBusy == true)
+                {
+                    PythonWorker.Dispose();
+                    for (int i=0;i<Pids.pids.Count;i++)
+                    {
+                        try
+                        {
+                            Process.GetProcessById(Pids.pids[i]).Kill();
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                    }
+                }
+
+                if (Directory.Exists(LocalizationData.GalleriesDir)){
+                    Directory.Delete(LocalizationData.GalleriesDir, true);
+                }
+                if (Directory.Exists(LocalizationData.LikesForPhotosDir)){
+                    Directory.Delete(LocalizationData.LikesForPhotosDir, true);
+                }
+                if (Directory.Exists(LocalizationData.PhotosDir)){
+                    Directory.Delete(LocalizationData.PhotosDir, true);
+                }
+
+               
+                                        }
             else if (dialogResult == DialogResult.No)
             {
                 //do nothing
