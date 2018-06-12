@@ -1,10 +1,16 @@
-from Scrapper import *
-from CmdParser import *
-from DatabaseManager import *
-
+try:
+    from Scrapper import *
+    from CmdParser import *
+    from SQLManager import *
+except ImportError:
+    try:
+        with open("error.log", 'a+') as f:
+            f.write("Import error in Main.py")
+    except Exception:
+        print("Import error in Main.py")
 
 cmdParser = CmdParser(sys.argv)
-if len(cmdParser.args) > 1:
+if len(cmdParser.args) > 3:
     if not cmdParser.GetHelp():
         login = cmdParser.GetLogin()
         passwd = cmdParser.GetPassword()
@@ -60,5 +66,7 @@ if len(cmdParser.args) > 1:
             scrapper.GetVotesForPhoto(int(cmdParser.GetVotesForPhoto()))
 
         if cmdParser.GetDBUpdate():
-            dbManager = DatabaseManager(scrapper)
-            dbManager.CreateUsersList()
+            sqlManager = SQLManager(scrapper.dbDir+'/scrapper.db', scrapper.dbDir+'/dbLog', False, scrapper )
+            sqlManager.UpdateFollowers()
+            sqlManager.UpdateFollowings()
+            sqlManager.UpdatePhotoInfo()

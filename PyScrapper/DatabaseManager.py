@@ -1,6 +1,13 @@
-import jsonpickle
-import os
-from datetime import datetime
+try:
+    import jsonpickle
+    import os
+    from datetime import datetime
+except ImportError:
+    try:
+        with open ("error.log", 'a+') as f:
+            f.write("Import error")
+    except Exception:
+        print("Import error")
 
 class User(object):
     def __init__(self, username, userID, fullname, follows_since, following_since,likes):

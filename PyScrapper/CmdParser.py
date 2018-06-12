@@ -1,10 +1,18 @@
-import re
+try:
+    import re
+except ImportError:
+    try:
+        with open ("error.log", 'a+') as f:
+            f.write("Import error in CmdParser.py")
+    except Exception:
+        print("Import error in CmdParser.py")
+
 class CmdParser:
 
     def __init__(self, argv):
         self.Users = []
         self.args = argv
-        if(len(self.args)==1):
+        if(len(self.args)<3):
             self.DisplayHelp()
             return
         elif self.GetHelp():

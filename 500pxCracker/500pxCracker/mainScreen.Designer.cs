@@ -90,7 +90,7 @@
             this.likeText = new System.Windows.Forms.TextBox();
             this.likesPic = new System.Windows.Forms.PictureBox();
             this.closeButton = new System.Windows.Forms.PictureBox();
-            this.PythonWorker = new System.ComponentModel.BackgroundWorker();
+            PythonWorker = new System.ComponentModel.BackgroundWorker();
             this.menuPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.killingPythonButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.updateDBButton)).BeginInit();
@@ -950,9 +950,9 @@
             // 
             // PythonWorker
             // 
-            this.PythonWorker.WorkerReportsProgress = true;
-            this.PythonWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.PythonWorker_DoWork);
-            this.PythonWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.PythonWorker_ProgressChanged);
+            PythonWorker.WorkerReportsProgress = true;
+            PythonWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.PythonWorker_DoWork);
+            PythonWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.PythonWorker_ProgressChanged);
             // 
             // mainScreen
             // 
@@ -1076,9 +1076,9 @@
         private System.Windows.Forms.ColumnHeader FollowingSince;
         private System.Windows.Forms.ColumnHeader FollowerSince;
         private System.Windows.Forms.Label PythonLabel;
-        private System.ComponentModel.BackgroundWorker PythonWorker;
         private System.Windows.Forms.PictureBox updateDBButton;
         private System.Windows.Forms.PictureBox pythonRunningPic;
         private System.Windows.Forms.PictureBox killingPythonButton;
+        public static System.ComponentModel.BackgroundWorker PythonWorker;
     }
 }
