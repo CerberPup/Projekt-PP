@@ -428,7 +428,7 @@ namespace _500pxCracker
         public void TimerLikeFresh(Object source, System.Timers.ElapsedEventArgs e)
         {
             try { 
-            PythonWorker.RunWorkerAsync("LikeFresh 0 " + int.Parse(textBox1.Text));
+            PythonWorker.RunWorkerAsync("LikeFresh 0 " + int.Parse(freshTimerTextBox.Text));
             }
             catch (Exception)
             {
@@ -439,7 +439,7 @@ namespace _500pxCracker
         public void TimerLikeUpcoming(Object source, System.Timers.ElapsedEventArgs e)
         {
             try { 
-            PythonWorker.RunWorkerAsync("LikeFresh 1 " + int.Parse(textBox4.Text));
+            PythonWorker.RunWorkerAsync("LikeFresh 1 " + int.Parse(upcomingTimerTextBox.Text));
             }
             catch (Exception)
             {
@@ -866,38 +866,68 @@ namespace _500pxCracker
 
         private void saveTimersButton_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("Are you sure you want to change the timers?", "", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes)
+            if (freshCheckBox.Checked && freshTimerTextBox.Text.Length == 0 && !upcomingCheckBox.Checked)
+                MessageBox.Show("Please provide number of Fresh photos to be liked!");
+
+            else if(upcomingCheckBox.Checked && upcomingTimerTextBox.Text.Length==0 && !freshCheckBox.Checked)
+                MessageBox.Show("Please provide number of Upcoming photos to be liked!");
+
+            else if(upcomingCheckBox.Checked && upcomingTimerTextBox.Text.Length == 0 && freshCheckBox.Checked && freshTimerTextBox.Text.Length == 0)
+                MessageBox.Show("Please provide number of photos to be liked!");
+
+            else
             {
-                for (TimerIndex i = 0; i < TimerIndex.Size; i++)
+                DialogResult dialogResult = MessageBox.Show("Are you sure you want to change the timers?", "", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
                 {
-                    switch (i)
+                    for (TimerIndex i = 0; i < TimerIndex.Size; i++)
                     {
-                        case TimerIndex.UpdateDB:
-                            Timers[(int)i].Interval = TimetoMS(DBdateTimePicker);
-                            break;
-                        case TimerIndex.LikeFresh:
-                            Timers[(int)i].Interval = TimetoMS(freshDateTimePicker);
-                            break;
-                        case TimerIndex.LikeUpcoming:
-                            Timers[(int)i].Interval = TimetoMS(upcomingDateTimePicker);
-                            break;
-                        case TimerIndex.LikeLatestPhotos:
-                            Timers[(int)i].Interval = TimetoMS(lastestDateTimePicker);
-                            break;
-                        default:
-                            break;
+                        switch (i)
+                        {
+                            case TimerIndex.UpdateDB:
+                                Timers[(int)i].Interval = TimetoMS(DBdateTimePicker);
+                                break;
+                            case TimerIndex.LikeFresh:
+                                Timers[(int)i].Interval = TimetoMS(freshDateTimePicker);
+                                break;
+                            case TimerIndex.LikeUpcoming:
+                                Timers[(int)i].Interval = TimetoMS(upcomingDateTimePicker);
+                                break;
+                            case TimerIndex.LikeLatestPhotos:
+                                Timers[(int)i].Interval = TimetoMS(lastestDateTimePicker);
+                                break;
+                            default:
+                                break;
+                        }
                     }
+                    SetTimerActive(TimerIndex.UpdateDB, BDcheckBox.Checked, DBcomboBox.SelectedIndex == 1);
+                    SetTimerActive(TimerIndex.LikeFresh, freshCheckBox.Checked, comboBox1.SelectedIndex == 1);
+                    SetTimerActive(TimerIndex.LikeUpcoming, upcomingCheckBox.Checked, comboBox2.SelectedIndex == 1);
+                    SetTimerActive(TimerIndex.LikeLatestPhotos, lastestCheckBox.Checked, comboBox3.SelectedIndex == 1);
+                    MessageBox.Show("Successfully saved the timers!");
                 }
-                SetTimerActive(TimerIndex.UpdateDB, BDcheckBox.Checked, DBcomboBox.SelectedIndex == 1);
-                SetTimerActive(TimerIndex.LikeFresh, freshCheckBox.Checked, comboBox1.SelectedIndex == 1);
-                SetTimerActive(TimerIndex.LikeUpcoming, upcomingCheckBox.Checked, comboBox2.SelectedIndex == 1);
-                SetTimerActive(TimerIndex.LikeLatestPhotos, lastestCheckBox.Checked, comboBox3.SelectedIndex == 1);
-                MessageBox.Show("Successfully saved the timers!");
+                else if (dialogResult == DialogResult.No)
+                {
+                    //do nothing
+                }
             }
-            else if (dialogResult == DialogResult.No)
+        }
+
+        private void freshTimerTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(freshPhotosNumberTextBox.Text, "[^0-9]"))
             {
-                //do nothing
+                MessageBox.Show("Please enter only numbers.");
+                freshPhotosNumberTextBox.Text = freshPhotosNumberTextBox.Text.Remove(freshPhotosNumberTextBox.Text.Length - 1);
+            }
+        }
+
+        private void upcomingTimerTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(freshPhotosNumberTextBox.Text, "[^0-9]"))
+            {
+                MessageBox.Show("Please enter only numbers.");
+                freshPhotosNumberTextBox.Text = freshPhotosNumberTextBox.Text.Remove(freshPhotosNumberTextBox.Text.Length - 1);
             }
         }
 

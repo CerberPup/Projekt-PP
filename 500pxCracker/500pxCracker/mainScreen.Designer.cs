@@ -97,13 +97,13 @@
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.upcomingDateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.upcomingCheckBox = new System.Windows.Forms.CheckBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.upcomingTimerTextBox = new System.Windows.Forms.TextBox();
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.textBox13 = new System.Windows.Forms.TextBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.freshDateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.freshCheckBox = new System.Windows.Forms.CheckBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.freshTimerTextBox = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.DBcomboBox = new System.Windows.Forms.ComboBox();
@@ -424,7 +424,7 @@
             this.followersPanel.Controls.Add(this.mutualFolButton);
             this.followersPanel.Controls.Add(this.mutualFollowersSearchText);
             this.followersPanel.Controls.Add(this.followersPic);
-            this.followersPanel.Location = new System.Drawing.Point(127, 6);
+            this.followersPanel.Location = new System.Drawing.Point(249, 6);
             this.followersPanel.Name = "followersPanel";
             this.followersPanel.Size = new System.Drawing.Size(600, 504);
             this.followersPanel.TabIndex = 2;
@@ -939,13 +939,13 @@
             this.timersPanel.Controls.Add(this.comboBox2);
             this.timersPanel.Controls.Add(this.upcomingDateTimePicker);
             this.timersPanel.Controls.Add(this.upcomingCheckBox);
-            this.timersPanel.Controls.Add(this.textBox4);
+            this.timersPanel.Controls.Add(this.upcomingTimerTextBox);
             this.timersPanel.Controls.Add(this.textBox11);
             this.timersPanel.Controls.Add(this.textBox13);
             this.timersPanel.Controls.Add(this.comboBox1);
             this.timersPanel.Controls.Add(this.freshDateTimePicker);
             this.timersPanel.Controls.Add(this.freshCheckBox);
-            this.timersPanel.Controls.Add(this.textBox1);
+            this.timersPanel.Controls.Add(this.freshTimerTextBox);
             this.timersPanel.Controls.Add(this.textBox2);
             this.timersPanel.Controls.Add(this.textBox3);
             this.timersPanel.Controls.Add(this.DBcomboBox);
@@ -954,9 +954,9 @@
             this.timersPanel.Controls.Add(this.DBtext);
             this.timersPanel.Controls.Add(this.timersPic);
             this.timersPanel.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.timersPanel.Location = new System.Drawing.Point(816, 385);
+            this.timersPanel.Location = new System.Drawing.Point(804, 390);
             this.timersPanel.Name = "timersPanel";
-            this.timersPanel.Size = new System.Drawing.Size(556, 245);
+            this.timersPanel.Size = new System.Drawing.Size(556, 93);
             this.timersPanel.TabIndex = 41;
             this.timersPanel.Visible = false;
             this.timersPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
@@ -1057,19 +1057,20 @@
             this.upcomingCheckBox.TabIndex = 29;
             this.upcomingCheckBox.UseVisualStyleBackColor = true;
             // 
-            // textBox4
+            // upcomingTimerTextBox
             // 
-            this.textBox4.BackColor = System.Drawing.Color.LightGray;
-            this.textBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox4.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.textBox4.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-            this.textBox4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox4.Location = new System.Drawing.Point(83, 137);
-            this.textBox4.MaxLength = 4;
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(30, 22);
-            this.textBox4.TabIndex = 26;
-            this.textBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.upcomingTimerTextBox.BackColor = System.Drawing.Color.LightGray;
+            this.upcomingTimerTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.upcomingTimerTextBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.upcomingTimerTextBox.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.upcomingTimerTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.upcomingTimerTextBox.Location = new System.Drawing.Point(83, 137);
+            this.upcomingTimerTextBox.MaxLength = 4;
+            this.upcomingTimerTextBox.Name = "upcomingTimerTextBox";
+            this.upcomingTimerTextBox.Size = new System.Drawing.Size(30, 22);
+            this.upcomingTimerTextBox.TabIndex = 26;
+            this.upcomingTimerTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.upcomingTimerTextBox.TextChanged += new System.EventHandler(this.upcomingTimerTextBox_TextChanged);
             // 
             // textBox11
             // 
@@ -1134,19 +1135,20 @@
             this.freshCheckBox.TabIndex = 23;
             this.freshCheckBox.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // freshTimerTextBox
             // 
-            this.textBox1.BackColor = System.Drawing.Color.LightGray;
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.textBox1.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-            this.textBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox1.Location = new System.Drawing.Point(83, 97);
-            this.textBox1.MaxLength = 4;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(30, 22);
-            this.textBox1.TabIndex = 20;
-            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.freshTimerTextBox.BackColor = System.Drawing.Color.LightGray;
+            this.freshTimerTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.freshTimerTextBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.freshTimerTextBox.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.freshTimerTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.freshTimerTextBox.Location = new System.Drawing.Point(83, 97);
+            this.freshTimerTextBox.MaxLength = 4;
+            this.freshTimerTextBox.Name = "freshTimerTextBox";
+            this.freshTimerTextBox.Size = new System.Drawing.Size(30, 22);
+            this.freshTimerTextBox.TabIndex = 20;
+            this.freshTimerTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.freshTimerTextBox.TextChanged += new System.EventHandler(this.freshTimerTextBox_TextChanged);
             // 
             // textBox2
             // 
@@ -1241,7 +1243,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.ClientSize = new System.Drawing.Size(773, 525);
+            this.ClientSize = new System.Drawing.Size(1017, 525);
             this.Controls.Add(this.timersPanel);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.likesPanel);
@@ -1369,7 +1371,7 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.DateTimePicker freshDateTimePicker;
         private System.Windows.Forms.CheckBox freshCheckBox;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox freshTimerTextBox;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.ComboBox comboBox3;
@@ -1379,7 +1381,7 @@
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.DateTimePicker upcomingDateTimePicker;
         private System.Windows.Forms.CheckBox upcomingCheckBox;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox upcomingTimerTextBox;
         private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.TextBox textBox13;
         private System.Windows.Forms.PictureBox saveTimersButton;
