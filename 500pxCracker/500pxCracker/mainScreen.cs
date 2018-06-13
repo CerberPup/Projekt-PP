@@ -622,11 +622,28 @@ namespace _500pxCracker
 
         private void mutualFolButton_Click(object sender, EventArgs e)
         {
-                if (followersComboBox.SelectedIndex > -1)
-                {
-                    if (!followersSearchPanel.Visible)
-                        followersSearchPanel.Visible = true;
-                    followersComboBox_SelectedIndexChanged(this, new EventArgs());
+            if (followersComboBox.SelectedIndex > -1)
+            {
+                if (!followersSearchPanel.Visible)
+                    followersSearchPanel.Visible = true;
+                followersComboBox_SelectedIndexChanged(this, new EventArgs());
+
+                if(!numberOfXTextBox.Visible)
+                    numberOfXTextBox.Visible = true;
+
+                if(followersComboBox.SelectedIndex == 0)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " all users on your list.";
+                if(followersComboBox.SelectedIndex == 1)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Only Followers on your list..";
+                if(followersComboBox.SelectedIndex == 2)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Only Followings on your list.";
+                if (followersComboBox.SelectedIndex == 3)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Followers on your list.";
+                if (followersComboBox.SelectedIndex == 4)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Followings on your list.";
+                if (followersComboBox.SelectedIndex == 5)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Mutual Followers on your list.";
+                
 
                 //PythonWorker.RunWorkerAsync("MutualFollow");
             }
@@ -991,6 +1008,19 @@ namespace _500pxCracker
                 //listViewItems.Sort();// Crash przy jakims userze
                 usersListView.Items.Clear();
                 usersListView.Items.AddRange(listViewItems.ToArray());
+
+                if (followersComboBox.SelectedIndex == 0)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " all users on your list.";
+                if (followersComboBox.SelectedIndex == 1)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Only Followers on your list..";
+                if (followersComboBox.SelectedIndex == 2)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Only Followings on your list.";
+                if (followersComboBox.SelectedIndex == 3)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Followers on your list.";
+                if (followersComboBox.SelectedIndex == 4)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Followings on your list.";
+                if (followersComboBox.SelectedIndex == 5)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Mutual Followers on your list.";
             }
         }
 
