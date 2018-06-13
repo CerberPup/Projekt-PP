@@ -61,8 +61,10 @@ namespace _500pxCracker
                 exitButton.MouseLeave += OnMouseLeaveexitButton;
                 killingPythonButton.MouseEnter += OnMouseEnterkillingPythonButton;
                 killingPythonButton.MouseLeave += OnMouseLeavekillingPythonButton;
+                timersPanelButton.MouseEnter += OnMouseEntertimersPanelButton;
+                timersPanelButton.MouseLeave += OnMouseLeavetimersPanelButton;
 
-            
+
                 closeButton.MouseEnter += OnMouseEntercloseButton;
                 closeButton.MouseLeave += OnMouseLeavecloseButton;
                 mutualFolButton.MouseEnter += OnMouseEntermutualFolButton;
@@ -88,6 +90,9 @@ namespace _500pxCracker
                 likeLatestButton.MouseLeave += OnMouseLeavelikeLatestButton;
                 likePhotosButton.MouseEnter += OnMouseEnterlikePhotosButton;
                 likePhotosButton.MouseLeave += OnMouseLeavelikePhotosButton;
+
+                saveTimersButton.MouseEnter += OnMouseEntersaveTimersButton;
+                saveTimersButton.MouseLeave += OnMouseLeavesaveTimersButton;
             }
 
             this.FormBorderStyle = FormBorderStyle.None;
@@ -196,6 +201,16 @@ namespace _500pxCracker
         private void OnMouseLeavekillingPythonButton(object sender, EventArgs e)
         {
             killingPythonButton.BackColor = Color.White;
+        }
+
+        private void OnMouseEntertimersPanelButton(object sender, EventArgs e)
+        {
+            timersPanelButton.BackColor = Color.FromArgb(196, 196, 196);
+        }
+
+        private void OnMouseLeavetimersPanelButton(object sender, EventArgs e)
+        {
+            timersPanelButton.BackColor = Color.White;
         }
 
         //--------------------------------------------------------------------------------------
@@ -309,6 +324,15 @@ namespace _500pxCracker
             likePhotosButton.BackColor = Color.FromArgb(255, 205, 205);
         }
 
+        private void OnMouseEntersaveTimersButton(object sender, EventArgs e)
+        {
+            saveTimersButton.BackColor = Color.FromArgb(255, 160, 160);
+        }
+        private void OnMouseLeavesaveTimersButton(object sender, EventArgs e)
+        {
+            saveTimersButton.BackColor = Color.FromArgb(255, 205, 205);
+        }
+
         //-----------------------------------------------------------------------------------------
 
         private void mainScreen_Load(object sender, EventArgs e)
@@ -319,11 +343,13 @@ namespace _500pxCracker
             //this.StartPosition = FormStartPosition.CenterParent;
 
             //followers
-            followersPanel.Size = new Size(617, 433);
+            followersPanel.Size = new Size(600, 504);
             followersPanel.Location = new Point(119, 12);
 
-            followersSearchPanel.Size = new Size(580, 344);
+            followersSearchPanel.Size = new Size(580, 410);
             followersSearchPanel.Location = new Point(21, 86);
+
+            usersListView.Size = new Size(359, 373);
 
             //likes
             likesPanel.Location = new Point(119, 12);
@@ -332,6 +358,24 @@ namespace _500pxCracker
             //profile
             profilePanel.Location = new Point(119, 12);
             profilePanel.Size = new Size(440, 185);
+
+            //timers
+            timersPanel.Location = new Point(119, 12);
+            timersPanel.Size = new Size(559, 332);
+
+            DBdateTimePicker.Format = DateTimePickerFormat.Custom;
+            DBdateTimePicker.CustomFormat = "HH:mm";
+            DBdateTimePicker.ShowUpDown = true;
+            lastestDateTimePicker.Format = DateTimePickerFormat.Custom;
+            lastestDateTimePicker.CustomFormat = "HH:mm";
+            lastestDateTimePicker.ShowUpDown = true;
+            upcomingDateTimePicker.Format = DateTimePickerFormat.Custom;
+            upcomingDateTimePicker.CustomFormat = "HH:mm";
+            upcomingDateTimePicker.ShowUpDown = true;
+            freshDateTimePicker.Format = DateTimePickerFormat.Custom;
+            freshDateTimePicker.CustomFormat = "HH:mm";
+            freshDateTimePicker.ShowUpDown = true;
+
 
             photoTypeDropDown.SelectedIndex = 0;
             timeDropDown.SelectedIndex = 0;
@@ -367,19 +411,19 @@ namespace _500pxCracker
 
         private static void TimerUpdateDB(Object source, System.Timers.ElapsedEventArgs e)
         {
-            PythonWorker.RunWorkerAsync("UpdateDB");
+            //PythonWorker.RunWorkerAsync("UpdateDB");
         }
         private static void TimerLikeFresh(Object source, System.Timers.ElapsedEventArgs e)
         {
-            PythonWorker.RunWorkerAsync("LikeFresh 0 ");
+            //PythonWorker.RunWorkerAsync("LikeFresh 0 ");
         }
         private static void TimerLikeUpcoming(Object source, System.Timers.ElapsedEventArgs e)
         {
-            PythonWorker.RunWorkerAsync("LikeFresh 1 ");
+            //PythonWorker.RunWorkerAsync("LikeFresh 1 ");
         }
         private static void TimerLikeLatestPhotos(Object source, System.Timers.ElapsedEventArgs e)
         {
-            PythonWorker.RunWorkerAsync("LikeLatestPhotos");
+            //PythonWorker.RunWorkerAsync("LikeLatestPhotos");
         }
 
         private void frm2_FormClosed(object sender, FormClosedEventArgs e)
@@ -421,6 +465,8 @@ namespace _500pxCracker
                 followersPanel.Visible = false;
             if (likesPanel.Visible)
                 likesPanel.Visible = false;
+            if (timersPanel.Visible)
+                timersPanel.Visible = false;
         }
 
         private void followersButton_Click(object sender, EventArgs e)
@@ -431,6 +477,8 @@ namespace _500pxCracker
                 profilePanel.Visible = false;
             if (likesPanel.Visible)
                 likesPanel.Visible = false;
+            if (timersPanel.Visible)
+                timersPanel.Visible = false;
             followersComboBox_SelectedIndexChanged(this, new EventArgs());
         }
 
@@ -438,6 +486,20 @@ namespace _500pxCracker
         {
             if (!likesPanel.Visible)
                 likesPanel.Visible = true;
+            if (followersPanel.Visible)
+                followersPanel.Visible = false;
+            if (profilePanel.Visible)
+                profilePanel.Visible = false;
+            if (timersPanel.Visible)
+                timersPanel.Visible = false;
+        }
+
+        private void timersPanelButton_Click(object sender, EventArgs e)
+        {
+            if (!timersPanel.Visible)
+                timersPanel.Visible = true;
+            if (likesPanel.Visible)
+                likesPanel.Visible = false;
             if (followersPanel.Visible)
                 followersPanel.Visible = false;
             if (profilePanel.Visible)
@@ -534,7 +596,8 @@ namespace _500pxCracker
             else
                     MessageBox.Show("Please choose one of the available options!");
         }
-        
+
+
 
         private void selectRandomButton_Click(object sender, EventArgs e)
         {
@@ -760,7 +823,48 @@ namespace _500pxCracker
             dataGetter.GetDb();
         }
 
-       
+
+        private void BDcheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void freshCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void upcomingCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lastestCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void saveTimersButton_Click(object sender, EventArgs e)
+        {
+            if (BDcheckBox.Checked) { }
+
+            if (freshCheckBox.Checked) { }
+
+            if (upcomingCheckBox.Checked) { }
+
+            if (lastestCheckBox.Checked) { }
+
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to change the timers?", "", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                //save timers
+                MessageBox.Show("Successfully saved the timers!");
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                //do nothing
+            }
+        }
 
         private void updateDBButton_Click(object sender, EventArgs e)
         {
