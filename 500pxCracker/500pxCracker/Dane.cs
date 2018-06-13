@@ -65,6 +65,10 @@ namespace _500pxCracker
     }
     public class dataGetter
     {
+        static public bool DBExist()
+        {
+            return File.Exists(LocalizationData.DbDir + "scrapper.db");
+        }
         public static Process process;
         public static User GetUserByFileName(string Name)
         {
@@ -154,7 +158,7 @@ namespace _500pxCracker
         static public string FollowersDir = UserInfoDir + "followers\\";
         static public string FollowingDir = UserInfoDir + "followings\\";
         static public string PhotosDir = ScriptsDir + "photosDumps\\";
-        static public string DbDir = "";
+        static public string DbDir = ""; // set at login
         static public string PythonDir = ""; // set at login
         static public string Python = ""; // set at login
         static public string DbCurrentDir = ""; // set at login
@@ -225,161 +229,6 @@ namespace _500pxCracker
             }
             return instance;
         }
-
-        static public void Serialize(CurrentUser d)
-        {
-            JsonSerializer serializer = new JsonSerializer();
-            serializer.NullValueHandling = NullValueHandling.Ignore;
-
-            using (StreamWriter sw = new StreamWriter("json.json"))
-            using (JsonWriter writer = new JsonTextWriter(sw))
-            {
-                serializer.Serialize(writer, d);
-            }
-        }
-        public User[] MutualFollow()
-        {
-            List<User> response = new List<User>();
-            foreach (User u in _Following)
-            {
-                User follower = FindFollowerByName(u._Name);
-                if (follower != null)
-                    response.Add(follower);
-            }
-            return response.ToArray();
-        }
-
-        public User FindFollowingByName(string Name)
-        {
-            foreach (User u in _Following)
-            {
-                if (u._Name == Name)
-                    return u;
-            }
-            return null;
-        }
-        public User FindFollowerByName(string Name)
-        {
-            foreach (User u in _Followers)
-            {
-                if (u._Name == Name)
-                    return u;
-            }
-            return null;
-        }
-        public List<User> OneWayFollow()
-        {
-            List<User> response = new List<User>();
-            
-            foreach (User u in _Following)
-            {
-                if (FindFollowerByName(u._Name) == null)
-                response.Add(u);
-            }
-            return response;
-        }
-
-        public DateTime? GetStartedFollowing(User user)
-        {
-            return user._StartedFollowing;
-        }
-
-        public DateTime? GetFollowedSince(User user)
-        {
-            return user._FollowedSince;
-        }
-
-        public User GetUserByFullName(string name)
-        {
-            foreach (User user in _Following)
-            {
-                if (user._FullName == name)
-                {
-                    return user;
-                }
-            }
-            foreach (User user in _Followers)
-            {
-                if (user._FullName == name)
-                {
-                    return user;
-                }
-            }
-            return null;
-        }
-
-        public User GetUserById(int id)
-        {
-            foreach (User user in _Following)
-            {
-                if (user._Id== id)
-                {
-                    return user;
-                }
-            }
-            foreach (User user in _Followers)
-            {
-                if (user._Id == id)
-                {
-                    return user;
-                }
-            }
-            return null;
-        }
-
-        public Dictionary<string, int> GetLastLikes(DateTime since)
-        {
-            Dictionary<string, int> response = new Dictionary<string, int>();
-
-            DirectoryInfo d = new DirectoryInfo(LocalizationData.DbDir);
-            DateTime newest = DateTime.MinValue;
-            DateTime oldest = DateTime.MaxValue;
-            string filenameNewest = "";
-            string filenameOldest = "";
-            foreach (var file in d.GetFiles("*"))
-            {
-                string date = file.Name.Substring(7);
-                string[] s = date.Split('_'); //04.02.1926 00:00:00
-                s[1] = s[1].Replace('-', ':');
-                DateTime dateTime = DateTime.Parse(s[0] + ' ' + s[1]);
-                if (dateTime > newest)
-                {
-                    newest = dateTime;
-                    filenameNewest = file.FullName;
-                }
-                if(oldest > dateTime && dateTime>since)
-                {
-                    oldest = dateTime;
-                    filenameOldest = file.FullName;
-                }
-
-            }
-            if (oldest==DateTime.MaxValue)
-            {
-                filenameOldest = filenameNewest;
-            }
-
-            if (filenameOldest != "" && filenameNewest != "")
-            {
-
-                DBMain dBMainOld = JsonConvert.DeserializeObject<DBMain>(File.ReadAllText(filenameOldest));
-                DBMain dBMainNew = JsonConvert.DeserializeObject<DBMain>(File.ReadAllText(filenameNewest));
-
-                foreach (var user in dBMainNew.users)
-                {
-                    response[user.username] = user.likes_amount;
-                }
-                if (filenameOldest != filenameNewest)
-                {
-                    foreach (var user in dBMainOld.users)
-                    {
-                        response[user.username] -= user.likes_amount;
-                    }
-                } 
-            }
-            return response;
-        }
-
         public void Unfollow(string userName)
         {
             Process process = new Process();

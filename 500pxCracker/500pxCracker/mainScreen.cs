@@ -112,9 +112,9 @@ namespace _500pxCracker
 
         const int _ = 10; // you can rename this variable if you like
 
-        Rectangle Top { get { return new Rectangle(0, 0, this.ClientSize.Width, _); } }
+        new Rectangle Top { get { return new Rectangle(0, 0, this.ClientSize.Width, _); } }
         //Rectangle Left { get { return new Rectangle(0, 0, _, this.ClientSize.Height); } }
-        Rectangle Bottom { get { return new Rectangle(0, this.ClientSize.Height - _, this.ClientSize.Width, _); } }
+        new Rectangle Bottom { get { return new Rectangle(0, this.ClientSize.Height - _, this.ClientSize.Width, _); } }
         //Rectangle Right { get { return new Rectangle(this.ClientSize.Width - _, 0, _, this.ClientSize.Height); } }
         /*
         Rectangle TopLeft { get { return new Rectangle(0, 0, _, _); } }
@@ -380,6 +380,10 @@ namespace _500pxCracker
             photoTypeDropDown.SelectedIndex = 0;
             timeDropDown.SelectedIndex = 0;
             followersComboBox.SelectedIndex = 0;
+            DBcomboBox.SelectedIndex = 0;
+            comboBox1.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 0;
+            comboBox3.SelectedIndex = 0;
             InitTimers();
         }
 
@@ -409,50 +413,83 @@ namespace _500pxCracker
             }
         }
 
-        private static void TimerUpdateDB(Object source, System.Timers.ElapsedEventArgs e)
+        public void TimerUpdateDB(Object source, System.Timers.ElapsedEventArgs e)
         {
-            //PythonWorker.RunWorkerAsync("UpdateDB");
+            try
+            {
+                PythonWorker.RunWorkerAsync("UpdateDB");
+            }
+            catch (Exception)
+            {
+                Random rnd = new Random();
+                SetTimerDuration(TimerIndex.UpdateDB, TimeSpan.FromMilliseconds(rnd.Next(5000, 20000)));
+            }
         }
-        private static void TimerLikeFresh(Object source, System.Timers.ElapsedEventArgs e)
+        public void TimerLikeFresh(Object source, System.Timers.ElapsedEventArgs e)
         {
-            //PythonWorker.RunWorkerAsync("LikeFresh 0 ");
+            try { 
+            PythonWorker.RunWorkerAsync("LikeFresh 0 " + int.Parse(textBox1.Text));
+            }
+            catch (Exception)
+            {
+                Random rnd = new Random();
+                SetTimerDuration(TimerIndex.LikeFresh, TimeSpan.FromMilliseconds(rnd.Next(5000, 20000)));
+            }
         }
-        private static void TimerLikeUpcoming(Object source, System.Timers.ElapsedEventArgs e)
+        public void TimerLikeUpcoming(Object source, System.Timers.ElapsedEventArgs e)
         {
-            //PythonWorker.RunWorkerAsync("LikeFresh 1 ");
+            try { 
+            PythonWorker.RunWorkerAsync("LikeFresh 1 " + int.Parse(textBox4.Text));
+            }
+            catch (Exception)
+            {
+                Random rnd = new Random();
+                SetTimerDuration(TimerIndex.LikeUpcoming, TimeSpan.FromMilliseconds(rnd.Next(5000,20000)));
+            }
         }
-        private static void TimerLikeLatestPhotos(Object source, System.Timers.ElapsedEventArgs e)
+        public void TimerLikeLatestPhotos(Object source, System.Timers.ElapsedEventArgs e)
         {
-            //PythonWorker.RunWorkerAsync("LikeLatestPhotos");
+            try {
+            PythonWorker.RunWorkerAsync("LikeLatestPhotos");
+            }
+            catch (Exception)
+            {
+                Random rnd = new Random();
+                SetTimerDuration(TimerIndex.LikeLatestPhotos, TimeSpan.FromMilliseconds(rnd.Next(5000, 20000)));
+            }
         }
-
         private void frm2_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.Close();
         }
         private void SetTimerDuration(TimerIndex index,TimeSpan duration)
         {
-            Timers[(int)index].Interval = duration.Milliseconds;
+            Timers[(int)index].Interval = duration.TotalMilliseconds;
         }
-        private void SetTimerActive(TimerIndex index,bool enabled)
+        private void SetTimerActive(TimerIndex index,bool enabled,bool cyclic)
         {
             TimersEnable[(int)index] = enabled;
             if (!isPythonRunning||!enabled)
             {
                 Timers[(int)index].Enabled = enabled;
+                Timers[(int)index].AutoReset = cyclic;
             }
         }
-        private void SetPythonRunning(bool val)
+        public void SetPythonRunning(bool val)
         {
             CurrentUser.Get().isStopped = false;
             for (int i = 0; i < (int)TimerIndex.Size; i++)
             {
-                Timers[i].Enabled = TimersEnable[i]&&!val;
+                Timers[i].Enabled = TimersEnable[i]&&!val&&Timers[i].AutoReset;
             }
             isPythonRunning = val;
-            PythonLabel.Visible = val;
-            pythonRunningPic.Visible = val;
-            killingPythonButton.Visible = val;
+            this.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () {
+                PythonLabel.Visible = true;
+                PythonLabel.Visible = val;
+                pythonRunningPic.Visible = val;
+                killingPythonButton.Visible = val;
+            });
+            
             if (val == false)
                 Console.Beep();
         }
@@ -668,10 +705,10 @@ namespace _500pxCracker
             string where = " where ";
             foreach (string user in SelectedUsers)
             {
-                where += "fullname = '"+ user+"' or ";
+                where += "fullname = '"+ user.Replace("'","\'")+"' or ";
             }
             where = where.Remove(where.Length - 4, 4);
-            SQLiteCommand command = new SQLiteCommand("select * from Users "+where, m_dbConnection);
+            SQLiteCommand command = new SQLiteCommand("select * from Users " , m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
@@ -711,7 +748,7 @@ namespace _500pxCracker
             string where = " where ";
             foreach (string user in SelectedUsers)
             {
-                where += "fullname = '" + user + "' or ";
+                where += "fullname = '" + user.Replace("'","\'") + "' or ";
             }
             where = where.Remove(where.Length - 4, 4);
             SQLiteCommand command = new SQLiteCommand("select * from Users " + where, m_dbConnection);
@@ -747,7 +784,7 @@ namespace _500pxCracker
         //profile panel ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         private void statsButton_Click(object sender, EventArgs e)
         {
-            if (timeDropDown.SelectedIndex > -1)
+            if (timeDropDown.SelectedIndex > -1 && dataGetter.DBExist())
             {
                 if(!statsPanel.Visible)
                     statsPanel.Visible = true;
@@ -822,42 +859,40 @@ namespace _500pxCracker
         {
             dataGetter.GetDb();
         }
-
-
-        private void BDcheckBox_CheckedChanged(object sender, EventArgs e)
+        private long TimetoMS(DateTimePicker dateTimePicker)
         {
-
-        }
-
-        private void freshCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void upcomingCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lastestCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-
+            return ((dateTimePicker.Value.Hour * 60) + dateTimePicker.Value.Minute) * 60000;
         }
 
         private void saveTimersButton_Click(object sender, EventArgs e)
         {
-            if (BDcheckBox.Checked) { }
-
-            if (freshCheckBox.Checked) { }
-
-            if (upcomingCheckBox.Checked) { }
-
-            if (lastestCheckBox.Checked) { }
-
             DialogResult dialogResult = MessageBox.Show("Are you sure you want to change the timers?", "", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                //save timers
+                for (TimerIndex i = 0; i < TimerIndex.Size; i++)
+                {
+                    switch (i)
+                    {
+                        case TimerIndex.UpdateDB:
+                            Timers[(int)i].Interval = TimetoMS(DBdateTimePicker);
+                            break;
+                        case TimerIndex.LikeFresh:
+                            Timers[(int)i].Interval = TimetoMS(freshDateTimePicker);
+                            break;
+                        case TimerIndex.LikeUpcoming:
+                            Timers[(int)i].Interval = TimetoMS(upcomingDateTimePicker);
+                            break;
+                        case TimerIndex.LikeLatestPhotos:
+                            Timers[(int)i].Interval = TimetoMS(lastestDateTimePicker);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                SetTimerActive(TimerIndex.UpdateDB, BDcheckBox.Checked, DBcomboBox.SelectedIndex == 1);
+                SetTimerActive(TimerIndex.LikeFresh, freshCheckBox.Checked, comboBox1.SelectedIndex == 1);
+                SetTimerActive(TimerIndex.LikeUpcoming, upcomingCheckBox.Checked, comboBox2.SelectedIndex == 1);
+                SetTimerActive(TimerIndex.LikeLatestPhotos, lastestCheckBox.Checked, comboBox3.SelectedIndex == 1);
                 MessageBox.Show("Successfully saved the timers!");
             }
             else if (dialogResult == DialogResult.No)
@@ -884,7 +919,7 @@ namespace _500pxCracker
 
         private void followersComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (followersSearchPanel.Visible && !isPythonRunning)
+            if (followersSearchPanel.Visible && !isPythonRunning && dataGetter.DBExist())
             {
                 List<ListViewItem> listViewItems = new List<ListViewItem>();
                 SQLiteConnection m_dbConnection = new SQLiteConnection("Data Source = " + LocalizationData.DbDir + "scrapper.db" + "; Version = 3; UseUTF16Encoding = True;");

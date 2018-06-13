@@ -956,7 +956,7 @@
             this.timersPanel.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.timersPanel.Location = new System.Drawing.Point(816, 385);
             this.timersPanel.Name = "timersPanel";
-            this.timersPanel.Size = new System.Drawing.Size(348, 57);
+            this.timersPanel.Size = new System.Drawing.Size(556, 245);
             this.timersPanel.TabIndex = 41;
             this.timersPanel.Visible = false;
             this.timersPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
@@ -1007,7 +1007,6 @@
             this.lastestCheckBox.Size = new System.Drawing.Size(15, 14);
             this.lastestCheckBox.TabIndex = 33;
             this.lastestCheckBox.UseVisualStyleBackColor = true;
-            this.lastestCheckBox.CheckedChanged += new System.EventHandler(this.lastestCheckBox_CheckedChanged);
             // 
             // textBox14
             // 
@@ -1057,7 +1056,6 @@
             this.upcomingCheckBox.Size = new System.Drawing.Size(15, 14);
             this.upcomingCheckBox.TabIndex = 29;
             this.upcomingCheckBox.UseVisualStyleBackColor = true;
-            this.upcomingCheckBox.CheckedChanged += new System.EventHandler(this.upcomingCheckBox_CheckedChanged);
             // 
             // textBox4
             // 
@@ -1135,7 +1133,6 @@
             this.freshCheckBox.Size = new System.Drawing.Size(15, 14);
             this.freshCheckBox.TabIndex = 23;
             this.freshCheckBox.UseVisualStyleBackColor = true;
-            this.freshCheckBox.CheckedChanged += new System.EventHandler(this.freshCheckBox_CheckedChanged);
             // 
             // textBox1
             // 
@@ -1203,13 +1200,12 @@
             this.BDcheckBox.Size = new System.Drawing.Size(15, 14);
             this.BDcheckBox.TabIndex = 16;
             this.BDcheckBox.UseVisualStyleBackColor = true;
-            this.BDcheckBox.CheckedChanged += new System.EventHandler(this.BDcheckBox_CheckedChanged);
             // 
             // DBdateTimePicker
             // 
             this.DBdateTimePicker.CalendarMonthBackground = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
             this.DBdateTimePicker.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.DBdateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.DBdateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.DBdateTimePicker.Location = new System.Drawing.Point(344, 62);
             this.DBdateTimePicker.Name = "DBdateTimePicker";
             this.DBdateTimePicker.Size = new System.Drawing.Size(60, 25);
@@ -1363,7 +1359,6 @@
         private System.Windows.Forms.PictureBox updateDBButton;
         private System.Windows.Forms.PictureBox pythonRunningPic;
         private System.Windows.Forms.PictureBox killingPythonButton;
-        public System.ComponentModel.BackgroundWorker PythonWorker;
         private System.Windows.Forms.PictureBox timersPanelButton;
         private System.Windows.Forms.Panel timersPanel;
         private System.Windows.Forms.PictureBox timersPic;
@@ -1388,5 +1383,6 @@
         private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.TextBox textBox13;
         private System.Windows.Forms.PictureBox saveTimersButton;
+        public System.ComponentModel.BackgroundWorker PythonWorker;
     }
 }
