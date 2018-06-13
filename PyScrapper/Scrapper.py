@@ -6,6 +6,8 @@ try:
     from pprint import pprint
     import random
     import pickle
+    import collections
+    import itertools
 except ImportError:
     try:
         with open ("error.log", 'a+') as f:
@@ -13,6 +15,8 @@ except ImportError:
     except Exception:
         print("Import error in Scrapper.py")
 
+def consume(iterator, n):
+    collections.deque(itertools.islice(iterator,n))
 
 def cleanupDir(fullpath):
     for the_file in os.listdir(fullpath):
@@ -34,7 +38,8 @@ class Scrapper:
     galleriesDir = scriptDir + '/galleriesDumps'
     likesDir = scriptDir + '/likesForPhotos'
 
-    def __init__(self, email, password, debugMode, offlineMode):
+    def __init__(self, email, password, debugMode, offlineMode, delay=0.5):
+        self.delay = delay
         self.userDir = self.userInfo + '/' + email
         self.followingDir = self.userDir + '/followings'
         self.followersDir = self.userDir + '/followers'
@@ -111,6 +116,16 @@ class Scrapper:
             self.UserData= pickle.load(userDataDumpFile)
         except IOError:
             self.logger.LogLine("No session to recover")
+            return False
+        except Exception:
+            if os.path.isfile(self.sessionObject):
+                os.remove(self.sessionObject)
+            if os.path.isfile(self.payloadObject):
+                os.remove(self.payloadObject)
+            if os.path.isfile(self.csrfObject):
+                os.remove(self.csrfObject)
+            if os.path.isfile(self.UserDataObject):
+                os.remove(self.UserDataObject)
             return False
         valid = self.requestWebPage('GET', 'https://api.500px.com/v1/users/' + str(
                 self.UserData['id']) + '/followers?fullformat=0&page=' + str(1), headers=self.csrfHeaders)
@@ -197,6 +212,11 @@ class Scrapper:
             retriesCounter=retriesCounter+1
             try:
                 response = self.session.request(method, url, data=data, headers=headers, timeout=5)
+                if(self.delay>0):
+                    randomize= random.randint(-(int(self.delay*1000/3)), int(self.delay*1000/3))/1000.00
+                else:
+                    randomize=0
+                time.sleep(self.delay+randomize)
             except requests.exceptions.RequestException:
                 self.logger.LogLine('Requested page is not responding, retrying...')
                 time.sleep(5)
@@ -481,7 +501,7 @@ class Scrapper:
             os.remove(file)
         page = startPage
         while amount>0:
-            URL = 'https://api.500px.com/v1/photos?rpp=50&feature=upcoming&image_size[]=1&image_size[]=2&image_size[]=32&image_size[]=31&image_size[]=33&image_size[]=34&image_size[]=35&image_size[]=36&image_size[]=2048&image_size[]=4&image_size[]=14&sort=&include_states=true&include_licensing=false&formats=jpeg,lytro&only=&exclude=&personalized_categories=false&page='+ str(page) + '&rpp=' + str(amount)
+            URL = 'https://api.500px.com/v1/photos?rpp=50&feature=upcoming&image_size[]=1&image_size[]=2&image_size[]=32&image_size[]=31&image_size[]=33&image_size[]=34&image_size[]=35&image_size[]=36&image_size[]=2048&image_size[]=4&image_size[]=14&sort=&include_states=true&include_licensing=false&formats=jpeg,lytro&only=&exclude=&personalized_categories=false&page='+ str(page) + '&rpp=50'
             self.logger.LogLine("Attempt to get photos from Upcoming, page " + str(page))
             response = self.requestWebPage("GET", URL, data=self.payload)
             if response.status_code == 200:
@@ -510,15 +530,24 @@ class Scrapper:
             self.logger.LogLine("Attempt to like " + str(amount) + " photos from fresh")
         else:
             self.logger.LogLine("Attempt to like " + str(amount) + " photos from upcoming")
-
+        ctr=0
         while amount>0:
             if fresh:
                 Photos = self.GetPhotosFromFresh(page, amount)
             else:
                 Photos = self.GetPhotosFromUpcoming(page, amount)
             page += int(round(amount / 50.0 + 0.499))
-            for photo in Photos:
+            it = iter(Photos)
+            ctr = 0
+            for photo in it:
                 if not self.PhotoIsLiked(photo['id']):
+                    ctr = 0
                     if random.randint(0,100) > 20:
                         if self.VoteForPhoto(photo['id']):
                             amount-=1
+                else:
+                    ctr+=1
+                    if ctr >=10:
+                        self.logger.LogLine( "Skipping 40 photos")
+                        consume(it, ctr)
+                        ctr=0

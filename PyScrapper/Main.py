@@ -12,9 +12,10 @@ except ImportError:
 cmdParser = CmdParser(sys.argv)
 if len(cmdParser.args) > 3:
     if not cmdParser.GetHelp():
+        delay = cmdParser.GetDelayTime()
         login = cmdParser.GetLogin()
         passwd = cmdParser.GetPassword()
-        scrapper = Scrapper(login, passwd, cmdParser.GetDebugMode(), cmdParser.GetOffline())
+        scrapper = Scrapper(login, passwd, cmdParser.GetDebugMode(), cmdParser.GetOffline(), delay)
         if not cmdParser.GetHoldCleanup():
             scrapper.cleanupTempFiles()
         toFollow = cmdParser.FollowUser()

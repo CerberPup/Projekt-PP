@@ -151,6 +151,21 @@ class CmdParser:
                 return next(it)
         return ""
 
+    def GetDelayTime(self):
+        delay=0.5
+        it = iter(self.args)
+        for arg in it:
+            if arg == "-s":
+                try:
+                    delay = float(next(it))
+                except ValueError:
+                    delay=0.5
+                finally:
+                    break
+        return delay
+
+
+
     def DisplayHelp(self):
         print("Cmd args: <email> <password> [<args>]")
         print("args:")
