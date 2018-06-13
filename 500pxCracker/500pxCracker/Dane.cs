@@ -39,8 +39,9 @@ namespace _500pxCracker
     public class Pids
     {
 
-        public static List<int> pids = new List<int>();
+        public static int pid;
     }
+
 
 
     public class JsonUser
@@ -102,6 +103,7 @@ namespace _500pxCracker
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
+            Pids.pid = process.Id;
             process.WaitForExit();
         }
         public static void UpdateFollowers()
@@ -135,7 +137,7 @@ namespace _500pxCracker
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
-            Pids.pids.Add(process.Id);
+            Pids.pid = process.Id;
             process.WaitForExit();
             UpdateFollowers();
             UpdateFollowings();
@@ -196,7 +198,7 @@ namespace _500pxCracker
         public List<string> UsersToRemove = new List<string>();
         public List<string> UsersToAdd = new List<string>();
         private Credentials _Credentials;
-
+        public bool isStopped = false;
         public Credentials Get_Credentials()
         {
             return _Credentials;
@@ -386,7 +388,7 @@ namespace _500pxCracker
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
-            Pids.pids.Add(process.Id);
+            Pids.pid = process.Id;
             process.WaitForExit();
         }
         public void Follow(string userName)
@@ -397,7 +399,7 @@ namespace _500pxCracker
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
-            Pids.pids.Add(process.Id);
+            Pids.pid = process.Id;
             process.WaitForExit();  
         }
 
@@ -409,11 +411,14 @@ namespace _500pxCracker
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
-            Pids.pids.Add(process.Id);
-
+            Pids.pid = process.Id;
+            if (isStopped)
+                return;
             process.WaitForExit();
             foreach (User u in _Following)
             {
+                if (isStopped)
+                    return;
                 Dictionary<string, DateTime> photos = new Dictionary<string, DateTime>();
                 DirectoryInfo d = new DirectoryInfo(LocalizationData.PhotosDir+"User"+u._Id.ToString());
                 if (d.Exists)
@@ -453,8 +458,7 @@ namespace _500pxCracker
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
                 process.Start();
-                Pids.pids.Add(process.Id);
-
+                Pids.pid = process.Id;
                 process.WaitForExit();
             }
             process = new Process();
@@ -463,16 +467,14 @@ namespace _500pxCracker
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
-            Pids.pids.Add(process.Id);
-
+            Pids.pid = process.Id;
             process.WaitForExit();
         }
 
 
-       public void getLocalUserPhotos()
+        public void getLocalUserPhotos()
         {
-            if (_User._Photos == null)
-                _User._Photos = new List<Photo>();
+            _User._Photos = new List<Photo>();
             Photo photo = null;
             Process process;
             process = new Process();
@@ -481,10 +483,10 @@ namespace _500pxCracker
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
-            Pids.pids.Add(process.Id);
-
+            Pids.pid = process.Id;
+            if (isStopped)
+                return;
             process.WaitForExit();
-
             Dictionary<string, DateTime> MyPhotos = new Dictionary<string, DateTime>();
             DirectoryInfo dir = new DirectoryInfo(LocalizationData.PhotosDir + "User" + _User._Id.ToString());
             if (dir.Exists)
@@ -536,25 +538,23 @@ namespace _500pxCracker
         public void LikeLikingMe(int number)
         {
             Dictionary<string, string> liking = new Dictionary<string, string>();
-            Photo newestPhoto = new Photo
-            {
-                _PhotoUploadDate = DateTime.MinValue
-            };
+            Photo newestPhoto = new Photo();
+            newestPhoto._PhotoUploadDate = DateTime.MinValue;
             Process process;
             DirectoryInfo dir;
             getLocalUserPhotos();
-
             //getting likes for our photos
             foreach (Photo pht in _User._Photos)
             {
-                
+                if (isStopped)
+                    return;
                 process = new Process();
                 process.StartInfo.FileName = LocalizationData.Python;
-                process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -l "+ pht._PhotoId+ " -noCleanup";
+                process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -l " + pht._PhotoId + " -noCleanup";
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
                 process.Start();
-                Pids.pids.Add(process.Id);
+                Pids.pid = process.Id;
                 process.WaitForExit();
             }
 
@@ -566,8 +566,8 @@ namespace _500pxCracker
                     newestPhoto = pht;
                 }
             }
-
-
+            if (isStopped)
+                return;
             dir = new DirectoryInfo(LocalizationData.LikesForPhotosDir);
             string file = File.ReadAllText(dir + "\\" + newestPhoto._PhotoId.Replace(" ", string.Empty));
             Regex regex = new Regex("\"username\": \"(.*?)\".*?\"id\": (.*?),");
@@ -576,23 +576,28 @@ namespace _500pxCracker
             newestPhoto._Likes = new List<Like>();
             foreach (Match match in matches)
             {
+                if (isStopped)
+                    return;
                 if (match.Success)
                 {
                     if (!likesForNewestPhoto.Keys.Contains(match.Groups[1].Value))
                     {
-                         Like like = new Like();                
+                        Like like = new Like();
                         likesForNewestPhoto.Add(match.Groups[1].Value, match.Groups[2].Value);
-                        newestPhoto._Likes.Add(like);         
-                    }                    
+                        newestPhoto._Likes.Add(like);
+                    }
                 }
             }
+
             //adding user who liked our most recent photos, key-username, value-id
             foreach (var like in likesForNewestPhoto)
-            {        
-                    if (!liking.Keys.Contains(like.Key) & !like.Key.Contains("-"))
-                    {
-                        liking.Add(like.Key,like.Value);
-                    }               
+            {
+                if (isStopped)
+                    return;
+                if (!liking.Keys.Contains(like.Key) & !like.Key.Contains("-"))
+                {
+                    liking.Add(like.Key, like.Value);
+                }
             }
 
             //donwloading photos
@@ -603,23 +608,21 @@ namespace _500pxCracker
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
-            Pids.pids.Add(process.Id);
-
+            Pids.pid = process.Id;
             process.WaitForExit();
-
-            //parsing downloaded json into photos collection
+            //parsing downloaded json and sending like requests
             foreach (var user in liking)
             {
-
+                if (isStopped)
+                    return;
                 DirectoryInfo d = new DirectoryInfo(LocalizationData.PhotosDir + "User" + user.Value);
                 if (d.Exists)
                 {
                     foreach (var gallery in d.GetDirectories())
                     {
                         string likingFiles = File.ReadAllText(d + "\\" + gallery.Name + "\\photos");
-                        //   Regex regexp = new Regex("\"liked\":(.*?),.*?\"feature_date\": \"(.*?)\".*?\"id\":(.*?),");
-                        Regex regexp = new Regex(" \"liked\":(.*?),.*?\"id\":(.*?),");
-                        MatchCollection likingMatches = regex.Matches(likingFiles);
+                        Regex regexp = new Regex("\"liked\":(.*?),.*?\"feature_date\": \"(.*?)\".*?\"id\":(.*?),");
+                        MatchCollection likingMatches = regexp.Matches(likingFiles);
                         int iterMax;
 
                         if (likingMatches.Count >= number)
@@ -633,20 +636,21 @@ namespace _500pxCracker
                         }
                         for (int i = 0; i < iterMax; i++)
                         {
-                            /*
+
                             if (likingMatches[i].Success && !bool.Parse(likingMatches[i].Groups[1].Value))
                             {
+                      
                                 process = new Process();
                                 process.StartInfo.FileName = LocalizationData.Python;
-                                process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -v " + likingMatches[i].Groups[2].Value + " -noCleanup"; ;
+                                process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -v " + likingMatches[i].Groups[3].Value + " -noCleanup"; ;
                                 process.StartInfo.UseShellExecute = false;
                                 process.StartInfo.CreateNoWindow = true;
                                 process.Start();
-                                Pids.pids.Add(process.Id);
+                                Pids.pid = process.Id;
                                 process.WaitForExit();
                             }
-                            */
-                        }   
+
+                        }
                     }
 
                     if (File.Exists(d + "\\photos_unassigned"))
@@ -665,23 +669,23 @@ namespace _500pxCracker
                         {
                             iterMax = likingMatches.Count;
                         }
-                          
+
                         for (int i = 0; i < iterMax; i++)
                         {
                             if (likingMatches[i].Success && !bool.Parse(likingMatches[i].Groups[1].Value))
                             {
-                                
+                                if (isStopped)
+                                    return;
                                 process = new Process();
                                 process.StartInfo.FileName = LocalizationData.Python;
                                 process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -v " + likingMatches[i].Groups[3].Value + " -noCleanup"; ;
                                 process.StartInfo.UseShellExecute = false;
                                 process.StartInfo.CreateNoWindow = true;
                                 process.Start();
-                              //  Pids.pids.Add(process.Id);                        
+                                Pids.pid = process.Id;
                                 process.WaitForExit();
-                               
                             }
-                        }                      
+                        }
                     }
                 }
             }
@@ -691,11 +695,9 @@ namespace _500pxCracker
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
-            Pids.pids.Add(process.Id);
+            Pids.pid = process.Id;
             process.WaitForExit();
-              
         }
-
         internal void LikeFresh(int mode, int amount)
         {
             Process process = new Process();
@@ -714,8 +716,7 @@ namespace _500pxCracker
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
-            Pids.pids.Add(process.Id);
-
+            Pids.pid = process.Id;
             process.WaitForExit();
         }
     }

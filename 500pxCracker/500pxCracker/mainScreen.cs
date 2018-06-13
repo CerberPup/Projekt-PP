@@ -400,6 +400,7 @@ namespace _500pxCracker
         }
         private void SetPythonRunning(bool val)
         {
+            CurrentUser.Get().isStopped = false;
             for (int i = 0; i < (int)TimerIndex.Size; i++)
             {
                 Timers[i].Enabled = TimersEnable[i]&&!val;
@@ -484,8 +485,8 @@ namespace _500pxCracker
         {
             dataGetter.GetFollowersandFollowings();
             CurrentUser.Get().LikeLatestPhotos();
-
-            MessageBox.Show("Successfully liked all the photos!");
+            if (!CurrentUser.Get().isStopped)
+                MessageBox.Show("Successfully liked all the photos");
         }
         private void likeLatestButton_Click(object sender, EventArgs e)
         {
@@ -498,7 +499,8 @@ namespace _500pxCracker
         private void LikeLikingMe(int number)
         {
             CurrentUser.Get().LikeLikingMe(number);
-            MessageBox.Show("Successfully liked all the photos");
+            if (!CurrentUser.Get().isStopped)
+              MessageBox.Show("Successfully liked all the photos");
         }
 
 
@@ -610,6 +612,13 @@ namespace _500pxCracker
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
+                /*
+                if (current.isStopped)
+                {
+                    m_dbConnection.Close();
+                    return;
+                }
+                */
                 current.Unfollow(reader["name"].ToString());
             }
             command = new SQLiteCommand("Update Users set following_since = ''"+where, m_dbConnection);
@@ -646,6 +655,13 @@ namespace _500pxCracker
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
+              /*
+              if (current.isStopped)
+              {
+                  m_dbConnection.Close();
+                  return;
+              }
+              */
                 current.Follow(reader["name"].ToString());
             }
             command = new SQLiteCommand("Update Users set following_since = '"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") +"'" + where, m_dbConnection);
@@ -892,38 +908,38 @@ namespace _500pxCracker
             DialogResult dialogResult = MessageBox.Show("Are you sure you want to stop Python? ", "", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-               
-                PythonWorker.CancelAsync();      
-                
-                         
+                PythonWorker.WorkerSupportsCancellation = true;
+                PythonWorker.CancelAsync();
+                CurrentUser.Get().isStopped = true;
                 if (PythonWorker.IsBusy == true)
                 {
                     PythonWorker.Dispose();
-                    for (int i=0;i<Pids.pids.Count;i++)
+                    try
                     {
-                        try
-                        {
-                            Process.GetProcessById(Pids.pids[i]).Kill();
-                        }
-                        catch (Exception)
-                        {
-
-                        }
+                        Process.GetProcessById(Pids.pid).Kill();
                     }
-                }
+                    catch (Exception)
+                    {
 
-                if (Directory.Exists(LocalizationData.GalleriesDir)){
+                    }
+
+                }
+                if (Directory.Exists(LocalizationData.GalleriesDir))
+                {
                     Directory.Delete(LocalizationData.GalleriesDir, true);
                 }
-                if (Directory.Exists(LocalizationData.LikesForPhotosDir)){
+                if (Directory.Exists(LocalizationData.LikesForPhotosDir))
+                {
                     Directory.Delete(LocalizationData.LikesForPhotosDir, true);
                 }
-                if (Directory.Exists(LocalizationData.PhotosDir)){
+                if (Directory.Exists(LocalizationData.PhotosDir))
+                {
                     Directory.Delete(LocalizationData.PhotosDir, true);
                 }
 
-               
-                                        }
+              
+
+            }
             else if (dialogResult == DialogResult.No)
             {
                 //do nothing
