@@ -12,12 +12,23 @@ namespace _500pxCracker
     {
         [DllImportAttribute("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-        
+
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
 
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
+        private enum TimerIndex
+        {
+            UpdateDB = 0,
+            LikeFresh,
+            LikeUpcoming,
+            LikeLatestPhotos,
+            Size
+        };
+
+        private List<bool> TimersEnable = new List<bool>();
+        private List<System.Timers.Timer> Timers = new List<System.Timers.Timer>();
         private bool isPythonRunning;
         private List<string> SelectedUsers = new List<string>();
         private enum FollowersComboBoxState
@@ -321,20 +332,80 @@ namespace _500pxCracker
             photoTypeDropDown.SelectedIndex = 0;
             timeDropDown.SelectedIndex = 0;
             followersComboBox.SelectedIndex = 0;
+            InitTimers();
+        }
+
+        private void InitTimers()
+        {
+            for (int i = 0; i < (int)TimerIndex.Size; i++)
+            {
+                System.Timers.Timer timmy = new System.Timers.Timer(360000);
+                switch (i)
+                {
+                    case (int)TimerIndex.UpdateDB:
+                        timmy.Elapsed += TimerUpdateDB;
+                        break;
+                    case (int)TimerIndex.LikeFresh:
+                        timmy.Elapsed += TimerLikeFresh;
+                        break;
+                    case (int)TimerIndex.LikeUpcoming:
+                        timmy.Elapsed += TimerLikeUpcoming;
+                        break;
+                    case (int)TimerIndex.LikeLatestPhotos:
+                        timmy.Elapsed += TimerLikeLatestPhotos;
+                        break;
+                }
+                timmy.Enabled = false;
+                TimersEnable.Add(false);
+                Timers.Add(timmy);
+            }
+        }
+
+        private static void TimerUpdateDB(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            PythonWorker.RunWorkerAsync("UpdateDB");
+        }
+        private static void TimerLikeFresh(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            PythonWorker.RunWorkerAsync("LikeFresh 0 ");
+        }
+        private static void TimerLikeUpcoming(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            PythonWorker.RunWorkerAsync("LikeFresh 1 ");
+        }
+        private static void TimerLikeLatestPhotos(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            PythonWorker.RunWorkerAsync("LikeLatestPhotos");
         }
 
         private void frm2_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.Close();
         }
+        private void SetTimerDuration(TimerIndex index,TimeSpan duration)
+        {
+            Timers[(int)index].Interval = duration.Milliseconds;
+        }
+        private void SetTimerActive(TimerIndex index,bool enabled)
+        {
+            TimersEnable[(int)index] = enabled;
+            if (!isPythonRunning||!enabled)
+            {
+                Timers[(int)index].Enabled = enabled;
+            }
+        }
         private void SetPythonRunning(bool val)
         {
+            for (int i = 0; i < (int)TimerIndex.Size; i++)
+            {
+                Timers[i].Enabled = TimersEnable[i]&&!val;
+            }
             isPythonRunning = val;
             PythonLabel.Visible = val;
             pythonRunningPic.Visible = val;
             killingPythonButton.Visible = val;
             if (val == false)
-                MessageBox.Show("Python successfully ended");
+                Console.Beep();
         }
 
         private void profileButton_Click(object sender, EventArgs e)
@@ -391,7 +462,6 @@ namespace _500pxCracker
         private void LikeFresh(int SelectedIndex, int Number)
         {
             CurrentUser.Get().LikeFresh(SelectedIndex, Number);
-            MessageBox.Show("Successfully liked the photos!");
         }
         private void likeFreshButton_Click(object sender, EventArgs e)
         {
