@@ -65,6 +65,7 @@ class Scrapper:
         self.ignoredFollowList = []
         self.web = None
         self.UserData = None
+        self.RequestCounter=0
         if not offlineMode:
             if not self.readSessionObject():
                 self._retrieveToken()
@@ -209,6 +210,7 @@ class Scrapper:
     def requestWebPage(self, method, url, data={}, headers={}, checkStatusCode=True, Retries=5):
         retriesCounter=0
         while True:
+            self.RequestCounter+=1
             retriesCounter=retriesCounter+1
             try:
                 response = self.session.request(method, url, data=data, headers=headers, timeout=5)
@@ -234,7 +236,7 @@ class Scrapper:
                 self.logger.LogLine("Incorrect request - aborting...")
                 return response
             if response.status_code == 429:
-                self.logger.LogLine("Too many requests in time, please shut down scrapper and try again later")
+                self.logger.LogLine("Too many requests in time, please shut down scrapper and try again later + COUNTER: " + str(self.RequestCounter))
                 time.sleep(600)
             if checkStatusCode and response.status_code != 200:
                 self.logger.LogLine('Requested URL error: (' + str(response.status_code) + ') occured. Retrying...')
@@ -387,7 +389,6 @@ class Scrapper:
         return retDict
 
     def GetUnassignedPhotosForUser(self, username, userID, pagesAmount=-1):
-
         Photos=[]
         if pagesAmount==0:
             return Photos
@@ -420,7 +421,7 @@ class Scrapper:
                 break
         return Photos
 
-    def GetVotesForPhoto(self, photoID):
+    def GetVotesForPhoto(self, photoID, atPage=0):
         Votes=[]
         page=1
         photoFile = Scrapper.likesDir + '/' + str(photoID)
@@ -428,7 +429,12 @@ class Scrapper:
             os.remove(photoFile)
         while True:
             self.logger.LogLine("Attempt to get votes for photo " + str(photoID))
-            likesPage = self.requestWebPage('GET', 'https://api.500px.com/v1/photos/' + str(photoID) + '/votes?page='+ str(page), Retries=1, data=self.payload)
+            URL = 'https://api.500px.com/v1/photos/' + str(photoID) + '/votes?page='
+            if atPage > 0:
+                URL += str(atPage)
+            else:
+                URL += str(page)
+            likesPage = self.requestWebPage('GET', URL , Retries=1, data=self.payload)
             if likesPage.status_code == 200:
                 likesPage_json= json.loads(likesPage.text)
                 with open(photoFile, 'a') as f:
@@ -436,6 +442,8 @@ class Scrapper:
                 Votes+= likesPage_json['users']
                 self.logger.LogLine("Votes retrieved succesfully")
                 if page == likesPage_json['total_pages']:
+                    break
+                if atPage > 0:
                     break
                 page=page+1
             elif likesPage.status_code == 404:
@@ -517,10 +525,14 @@ class Scrapper:
         return Photos
 
     def PhotoIsLiked(self, photoID):
-        votes = self.GetVotesForPhoto(int(photoID))
-        for vote in votes:
-            if vote['username'] == self.UserData['username']:
-                return True
+        page=1
+        votes = self.GetVotesForPhoto(int(photoID), atPage=page)
+        while votes!=[]:
+            for vote in votes:
+                if vote['username'] == self.UserData['username']:
+                    return True
+            page+=1
+            votes = self.GetVotesForPhoto(int(photoID), atPage=page)
         return False
 
     def VoteFreshOrUpcoming(self, fresh=True, amount=100):

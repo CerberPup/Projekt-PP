@@ -50,7 +50,7 @@ if len(cmdParser.args) > 3:
 
         if cmdParser.GetVote():
             if scrapper.PhotoIsLiked(cmdParser.VoteForPhoto()):
-                scrapper.logger.LogLine("Photo already likes")
+                scrapper.logger.LogLine("Photo already liked")
             else:
                 scrapper.VoteForPhoto(cmdParser.VoteForPhoto())
 
