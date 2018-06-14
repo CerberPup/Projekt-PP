@@ -4,8 +4,9 @@
 - 3. Update statistics crashes on empty database
 - 4. Go on followers/followings tab, change the drop down list item on any but "All". Database is created empty. Then click on follow/unfollow users (with empty list) - crash, in both cases. 
 - 5. Does not implemented delay time 
+- 6. Crash when timers are set to 00:00
 
-#Assignment:
+# Assignment:
 # Karol Marszałek: 
 -------------------
 # Wojciech Wrona:
