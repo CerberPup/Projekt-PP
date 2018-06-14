@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -41,6 +43,8 @@ namespace _500pxCracker
             Mutuals
 
         };
+
+
         public mainScreen()
         {
             InitializeComponent();
@@ -57,8 +61,10 @@ namespace _500pxCracker
                 exitButton.MouseLeave += OnMouseLeaveexitButton;
                 killingPythonButton.MouseEnter += OnMouseEnterkillingPythonButton;
                 killingPythonButton.MouseLeave += OnMouseLeavekillingPythonButton;
+                timersPanelButton.MouseEnter += OnMouseEntertimersPanelButton;
+                timersPanelButton.MouseLeave += OnMouseLeavetimersPanelButton;
 
-            
+
                 closeButton.MouseEnter += OnMouseEntercloseButton;
                 closeButton.MouseLeave += OnMouseLeavecloseButton;
                 mutualFolButton.MouseEnter += OnMouseEntermutualFolButton;
@@ -84,6 +90,9 @@ namespace _500pxCracker
                 likeLatestButton.MouseLeave += OnMouseLeavelikeLatestButton;
                 likePhotosButton.MouseEnter += OnMouseEnterlikePhotosButton;
                 likePhotosButton.MouseLeave += OnMouseLeavelikePhotosButton;
+
+                saveTimersButton.MouseEnter += OnMouseEntersaveTimersButton;
+                saveTimersButton.MouseLeave += OnMouseLeavesaveTimersButton;
             }
 
             this.FormBorderStyle = FormBorderStyle.None;
@@ -103,9 +112,9 @@ namespace _500pxCracker
 
         const int _ = 10; // you can rename this variable if you like
 
-        Rectangle Top { get { return new Rectangle(0, 0, this.ClientSize.Width, _); } }
+        new Rectangle Top { get { return new Rectangle(0, 0, this.ClientSize.Width, _); } }
         //Rectangle Left { get { return new Rectangle(0, 0, _, this.ClientSize.Height); } }
-        Rectangle Bottom { get { return new Rectangle(0, this.ClientSize.Height - _, this.ClientSize.Width, _); } }
+        new Rectangle Bottom { get { return new Rectangle(0, this.ClientSize.Height - _, this.ClientSize.Width, _); } }
         //Rectangle Right { get { return new Rectangle(this.ClientSize.Width - _, 0, _, this.ClientSize.Height); } }
         /*
         Rectangle TopLeft { get { return new Rectangle(0, 0, _, _); } }
@@ -192,6 +201,16 @@ namespace _500pxCracker
         private void OnMouseLeavekillingPythonButton(object sender, EventArgs e)
         {
             killingPythonButton.BackColor = Color.White;
+        }
+
+        private void OnMouseEntertimersPanelButton(object sender, EventArgs e)
+        {
+            timersPanelButton.BackColor = Color.FromArgb(196, 196, 196);
+        }
+
+        private void OnMouseLeavetimersPanelButton(object sender, EventArgs e)
+        {
+            timersPanelButton.BackColor = Color.White;
         }
 
         //--------------------------------------------------------------------------------------
@@ -305,6 +324,15 @@ namespace _500pxCracker
             likePhotosButton.BackColor = Color.FromArgb(255, 205, 205);
         }
 
+        private void OnMouseEntersaveTimersButton(object sender, EventArgs e)
+        {
+            saveTimersButton.BackColor = Color.FromArgb(255, 160, 160);
+        }
+        private void OnMouseLeavesaveTimersButton(object sender, EventArgs e)
+        {
+            saveTimersButton.BackColor = Color.FromArgb(255, 205, 205);
+        }
+
         //-----------------------------------------------------------------------------------------
 
         private void mainScreen_Load(object sender, EventArgs e)
@@ -315,11 +343,13 @@ namespace _500pxCracker
             //this.StartPosition = FormStartPosition.CenterParent;
 
             //followers
-            followersPanel.Size = new Size(617, 433);
+            followersPanel.Size = new Size(600, 504);
             followersPanel.Location = new Point(119, 12);
 
-            followersSearchPanel.Size = new Size(580, 344);
+            followersSearchPanel.Size = new Size(580, 410);
             followersSearchPanel.Location = new Point(21, 86);
+
+            usersListView.Size = new Size(359, 373);
 
             //likes
             likesPanel.Location = new Point(119, 12);
@@ -329,9 +359,31 @@ namespace _500pxCracker
             profilePanel.Location = new Point(119, 12);
             profilePanel.Size = new Size(440, 185);
 
+            //timers
+            timersPanel.Location = new Point(119, 12);
+            timersPanel.Size = new Size(559, 332);
+
+            DBdateTimePicker.Format = DateTimePickerFormat.Custom;
+            DBdateTimePicker.CustomFormat = "HH:mm";
+            DBdateTimePicker.ShowUpDown = true;
+            lastestDateTimePicker.Format = DateTimePickerFormat.Custom;
+            lastestDateTimePicker.CustomFormat = "HH:mm";
+            lastestDateTimePicker.ShowUpDown = true;
+            upcomingDateTimePicker.Format = DateTimePickerFormat.Custom;
+            upcomingDateTimePicker.CustomFormat = "HH:mm";
+            upcomingDateTimePicker.ShowUpDown = true;
+            freshDateTimePicker.Format = DateTimePickerFormat.Custom;
+            freshDateTimePicker.CustomFormat = "HH:mm";
+            freshDateTimePicker.ShowUpDown = true;
+
+
             photoTypeDropDown.SelectedIndex = 0;
             timeDropDown.SelectedIndex = 0;
             followersComboBox.SelectedIndex = 0;
+            DBcomboBox.SelectedIndex = 0;
+            comboBox1.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 0;
+            comboBox3.SelectedIndex = 0;
             InitTimers();
         }
 
@@ -361,49 +413,83 @@ namespace _500pxCracker
             }
         }
 
-        private static void TimerUpdateDB(Object source, System.Timers.ElapsedEventArgs e)
+        public void TimerUpdateDB(Object source, System.Timers.ElapsedEventArgs e)
         {
-            PythonWorker.RunWorkerAsync("UpdateDB");
+            try
+            {
+                PythonWorker.RunWorkerAsync("UpdateDB");
+            }
+            catch (Exception)
+            {
+                Random rnd = new Random();
+                SetTimerDuration(TimerIndex.UpdateDB, TimeSpan.FromMilliseconds(rnd.Next(5000, 20000)));
+            }
         }
-        private static void TimerLikeFresh(Object source, System.Timers.ElapsedEventArgs e)
+        public void TimerLikeFresh(Object source, System.Timers.ElapsedEventArgs e)
         {
-            PythonWorker.RunWorkerAsync("LikeFresh 0 ");
+            try { 
+            PythonWorker.RunWorkerAsync("LikeFresh 0 " + int.Parse(freshTimerTextBox.Text));
+            }
+            catch (Exception)
+            {
+                Random rnd = new Random();
+                SetTimerDuration(TimerIndex.LikeFresh, TimeSpan.FromMilliseconds(rnd.Next(5000, 20000)));
+            }
         }
-        private static void TimerLikeUpcoming(Object source, System.Timers.ElapsedEventArgs e)
+        public void TimerLikeUpcoming(Object source, System.Timers.ElapsedEventArgs e)
         {
-            PythonWorker.RunWorkerAsync("LikeFresh 1 ");
+            try { 
+            PythonWorker.RunWorkerAsync("LikeFresh 1 " + int.Parse(upcomingTimerTextBox.Text));
+            }
+            catch (Exception)
+            {
+                Random rnd = new Random();
+                SetTimerDuration(TimerIndex.LikeUpcoming, TimeSpan.FromMilliseconds(rnd.Next(5000,20000)));
+            }
         }
-        private static void TimerLikeLatestPhotos(Object source, System.Timers.ElapsedEventArgs e)
+        public void TimerLikeLatestPhotos(Object source, System.Timers.ElapsedEventArgs e)
         {
+            try {
             PythonWorker.RunWorkerAsync("LikeLatestPhotos");
+            }
+            catch (Exception)
+            {
+                Random rnd = new Random();
+                SetTimerDuration(TimerIndex.LikeLatestPhotos, TimeSpan.FromMilliseconds(rnd.Next(5000, 20000)));
+            }
         }
-
         private void frm2_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.Close();
         }
         private void SetTimerDuration(TimerIndex index,TimeSpan duration)
         {
-            Timers[(int)index].Interval = duration.Milliseconds;
+            Timers[(int)index].Interval = duration.TotalMilliseconds;
         }
-        private void SetTimerActive(TimerIndex index,bool enabled)
+        private void SetTimerActive(TimerIndex index,bool enabled,bool cyclic)
         {
             TimersEnable[(int)index] = enabled;
             if (!isPythonRunning||!enabled)
             {
                 Timers[(int)index].Enabled = enabled;
+                Timers[(int)index].AutoReset = cyclic;
             }
         }
-        private void SetPythonRunning(bool val)
+        public void SetPythonRunning(bool val)
         {
+            CurrentUser.Get().isStopped = false;
             for (int i = 0; i < (int)TimerIndex.Size; i++)
             {
-                Timers[i].Enabled = TimersEnable[i]&&!val;
+                Timers[i].Enabled = TimersEnable[i]&&!val&&Timers[i].AutoReset;
             }
             isPythonRunning = val;
-            PythonLabel.Visible = val;
-            pythonRunningPic.Visible = val;
-            killingPythonButton.Visible = val;
+            this.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () {
+                PythonLabel.Visible = true;
+                PythonLabel.Visible = val;
+                pythonRunningPic.Visible = val;
+                killingPythonButton.Visible = val;
+            });
+            
             if (val == false)
                 Console.Beep();
         }
@@ -416,6 +502,8 @@ namespace _500pxCracker
                 followersPanel.Visible = false;
             if (likesPanel.Visible)
                 likesPanel.Visible = false;
+            if (timersPanel.Visible)
+                timersPanel.Visible = false;
         }
 
         private void followersButton_Click(object sender, EventArgs e)
@@ -426,6 +514,8 @@ namespace _500pxCracker
                 profilePanel.Visible = false;
             if (likesPanel.Visible)
                 likesPanel.Visible = false;
+            if (timersPanel.Visible)
+                timersPanel.Visible = false;
             followersComboBox_SelectedIndexChanged(this, new EventArgs());
         }
 
@@ -433,6 +523,20 @@ namespace _500pxCracker
         {
             if (!likesPanel.Visible)
                 likesPanel.Visible = true;
+            if (followersPanel.Visible)
+                followersPanel.Visible = false;
+            if (profilePanel.Visible)
+                profilePanel.Visible = false;
+            if (timersPanel.Visible)
+                timersPanel.Visible = false;
+        }
+
+        private void timersPanelButton_Click(object sender, EventArgs e)
+        {
+            if (!timersPanel.Visible)
+                timersPanel.Visible = true;
+            if (likesPanel.Visible)
+                likesPanel.Visible = false;
             if (followersPanel.Visible)
                 followersPanel.Visible = false;
             if (profilePanel.Visible)
@@ -480,8 +584,8 @@ namespace _500pxCracker
         {
             dataGetter.GetFollowersandFollowings();
             CurrentUser.Get().LikeLatestPhotos();
-
-            MessageBox.Show("Successfully liked all the photos!");
+            if (!CurrentUser.Get().isStopped)
+                MessageBox.Show("Successfully liked all the photos");
         }
         private void likeLatestButton_Click(object sender, EventArgs e)
         {
@@ -491,16 +595,24 @@ namespace _500pxCracker
             }
         }
 
+        private void LikeLikingMe(int number)
+        {
+            CurrentUser.Get().LikeLikingMe(number);
+            if (!CurrentUser.Get().isStopped)
+              MessageBox.Show("Successfully liked all the photos");
+        }
+
+
+
         private void likePhotosButton_Click(object sender, EventArgs e)
         {
             if (!isPythonRunning)
             {
                 if (photosNumberTextBox.Text.Length != 0)
                 {
-                    CurrentUser.Get().LikeLikingMe(int.Parse(photosNumberTextBox.Text));
+                      PythonWorker.RunWorkerAsync("LikeLikingMe-"+ int.Parse(photosNumberTextBox.Text));
 
-                    MessageBox.Show("Successfully liked all the photos");
-                    photosNumberTextBox.Text = "";
+                      photosNumberTextBox.Text = "";
                 }
                 else
                     MessageBox.Show("Please provide all required information!");
@@ -510,18 +622,36 @@ namespace _500pxCracker
 
         private void mutualFolButton_Click(object sender, EventArgs e)
         {
-                if (followersComboBox.SelectedIndex > -1)
-                {
-                    if (!followersSearchPanel.Visible)
-                        followersSearchPanel.Visible = true;
-                    followersComboBox_SelectedIndexChanged(this, new EventArgs());
+            if (followersComboBox.SelectedIndex > -1)
+            {
+                if (!followersSearchPanel.Visible)
+                    followersSearchPanel.Visible = true;
+                followersComboBox_SelectedIndexChanged(this, new EventArgs());
+
+                if(!numberOfXTextBox.Visible)
+                    numberOfXTextBox.Visible = true;
+
+                if(followersComboBox.SelectedIndex == 0)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " all users on your list.";
+                if(followersComboBox.SelectedIndex == 1)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Only Followers on your list..";
+                if(followersComboBox.SelectedIndex == 2)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Only Followings on your list.";
+                if (followersComboBox.SelectedIndex == 3)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Followers on your list.";
+                if (followersComboBox.SelectedIndex == 4)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Followings on your list.";
+                if (followersComboBox.SelectedIndex == 5)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Mutual Followers on your list.";
+                
 
                 //PythonWorker.RunWorkerAsync("MutualFollow");
             }
             else
                     MessageBox.Show("Please choose one of the available options!");
         }
-        
+
+
 
         private void selectRandomButton_Click(object sender, EventArgs e)
         {
@@ -592,13 +722,20 @@ namespace _500pxCracker
             string where = " where ";
             foreach (string user in SelectedUsers)
             {
-                where += "fullname = '"+ user+"' or ";
+                where += "fullname = '"+ user.Replace("'","\'")+"' or ";
             }
             where = where.Remove(where.Length - 4, 4);
-            SQLiteCommand command = new SQLiteCommand("select * from Users "+where, m_dbConnection);
+            SQLiteCommand command = new SQLiteCommand("select * from Users " , m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
+                /*
+                if (current.isStopped)
+                {
+                    m_dbConnection.Close();
+                    return;
+                }
+                */
                 current.Unfollow(reader["name"].ToString());
             }
             command = new SQLiteCommand("Update Users set following_since = ''"+where, m_dbConnection);
@@ -628,13 +765,20 @@ namespace _500pxCracker
             string where = " where ";
             foreach (string user in SelectedUsers)
             {
-                where += "fullname = '" + user + "' or ";
+                where += "fullname = '" + user.Replace("'","\'") + "' or ";
             }
             where = where.Remove(where.Length - 4, 4);
             SQLiteCommand command = new SQLiteCommand("select * from Users " + where, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
+              /*
+              if (current.isStopped)
+              {
+                  m_dbConnection.Close();
+                  return;
+              }
+              */
                 current.Follow(reader["name"].ToString());
             }
             command = new SQLiteCommand("Update Users set following_since = '"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") +"'" + where, m_dbConnection);
@@ -657,7 +801,7 @@ namespace _500pxCracker
         //profile panel ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         private void statsButton_Click(object sender, EventArgs e)
         {
-            if (timeDropDown.SelectedIndex > -1)
+            if (timeDropDown.SelectedIndex > -1 && dataGetter.DBExist())
             {
                 if(!statsPanel.Visible)
                     statsPanel.Visible = true;
@@ -732,6 +876,78 @@ namespace _500pxCracker
         {
             dataGetter.GetDb();
         }
+        private long TimetoMS(DateTimePicker dateTimePicker)
+        {
+            return ((dateTimePicker.Value.Hour * 60) + dateTimePicker.Value.Minute) * 60000;
+        }
+
+        private void saveTimersButton_Click(object sender, EventArgs e)
+        {
+            if (freshCheckBox.Checked && freshTimerTextBox.Text.Length == 0 && !upcomingCheckBox.Checked)
+                MessageBox.Show("Please provide number of Fresh photos to be liked!");
+
+            else if(upcomingCheckBox.Checked && upcomingTimerTextBox.Text.Length==0 && !freshCheckBox.Checked)
+                MessageBox.Show("Please provide number of Upcoming photos to be liked!");
+
+            else if(upcomingCheckBox.Checked && upcomingTimerTextBox.Text.Length == 0 && freshCheckBox.Checked && freshTimerTextBox.Text.Length == 0)
+                MessageBox.Show("Please provide number of photos to be liked!");
+
+            else
+            {
+                DialogResult dialogResult = MessageBox.Show("Are you sure you want to change the timers?", "", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    for (TimerIndex i = 0; i < TimerIndex.Size; i++)
+                    {
+                        switch (i)
+                        {
+                            case TimerIndex.UpdateDB:
+                                Timers[(int)i].Interval = TimetoMS(DBdateTimePicker);
+                                break;
+                            case TimerIndex.LikeFresh:
+                                Timers[(int)i].Interval = TimetoMS(freshDateTimePicker);
+                                break;
+                            case TimerIndex.LikeUpcoming:
+                                Timers[(int)i].Interval = TimetoMS(upcomingDateTimePicker);
+                                break;
+                            case TimerIndex.LikeLatestPhotos:
+                                Timers[(int)i].Interval = TimetoMS(lastestDateTimePicker);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    SetTimerActive(TimerIndex.UpdateDB, BDcheckBox.Checked, DBcomboBox.SelectedIndex == 1);
+                    SetTimerActive(TimerIndex.LikeFresh, freshCheckBox.Checked, comboBox1.SelectedIndex == 1);
+                    SetTimerActive(TimerIndex.LikeUpcoming, upcomingCheckBox.Checked, comboBox2.SelectedIndex == 1);
+                    SetTimerActive(TimerIndex.LikeLatestPhotos, lastestCheckBox.Checked, comboBox3.SelectedIndex == 1);
+                    MessageBox.Show("Successfully saved the timers!");
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+                    //do nothing
+                }
+            }
+        }
+
+        private void freshTimerTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(freshPhotosNumberTextBox.Text, "[^0-9]"))
+            {
+                MessageBox.Show("Please enter only numbers.");
+                freshPhotosNumberTextBox.Text = freshPhotosNumberTextBox.Text.Remove(freshPhotosNumberTextBox.Text.Length - 1);
+            }
+        }
+
+        private void upcomingTimerTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(freshPhotosNumberTextBox.Text, "[^0-9]"))
+            {
+                MessageBox.Show("Please enter only numbers.");
+                freshPhotosNumberTextBox.Text = freshPhotosNumberTextBox.Text.Remove(freshPhotosNumberTextBox.Text.Length - 1);
+            }
+        }
+
         private void updateDBButton_Click(object sender, EventArgs e)
         {
             if (!isPythonRunning)
@@ -750,7 +966,7 @@ namespace _500pxCracker
 
         private void followersComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (followersSearchPanel.Visible && !isPythonRunning)
+            if (followersSearchPanel.Visible && !isPythonRunning && dataGetter.DBExist())
             {
                 List<ListViewItem> listViewItems = new List<ListViewItem>();
                 SQLiteConnection m_dbConnection = new SQLiteConnection("Data Source = " + LocalizationData.DbDir + "scrapper.db" + "; Version = 3; UseUTF16Encoding = True;");
@@ -792,6 +1008,19 @@ namespace _500pxCracker
                 //listViewItems.Sort();// Crash przy jakims userze
                 usersListView.Items.Clear();
                 usersListView.Items.AddRange(listViewItems.ToArray());
+
+                if (followersComboBox.SelectedIndex == 0)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " all users on your list.";
+                if (followersComboBox.SelectedIndex == 1)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Only Followers on your list..";
+                if (followersComboBox.SelectedIndex == 2)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Only Followings on your list.";
+                if (followersComboBox.SelectedIndex == 3)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Followers on your list.";
+                if (followersComboBox.SelectedIndex == 4)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Followings on your list.";
+                if (followersComboBox.SelectedIndex == 5)
+                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Mutual Followers on your list.";
             }
         }
 
@@ -836,7 +1065,9 @@ namespace _500pxCracker
                 case "LikeLatestPhotos":
                     LikeLatestPhotos();
                     break;
-
+                case "LikeLikingMe":
+                    LikeLikingMe(arg[0]);
+                    break;
                 default:
                     break;
             }
@@ -861,6 +1092,7 @@ namespace _500pxCracker
                 if (dialogResult == DialogResult.Yes)
                 {
                     PythonWorker.RunWorkerAsync("UpdateDB");
+                 
                 }
                 else if (dialogResult == DialogResult.No)
                 {
@@ -875,7 +1107,37 @@ namespace _500pxCracker
             DialogResult dialogResult = MessageBox.Show("Are you sure you want to stop Python? ", "", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                //tu prosze ubic pythona
+                PythonWorker.WorkerSupportsCancellation = true;
+                PythonWorker.CancelAsync();
+                CurrentUser.Get().isStopped = true;
+                if (PythonWorker.IsBusy == true)
+                {
+                    PythonWorker.Dispose();
+                    try
+                    {
+                        Process.GetProcessById(Pids.pid).Kill();
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+
+                }
+                if (Directory.Exists(LocalizationData.GalleriesDir))
+                {
+                    Directory.Delete(LocalizationData.GalleriesDir, true);
+                }
+                if (Directory.Exists(LocalizationData.LikesForPhotosDir))
+                {
+                    Directory.Delete(LocalizationData.LikesForPhotosDir, true);
+                }
+                if (Directory.Exists(LocalizationData.PhotosDir))
+                {
+                    Directory.Delete(LocalizationData.PhotosDir, true);
+                }
+
+              
+
             }
             else if (dialogResult == DialogResult.No)
             {

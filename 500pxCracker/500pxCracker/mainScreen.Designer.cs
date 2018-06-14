@@ -30,6 +30,7 @@
         { 
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainScreen));
             this.menuPanel = new System.Windows.Forms.Panel();
+            this.timersPanelButton = new System.Windows.Forms.PictureBox();
             this.killingPythonButton = new System.Windows.Forms.PictureBox();
             this.updateDBButton = new System.Windows.Forms.PictureBox();
             this.pythonRunningPic = new System.Windows.Forms.PictureBox();
@@ -69,10 +70,6 @@
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.textBox10 = new System.Windows.Forms.TextBox();
             this.usersToBeSelectedNumber = new System.Windows.Forms.TextBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.profilePic1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.profilePic2 = new System.Windows.Forms.PictureBox();
             this.mutualFolButton = new System.Windows.Forms.PictureBox();
             this.mutualFollowersSearchText = new System.Windows.Forms.TextBox();
             this.followersPic = new System.Windows.Forms.PictureBox();
@@ -90,8 +87,33 @@
             this.likeText = new System.Windows.Forms.TextBox();
             this.likesPic = new System.Windows.Forms.PictureBox();
             this.closeButton = new System.Windows.Forms.PictureBox();
-            PythonWorker = new System.ComponentModel.BackgroundWorker();
+            this.PythonWorker = new System.ComponentModel.BackgroundWorker();
+            this.timersPanel = new System.Windows.Forms.Panel();
+            this.saveTimersButton = new System.Windows.Forms.PictureBox();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.lastestDateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.lastestCheckBox = new System.Windows.Forms.CheckBox();
+            this.textBox14 = new System.Windows.Forms.TextBox();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.upcomingDateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.upcomingCheckBox = new System.Windows.Forms.CheckBox();
+            this.upcomingTimerTextBox = new System.Windows.Forms.TextBox();
+            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.textBox13 = new System.Windows.Forms.TextBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.freshDateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.freshCheckBox = new System.Windows.Forms.CheckBox();
+            this.freshTimerTextBox = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.DBcomboBox = new System.Windows.Forms.ComboBox();
+            this.BDcheckBox = new System.Windows.Forms.CheckBox();
+            this.DBdateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.DBtext = new System.Windows.Forms.TextBox();
+            this.timersPic = new System.Windows.Forms.PictureBox();
+            this.numberOfXTextBox = new System.Windows.Forms.TextBox();
             this.menuPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.timersPanelButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.killingPythonButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.updateDBButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pythonRunningPic)).BeginInit();
@@ -112,10 +134,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.selectAllUsersButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.deselectAllUsersButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectRandomButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.profilePic1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.profilePic2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mutualFolButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.followersPic)).BeginInit();
             this.likesPanel.SuspendLayout();
@@ -124,11 +142,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.likeFreshButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.likesPic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.closeButton)).BeginInit();
+            this.timersPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.saveTimersButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timersPic)).BeginInit();
             this.SuspendLayout();
             // 
             // menuPanel
             // 
             this.menuPanel.BackColor = System.Drawing.Color.White;
+            this.menuPanel.Controls.Add(this.timersPanelButton);
             this.menuPanel.Controls.Add(this.killingPythonButton);
             this.menuPanel.Controls.Add(this.updateDBButton);
             this.menuPanel.Controls.Add(this.pythonRunningPic);
@@ -141,9 +163,21 @@
             this.menuPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.menuPanel.Location = new System.Drawing.Point(0, 0);
             this.menuPanel.Name = "menuPanel";
-            this.menuPanel.Size = new System.Drawing.Size(100, 454);
+            this.menuPanel.Size = new System.Drawing.Size(100, 525);
             this.menuPanel.TabIndex = 0;
             this.menuPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
+            // 
+            // timersPanelButton
+            // 
+            this.timersPanelButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.timersPanelButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.timersPanelButton.Image = ((System.Drawing.Image)(resources.GetObject("timersPanelButton.Image")));
+            this.timersPanelButton.Location = new System.Drawing.Point(25, 263);
+            this.timersPanelButton.Name = "timersPanelButton";
+            this.timersPanelButton.Size = new System.Drawing.Size(50, 50);
+            this.timersPanelButton.TabIndex = 49;
+            this.timersPanelButton.TabStop = false;
+            this.timersPanelButton.Click += new System.EventHandler(this.timersPanelButton_Click);
             // 
             // killingPythonButton
             // 
@@ -152,7 +186,7 @@
             this.killingPythonButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.killingPythonButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.killingPythonButton.Image = ((System.Drawing.Image)(resources.GetObject("killingPythonButton.Image")));
-            this.killingPythonButton.Location = new System.Drawing.Point(60, 405);
+            this.killingPythonButton.Location = new System.Drawing.Point(60, 476);
             this.killingPythonButton.Name = "killingPythonButton";
             this.killingPythonButton.Size = new System.Drawing.Size(25, 25);
             this.killingPythonButton.TabIndex = 48;
@@ -165,7 +199,7 @@
             this.updateDBButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.updateDBButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.updateDBButton.Image = ((System.Drawing.Image)(resources.GetObject("updateDBButton.Image")));
-            this.updateDBButton.Location = new System.Drawing.Point(25, 263);
+            this.updateDBButton.Location = new System.Drawing.Point(25, 319);
             this.updateDBButton.Name = "updateDBButton";
             this.updateDBButton.Size = new System.Drawing.Size(50, 50);
             this.updateDBButton.TabIndex = 47;
@@ -180,7 +214,7 @@
             this.pythonRunningPic.Cursor = System.Windows.Forms.Cursors.Default;
             this.pythonRunningPic.Enabled = false;
             this.pythonRunningPic.Image = ((System.Drawing.Image)(resources.GetObject("pythonRunningPic.Image")));
-            this.pythonRunningPic.Location = new System.Drawing.Point(15, 405);
+            this.pythonRunningPic.Location = new System.Drawing.Point(15, 476);
             this.pythonRunningPic.Name = "pythonRunningPic";
             this.pythonRunningPic.Size = new System.Drawing.Size(25, 25);
             this.pythonRunningPic.TabIndex = 46;
@@ -193,7 +227,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PythonLabel.AutoSize = true;
             this.PythonLabel.Font = new System.Drawing.Font("Segoe UI", 6.75F);
-            this.PythonLabel.Location = new System.Drawing.Point(13, 433);
+            this.PythonLabel.Location = new System.Drawing.Point(13, 504);
             this.PythonLabel.Name = "PythonLabel";
             this.PythonLabel.Size = new System.Drawing.Size(74, 12);
             this.PythonLabel.TabIndex = 11;
@@ -206,7 +240,7 @@
             this.exitButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.exitButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.exitButton.Image = ((System.Drawing.Image)(resources.GetObject("exitButton.Image")));
-            this.exitButton.Location = new System.Drawing.Point(25, 319);
+            this.exitButton.Location = new System.Drawing.Point(25, 374);
             this.exitButton.Name = "exitButton";
             this.exitButton.Size = new System.Drawing.Size(50, 50);
             this.exitButton.TabIndex = 10;
@@ -385,17 +419,15 @@
             // 
             // followersPanel
             // 
-            this.followersPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.followersPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.followersPanel.Controls.Add(this.followersComboBox);
             this.followersPanel.Controls.Add(this.followersSearchPanel);
             this.followersPanel.Controls.Add(this.mutualFolButton);
             this.followersPanel.Controls.Add(this.mutualFollowersSearchText);
             this.followersPanel.Controls.Add(this.followersPic);
-            this.followersPanel.Location = new System.Drawing.Point(119, 12);
+            this.followersPanel.Location = new System.Drawing.Point(127, 6);
             this.followersPanel.Name = "followersPanel";
-            this.followersPanel.Size = new System.Drawing.Size(617, 433);
+            this.followersPanel.Size = new System.Drawing.Size(600, 504);
             this.followersPanel.TabIndex = 2;
             this.followersPanel.Visible = false;
             this.followersPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
@@ -422,9 +454,8 @@
             // 
             // followersSearchPanel
             // 
-            this.followersSearchPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.followersSearchPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.followersSearchPanel.Controls.Add(this.numberOfXTextBox);
             this.followersSearchPanel.Controls.Add(this.followButton);
             this.followersSearchPanel.Controls.Add(this.textBox12);
             this.followersSearchPanel.Controls.Add(this.usersListView);
@@ -440,13 +471,9 @@
             this.followersSearchPanel.Controls.Add(this.textBox9);
             this.followersSearchPanel.Controls.Add(this.textBox10);
             this.followersSearchPanel.Controls.Add(this.usersToBeSelectedNumber);
-            this.followersSearchPanel.Controls.Add(this.pictureBox1);
-            this.followersSearchPanel.Controls.Add(this.profilePic1);
-            this.followersSearchPanel.Controls.Add(this.pictureBox2);
-            this.followersSearchPanel.Controls.Add(this.profilePic2);
-            this.followersSearchPanel.Location = new System.Drawing.Point(21, 86);
+            this.followersSearchPanel.Location = new System.Drawing.Point(13, 86);
             this.followersSearchPanel.Name = "followersSearchPanel";
-            this.followersSearchPanel.Size = new System.Drawing.Size(580, 344);
+            this.followersSearchPanel.Size = new System.Drawing.Size(580, 410);
             this.followersSearchPanel.TabIndex = 38;
             this.followersSearchPanel.Visible = false;
             // 
@@ -478,9 +505,7 @@
             // 
             // usersListView
             // 
-            this.usersListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.usersListView.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.usersListView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
             this.usersListView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.usersListView.CheckBoxes = true;
@@ -488,9 +513,9 @@
             this.Usesrname,
             this.FollowingSince,
             this.FollowerSince});
-            this.usersListView.Location = new System.Drawing.Point(12, 35);
+            this.usersListView.Location = new System.Drawing.Point(18, 18);
             this.usersListView.Name = "usersListView";
-            this.usersListView.Size = new System.Drawing.Size(359, 297);
+            this.usersListView.Size = new System.Drawing.Size(359, 373);
             this.usersListView.TabIndex = 40;
             this.usersListView.UseCompatibleStateImageBehavior = false;
             this.usersListView.View = System.Windows.Forms.View.Details;
@@ -667,54 +692,6 @@
             this.usersToBeSelectedNumber.Size = new System.Drawing.Size(33, 22);
             this.usersToBeSelectedNumber.TabIndex = 43;
             this.usersToBeSelectedNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.pictureBox1.Enabled = false;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(198, 4);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(25, 25);
-            this.pictureBox1.TabIndex = 39;
-            this.pictureBox1.TabStop = false;
-            // 
-            // profilePic1
-            // 
-            this.profilePic1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.profilePic1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.profilePic1.Enabled = false;
-            this.profilePic1.Image = ((System.Drawing.Image)(resources.GetObject("profilePic1.Image")));
-            this.profilePic1.Location = new System.Drawing.Point(265, 4);
-            this.profilePic1.Name = "profilePic1";
-            this.profilePic1.Size = new System.Drawing.Size(25, 25);
-            this.profilePic1.TabIndex = 38;
-            this.profilePic1.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Default;
-            this.pictureBox2.Enabled = false;
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(296, 4);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(25, 25);
-            this.pictureBox2.TabIndex = 36;
-            this.pictureBox2.TabStop = false;
-            // 
-            // profilePic2
-            // 
-            this.profilePic2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.profilePic2.Cursor = System.Windows.Forms.Cursors.Default;
-            this.profilePic2.Enabled = false;
-            this.profilePic2.Image = ((System.Drawing.Image)(resources.GetObject("profilePic2.Image")));
-            this.profilePic2.Location = new System.Drawing.Point(167, 4);
-            this.profilePic2.Name = "profilePic2";
-            this.profilePic2.Size = new System.Drawing.Size(25, 25);
-            this.profilePic2.TabIndex = 35;
-            this.profilePic2.TabStop = false;
             // 
             // mutualFolButton
             // 
@@ -950,16 +927,342 @@
             // 
             // PythonWorker
             // 
-            PythonWorker.WorkerReportsProgress = true;
-            PythonWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.PythonWorker_DoWork);
-            PythonWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.PythonWorker_ProgressChanged);
+            this.PythonWorker.WorkerReportsProgress = true;
+            this.PythonWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.PythonWorker_DoWork);
+            this.PythonWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.PythonWorker_ProgressChanged);
+            // 
+            // timersPanel
+            // 
+            this.timersPanel.Controls.Add(this.saveTimersButton);
+            this.timersPanel.Controls.Add(this.comboBox3);
+            this.timersPanel.Controls.Add(this.lastestDateTimePicker);
+            this.timersPanel.Controls.Add(this.lastestCheckBox);
+            this.timersPanel.Controls.Add(this.textBox14);
+            this.timersPanel.Controls.Add(this.comboBox2);
+            this.timersPanel.Controls.Add(this.upcomingDateTimePicker);
+            this.timersPanel.Controls.Add(this.upcomingCheckBox);
+            this.timersPanel.Controls.Add(this.upcomingTimerTextBox);
+            this.timersPanel.Controls.Add(this.textBox11);
+            this.timersPanel.Controls.Add(this.textBox13);
+            this.timersPanel.Controls.Add(this.comboBox1);
+            this.timersPanel.Controls.Add(this.freshDateTimePicker);
+            this.timersPanel.Controls.Add(this.freshCheckBox);
+            this.timersPanel.Controls.Add(this.freshTimerTextBox);
+            this.timersPanel.Controls.Add(this.textBox2);
+            this.timersPanel.Controls.Add(this.textBox3);
+            this.timersPanel.Controls.Add(this.DBcomboBox);
+            this.timersPanel.Controls.Add(this.BDcheckBox);
+            this.timersPanel.Controls.Add(this.DBdateTimePicker);
+            this.timersPanel.Controls.Add(this.DBtext);
+            this.timersPanel.Controls.Add(this.timersPic);
+            this.timersPanel.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.timersPanel.Location = new System.Drawing.Point(804, 390);
+            this.timersPanel.Name = "timersPanel";
+            this.timersPanel.Size = new System.Drawing.Size(556, 93);
+            this.timersPanel.TabIndex = 41;
+            this.timersPanel.Visible = false;
+            this.timersPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
+            // 
+            // saveTimersButton
+            // 
+            this.saveTimersButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.saveTimersButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.saveTimersButton.Image = ((System.Drawing.Image)(resources.GetObject("saveTimersButton.Image")));
+            this.saveTimersButton.Location = new System.Drawing.Point(508, 206);
+            this.saveTimersButton.Name = "saveTimersButton";
+            this.saveTimersButton.Size = new System.Drawing.Size(25, 25);
+            this.saveTimersButton.TabIndex = 36;
+            this.saveTimersButton.TabStop = false;
+            this.saveTimersButton.Click += new System.EventHandler(this.saveTimersButton_Click);
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.BackColor = System.Drawing.Color.LightGray;
+            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox3.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.comboBox3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Items.AddRange(new object[] {
+            "single event",
+            "cyclic event"});
+            this.comboBox3.Location = new System.Drawing.Point(412, 171);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(121, 21);
+            this.comboBox3.TabIndex = 35;
+            // 
+            // lastestDateTimePicker
+            // 
+            this.lastestDateTimePicker.CalendarMonthBackground = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.lastestDateTimePicker.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lastestDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.lastestDateTimePicker.Location = new System.Drawing.Point(344, 170);
+            this.lastestDateTimePicker.Name = "lastestDateTimePicker";
+            this.lastestDateTimePicker.Size = new System.Drawing.Size(60, 25);
+            this.lastestDateTimePicker.TabIndex = 34;
+            // 
+            // lastestCheckBox
+            // 
+            this.lastestCheckBox.AutoSize = true;
+            this.lastestCheckBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lastestCheckBox.Location = new System.Drawing.Point(30, 181);
+            this.lastestCheckBox.Name = "lastestCheckBox";
+            this.lastestCheckBox.Size = new System.Drawing.Size(15, 14);
+            this.lastestCheckBox.TabIndex = 33;
+            this.lastestCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // textBox14
+            // 
+            this.textBox14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.textBox14.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox14.Cursor = System.Windows.Forms.Cursors.Default;
+            this.textBox14.Enabled = false;
+            this.textBox14.Font = new System.Drawing.Font("Segoe UI", 10.25F);
+            this.textBox14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.textBox14.Location = new System.Drawing.Point(51, 178);
+            this.textBox14.Name = "textBox14";
+            this.textBox14.Size = new System.Drawing.Size(282, 19);
+            this.textBox14.TabIndex = 32;
+            this.textBox14.Text = "Like all lastest photos of the users I follow at";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.BackColor = System.Drawing.Color.LightGray;
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox2.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.comboBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "single event",
+            "cyclic event"});
+            this.comboBox2.Location = new System.Drawing.Point(412, 135);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(121, 21);
+            this.comboBox2.TabIndex = 31;
+            // 
+            // upcomingDateTimePicker
+            // 
+            this.upcomingDateTimePicker.CalendarMonthBackground = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.upcomingDateTimePicker.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.upcomingDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.upcomingDateTimePicker.Location = new System.Drawing.Point(344, 134);
+            this.upcomingDateTimePicker.Name = "upcomingDateTimePicker";
+            this.upcomingDateTimePicker.Size = new System.Drawing.Size(60, 25);
+            this.upcomingDateTimePicker.TabIndex = 30;
+            // 
+            // upcomingCheckBox
+            // 
+            this.upcomingCheckBox.AutoSize = true;
+            this.upcomingCheckBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.upcomingCheckBox.Location = new System.Drawing.Point(30, 142);
+            this.upcomingCheckBox.Name = "upcomingCheckBox";
+            this.upcomingCheckBox.Size = new System.Drawing.Size(15, 14);
+            this.upcomingCheckBox.TabIndex = 29;
+            this.upcomingCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // upcomingTimerTextBox
+            // 
+            this.upcomingTimerTextBox.BackColor = System.Drawing.Color.LightGray;
+            this.upcomingTimerTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.upcomingTimerTextBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.upcomingTimerTextBox.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.upcomingTimerTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.upcomingTimerTextBox.Location = new System.Drawing.Point(83, 137);
+            this.upcomingTimerTextBox.MaxLength = 4;
+            this.upcomingTimerTextBox.Name = "upcomingTimerTextBox";
+            this.upcomingTimerTextBox.Size = new System.Drawing.Size(30, 22);
+            this.upcomingTimerTextBox.TabIndex = 26;
+            this.upcomingTimerTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.upcomingTimerTextBox.TextChanged += new System.EventHandler(this.upcomingTimerTextBox_TextChanged);
+            // 
+            // textBox11
+            // 
+            this.textBox11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.textBox11.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox11.Cursor = System.Windows.Forms.Cursors.Default;
+            this.textBox11.Enabled = false;
+            this.textBox11.Font = new System.Drawing.Font("Segoe UI", 10.25F);
+            this.textBox11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.textBox11.Location = new System.Drawing.Point(119, 138);
+            this.textBox11.Name = "textBox11";
+            this.textBox11.Size = new System.Drawing.Size(175, 19);
+            this.textBox11.TabIndex = 27;
+            this.textBox11.Text = "photos from Upcoming at";
+            // 
+            // textBox13
+            // 
+            this.textBox13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.textBox13.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox13.Cursor = System.Windows.Forms.Cursors.Default;
+            this.textBox13.Enabled = false;
+            this.textBox13.Font = new System.Drawing.Font("Segoe UI", 10.25F);
+            this.textBox13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.textBox13.Location = new System.Drawing.Point(51, 138);
+            this.textBox13.Name = "textBox13";
+            this.textBox13.Size = new System.Drawing.Size(25, 19);
+            this.textBox13.TabIndex = 28;
+            this.textBox13.Text = "Like";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.BackColor = System.Drawing.Color.LightGray;
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.comboBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "single event",
+            "cyclic event"});
+            this.comboBox1.Location = new System.Drawing.Point(412, 101);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 25;
+            // 
+            // freshDateTimePicker
+            // 
+            this.freshDateTimePicker.CalendarMonthBackground = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.freshDateTimePicker.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.freshDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.freshDateTimePicker.Location = new System.Drawing.Point(344, 100);
+            this.freshDateTimePicker.Name = "freshDateTimePicker";
+            this.freshDateTimePicker.Size = new System.Drawing.Size(60, 25);
+            this.freshDateTimePicker.TabIndex = 24;
+            // 
+            // freshCheckBox
+            // 
+            this.freshCheckBox.AutoSize = true;
+            this.freshCheckBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.freshCheckBox.Location = new System.Drawing.Point(30, 103);
+            this.freshCheckBox.Name = "freshCheckBox";
+            this.freshCheckBox.Size = new System.Drawing.Size(15, 14);
+            this.freshCheckBox.TabIndex = 23;
+            this.freshCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // freshTimerTextBox
+            // 
+            this.freshTimerTextBox.BackColor = System.Drawing.Color.LightGray;
+            this.freshTimerTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.freshTimerTextBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.freshTimerTextBox.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.freshTimerTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.freshTimerTextBox.Location = new System.Drawing.Point(83, 97);
+            this.freshTimerTextBox.MaxLength = 4;
+            this.freshTimerTextBox.Name = "freshTimerTextBox";
+            this.freshTimerTextBox.Size = new System.Drawing.Size(30, 22);
+            this.freshTimerTextBox.TabIndex = 20;
+            this.freshTimerTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.freshTimerTextBox.TextChanged += new System.EventHandler(this.freshTimerTextBox_TextChanged);
+            // 
+            // textBox2
+            // 
+            this.textBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox2.Cursor = System.Windows.Forms.Cursors.Default;
+            this.textBox2.Enabled = false;
+            this.textBox2.Font = new System.Drawing.Font("Segoe UI", 10.25F);
+            this.textBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.textBox2.Location = new System.Drawing.Point(119, 98);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(138, 19);
+            this.textBox2.TabIndex = 21;
+            this.textBox2.Text = "photos from Fresh at";
+            // 
+            // textBox3
+            // 
+            this.textBox3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox3.Cursor = System.Windows.Forms.Cursors.Default;
+            this.textBox3.Enabled = false;
+            this.textBox3.Font = new System.Drawing.Font("Segoe UI", 10.25F);
+            this.textBox3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.textBox3.Location = new System.Drawing.Point(51, 98);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(25, 19);
+            this.textBox3.TabIndex = 22;
+            this.textBox3.Text = "Like";
+            // 
+            // DBcomboBox
+            // 
+            this.DBcomboBox.BackColor = System.Drawing.Color.LightGray;
+            this.DBcomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.DBcomboBox.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.DBcomboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.DBcomboBox.FormattingEnabled = true;
+            this.DBcomboBox.Items.AddRange(new object[] {
+            "single event",
+            "cyclic event"});
+            this.DBcomboBox.Location = new System.Drawing.Point(412, 62);
+            this.DBcomboBox.Name = "DBcomboBox";
+            this.DBcomboBox.Size = new System.Drawing.Size(121, 21);
+            this.DBcomboBox.TabIndex = 19;
+            // 
+            // BDcheckBox
+            // 
+            this.BDcheckBox.AutoSize = true;
+            this.BDcheckBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.BDcheckBox.Location = new System.Drawing.Point(30, 66);
+            this.BDcheckBox.Name = "BDcheckBox";
+            this.BDcheckBox.Size = new System.Drawing.Size(15, 14);
+            this.BDcheckBox.TabIndex = 16;
+            this.BDcheckBox.UseVisualStyleBackColor = true;
+            // 
+            // DBdateTimePicker
+            // 
+            this.DBdateTimePicker.CalendarMonthBackground = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.DBdateTimePicker.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.DBdateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.DBdateTimePicker.Location = new System.Drawing.Point(344, 62);
+            this.DBdateTimePicker.Name = "DBdateTimePicker";
+            this.DBdateTimePicker.Size = new System.Drawing.Size(60, 25);
+            this.DBdateTimePicker.TabIndex = 15;
+            // 
+            // DBtext
+            // 
+            this.DBtext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.DBtext.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.DBtext.Cursor = System.Windows.Forms.Cursors.Default;
+            this.DBtext.Enabled = false;
+            this.DBtext.Font = new System.Drawing.Font("Segoe UI", 10.25F);
+            this.DBtext.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.DBtext.Location = new System.Drawing.Point(51, 63);
+            this.DBtext.Name = "DBtext";
+            this.DBtext.Size = new System.Drawing.Size(129, 19);
+            this.DBtext.TabIndex = 14;
+            this.DBtext.Text = "Update database at";
+            // 
+            // timersPic
+            // 
+            this.timersPic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.timersPic.Enabled = false;
+            this.timersPic.Image = ((System.Drawing.Image)(resources.GetObject("timersPic.Image")));
+            this.timersPic.Location = new System.Drawing.Point(3, 3);
+            this.timersPic.Name = "timersPic";
+            this.timersPic.Size = new System.Drawing.Size(50, 50);
+            this.timersPic.TabIndex = 4;
+            this.timersPic.TabStop = false;
+            // 
+            // numberOfXTextBox
+            // 
+            this.numberOfXTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.numberOfXTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.numberOfXTextBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.numberOfXTextBox.Enabled = false;
+            this.numberOfXTextBox.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+            this.numberOfXTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.numberOfXTextBox.Location = new System.Drawing.Point(387, 355);
+            this.numberOfXTextBox.Multiline = true;
+            this.numberOfXTextBox.Name = "numberOfXTextBox";
+            this.numberOfXTextBox.Size = new System.Drawing.Size(184, 36);
+            this.numberOfXTextBox.TabIndex = 54;
+            this.numberOfXTextBox.Text = "You have";
+            this.numberOfXTextBox.Visible = false;
             // 
             // mainScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.ClientSize = new System.Drawing.Size(773, 454);
+            this.ClientSize = new System.Drawing.Size(773, 525);
+            this.Controls.Add(this.timersPanel);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.likesPanel);
             this.Controls.Add(this.followersPanel);
@@ -967,7 +1270,7 @@
             this.Controls.Add(this.profilePanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(773, 454);
+            this.MinimumSize = new System.Drawing.Size(773, 525);
             this.Name = "mainScreen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "mainScreen";
@@ -975,6 +1278,7 @@
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
             this.menuPanel.ResumeLayout(false);
             this.menuPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.timersPanelButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.killingPythonButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.updateDBButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pythonRunningPic)).EndInit();
@@ -999,10 +1303,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.selectAllUsersButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.deselectAllUsersButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectRandomButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.profilePic1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.profilePic2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mutualFolButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.followersPic)).EndInit();
             this.likesPanel.ResumeLayout(false);
@@ -1012,6 +1312,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.likeFreshButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.likesPic)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.closeButton)).EndInit();
+            this.timersPanel.ResumeLayout(false);
+            this.timersPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.saveTimersButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timersPic)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1046,16 +1350,12 @@
         private System.Windows.Forms.PictureBox likePhotosButton;
         private System.Windows.Forms.PictureBox exitButton;
         private System.Windows.Forms.Panel followersSearchPanel;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.PictureBox profilePic2;
         private System.Windows.Forms.ComboBox timeDropDown;
         private System.Windows.Forms.Panel statsPanel;
         private System.Windows.Forms.TextBox statsText2;
         private System.Windows.Forms.TextBox statsText1;
         private System.Windows.Forms.TextBox statsLikes;
         private System.Windows.Forms.PictureBox closeButton;
-        private System.Windows.Forms.PictureBox profilePic1;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ListView usersListView;
         private System.Windows.Forms.PictureBox invertSelectionButton;
         private System.Windows.Forms.TextBox textBox5;
@@ -1079,6 +1379,31 @@
         private System.Windows.Forms.PictureBox updateDBButton;
         private System.Windows.Forms.PictureBox pythonRunningPic;
         private System.Windows.Forms.PictureBox killingPythonButton;
-        public static System.ComponentModel.BackgroundWorker PythonWorker;
+        private System.Windows.Forms.PictureBox timersPanelButton;
+        private System.Windows.Forms.Panel timersPanel;
+        private System.Windows.Forms.PictureBox timersPic;
+        private System.Windows.Forms.TextBox DBtext;
+        private System.Windows.Forms.DateTimePicker DBdateTimePicker;
+        private System.Windows.Forms.CheckBox BDcheckBox;
+        private System.Windows.Forms.ComboBox DBcomboBox;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.DateTimePicker freshDateTimePicker;
+        private System.Windows.Forms.CheckBox freshCheckBox;
+        private System.Windows.Forms.TextBox freshTimerTextBox;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.DateTimePicker lastestDateTimePicker;
+        private System.Windows.Forms.CheckBox lastestCheckBox;
+        private System.Windows.Forms.TextBox textBox14;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.DateTimePicker upcomingDateTimePicker;
+        private System.Windows.Forms.CheckBox upcomingCheckBox;
+        private System.Windows.Forms.TextBox upcomingTimerTextBox;
+        private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.TextBox textBox13;
+        private System.Windows.Forms.PictureBox saveTimersButton;
+        public System.ComponentModel.BackgroundWorker PythonWorker;
+        private System.Windows.Forms.TextBox numberOfXTextBox;
     }
 }
