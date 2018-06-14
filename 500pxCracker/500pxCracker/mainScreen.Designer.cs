@@ -52,6 +52,7 @@
             this.followersPanel = new System.Windows.Forms.Panel();
             this.followersComboBox = new System.Windows.Forms.ComboBox();
             this.followersSearchPanel = new System.Windows.Forms.Panel();
+            this.numberOfXTextBox = new System.Windows.Forms.TextBox();
             this.followButton = new System.Windows.Forms.PictureBox();
             this.textBox12 = new System.Windows.Forms.TextBox();
             this.usersListView = new System.Windows.Forms.ListView();
@@ -111,7 +112,6 @@
             this.DBdateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.DBtext = new System.Windows.Forms.TextBox();
             this.timersPic = new System.Windows.Forms.PictureBox();
-            this.numberOfXTextBox = new System.Windows.Forms.TextBox();
             this.menuPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.timersPanelButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.killingPythonButton)).BeginInit();
@@ -425,7 +425,7 @@
             this.followersPanel.Controls.Add(this.mutualFolButton);
             this.followersPanel.Controls.Add(this.mutualFollowersSearchText);
             this.followersPanel.Controls.Add(this.followersPic);
-            this.followersPanel.Location = new System.Drawing.Point(127, 6);
+            this.followersPanel.Location = new System.Drawing.Point(389, 6);
             this.followersPanel.Name = "followersPanel";
             this.followersPanel.Size = new System.Drawing.Size(600, 504);
             this.followersPanel.TabIndex = 2;
@@ -476,6 +476,22 @@
             this.followersSearchPanel.Size = new System.Drawing.Size(580, 410);
             this.followersSearchPanel.TabIndex = 38;
             this.followersSearchPanel.Visible = false;
+            // 
+            // numberOfXTextBox
+            // 
+            this.numberOfXTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.numberOfXTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.numberOfXTextBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.numberOfXTextBox.Enabled = false;
+            this.numberOfXTextBox.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+            this.numberOfXTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.numberOfXTextBox.Location = new System.Drawing.Point(387, 355);
+            this.numberOfXTextBox.Multiline = true;
+            this.numberOfXTextBox.Name = "numberOfXTextBox";
+            this.numberOfXTextBox.Size = new System.Drawing.Size(184, 36);
+            this.numberOfXTextBox.TabIndex = 54;
+            this.numberOfXTextBox.Text = "You have";
+            this.numberOfXTextBox.Visible = false;
             // 
             // followButton
             // 
@@ -1240,28 +1256,12 @@
             this.timersPic.TabIndex = 4;
             this.timersPic.TabStop = false;
             // 
-            // numberOfXTextBox
-            // 
-            this.numberOfXTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.numberOfXTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.numberOfXTextBox.Cursor = System.Windows.Forms.Cursors.Default;
-            this.numberOfXTextBox.Enabled = false;
-            this.numberOfXTextBox.Font = new System.Drawing.Font("Segoe UI", 9.25F);
-            this.numberOfXTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.numberOfXTextBox.Location = new System.Drawing.Point(387, 355);
-            this.numberOfXTextBox.Multiline = true;
-            this.numberOfXTextBox.Name = "numberOfXTextBox";
-            this.numberOfXTextBox.Size = new System.Drawing.Size(184, 36);
-            this.numberOfXTextBox.TabIndex = 54;
-            this.numberOfXTextBox.Text = "You have";
-            this.numberOfXTextBox.Visible = false;
-            // 
             // mainScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.ClientSize = new System.Drawing.Size(773, 525);
+            this.ClientSize = new System.Drawing.Size(1297, 525);
             this.Controls.Add(this.timersPanel);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.likesPanel);

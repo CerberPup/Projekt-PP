@@ -746,7 +746,7 @@ namespace _500pxCracker
         }
         private void unfollowButton_Click(object sender, EventArgs e)
         {
-            if (!isPythonRunning)
+            if (!isPythonRunning && usersListView.CheckedItems.Count>0)
             {
                 CurrentUser current = CurrentUser.Get();
                 foreach (ListViewItem item in usersListView.CheckedItems)
@@ -787,7 +787,7 @@ namespace _500pxCracker
         }
         private void followButton_Click(object sender, EventArgs e)
         {
-            if (!isPythonRunning)
+            if (!isPythonRunning && usersListView.CheckedItems.Count > 0)
             {
                 CurrentUser current = CurrentUser.Get();
                 foreach (ListViewItem item in usersListView.CheckedItems)
@@ -801,8 +801,23 @@ namespace _500pxCracker
         //profile panel ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         private void statsButton_Click(object sender, EventArgs e)
         {
-            if (timeDropDown.SelectedIndex > -1 && dataGetter.DBExist())
+            if (timeDropDown.SelectedIndex > -1)
             {
+                if (!dataGetter.DBExist())
+                {
+                    if (!isPythonRunning)
+                    {
+                        DialogResult dialogResult = MessageBox.Show("You need to dowload DataBase first. \nDo you want to do it now?", "", MessageBoxButtons.YesNo);
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            PythonWorker.RunWorkerAsync("UpdateDB");
+                        }
+                        else if (dialogResult == DialogResult.No)
+                        {
+                            return;
+                        }
+                    }
+                }
                 if(!statsPanel.Visible)
                     statsPanel.Visible = true;
                 statsText2.Text = "times last " + timeDropDown.SelectedItem.ToString();
@@ -1009,6 +1024,12 @@ namespace _500pxCracker
                 usersListView.Items.Clear();
                 usersListView.Items.AddRange(listViewItems.ToArray());
 
+                switch (followersComboBox.SelectedIndex)
+                {
+                    case 0:
+                    default:
+                        break;
+                }
                 if (followersComboBox.SelectedIndex == 0)
                     numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " all users on your list.";
                 if (followersComboBox.SelectedIndex == 1)
