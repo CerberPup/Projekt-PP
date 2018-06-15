@@ -1,7 +1,24 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="_500pxCracker.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="UpdateDBDateTime" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">06/15/2018 00:01:00</Value>
+    </Setting>
+    <Setting Name="FreshDateTime" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">06/15/2018 00:01:00</Value>
+    </Setting>
+    <Setting Name="UpcomingDateTime" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">06/15/2018 00:01:00</Value>
+    </Setting>
+    <Setting Name="LastestDateTime" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">06/15/2018 00:01:00</Value>
+    </Setting>
+    <Setting Name="FreshNumber" Type="System.String" Scope="User">
+      <Value Profile="(Default)">50</Value>
+    </Setting>
+    <Setting Name="UpcomingNumber" Type="System.String" Scope="User">
+      <Value Profile="(Default)">50</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>

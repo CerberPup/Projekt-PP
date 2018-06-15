@@ -8,22 +8,90 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace _500pxCracker.Properties
-{
-
-
+namespace _500pxCracker.Properties {
+    
+    
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "11.0.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
-    {
-
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.6.0.0")]
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-
-        public static Settings Default
-        {
-            get
-            {
+        
+        public static Settings Default {
+            get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("06/15/2018 00:01:00")]
+        public global::System.DateTime UpdateDBDateTime {
+            get {
+                return ((global::System.DateTime)(this["UpdateDBDateTime"]));
+            }
+            set {
+                this["UpdateDBDateTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("06/15/2018 00:01:00")]
+        public global::System.DateTime FreshDateTime {
+            get {
+                return ((global::System.DateTime)(this["FreshDateTime"]));
+            }
+            set {
+                this["FreshDateTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("06/15/2018 00:01:00")]
+        public global::System.DateTime UpcomingDateTime {
+            get {
+                return ((global::System.DateTime)(this["UpcomingDateTime"]));
+            }
+            set {
+                this["UpcomingDateTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("06/15/2018 00:01:00")]
+        public global::System.DateTime LastestDateTime {
+            get {
+                return ((global::System.DateTime)(this["LastestDateTime"]));
+            }
+            set {
+                this["LastestDateTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public string FreshNumber {
+            get {
+                return ((string)(this["FreshNumber"]));
+            }
+            set {
+                this["FreshNumber"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public string UpcomingNumber {
+            get {
+                return ((string)(this["UpcomingNumber"]));
+            }
+            set {
+                this["UpcomingNumber"] = value;
             }
         }
     }

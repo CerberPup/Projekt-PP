@@ -126,7 +126,6 @@ namespace _500pxCracker
         protected override void WndProc(ref Message message)
         {
             base.WndProc(ref message);
-
             if (message.Msg == 0x84) // WM_NCHITTEST
             {
                 var cursor = this.PointToClient(Cursor.Position);
@@ -384,6 +383,12 @@ namespace _500pxCracker
             comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 0;
             comboBox3.SelectedIndex = 0;
+            DBdateTimePicker.Value = Properties.Settings.Default.UpdateDBDateTime;
+            freshDateTimePicker.Value = Properties.Settings.Default.FreshDateTime;
+            upcomingDateTimePicker.Value = Properties.Settings.Default.UpcomingDateTime;
+            lastestDateTimePicker.Value = Properties.Settings.Default.LastestDateTime;
+            freshTimerTextBox.Text = Properties.Settings.Default.FreshNumber;
+            upcomingTimerTextBox.Text = Properties.Settings.Default.UpcomingNumber;
             InitTimers();
         }
 
@@ -423,6 +428,7 @@ namespace _500pxCracker
             {
                 Random rnd = new Random();
                 SetTimerDuration(TimerIndex.UpdateDB, TimeSpan.FromMilliseconds(rnd.Next(5000, 20000)));
+                Timers[(int)TimerIndex.UpdateDB].Start();
             }
         }
         public void TimerLikeFresh(Object source, System.Timers.ElapsedEventArgs e)
@@ -434,6 +440,7 @@ namespace _500pxCracker
             {
                 Random rnd = new Random();
                 SetTimerDuration(TimerIndex.LikeFresh, TimeSpan.FromMilliseconds(rnd.Next(5000, 20000)));
+                Timers[(int)TimerIndex.LikeFresh].Start();
             }
         }
         public void TimerLikeUpcoming(Object source, System.Timers.ElapsedEventArgs e)
@@ -445,6 +452,7 @@ namespace _500pxCracker
             {
                 Random rnd = new Random();
                 SetTimerDuration(TimerIndex.LikeUpcoming, TimeSpan.FromMilliseconds(rnd.Next(5000,20000)));
+                Timers[(int)TimerIndex.LikeUpcoming].Start();
             }
         }
         public void TimerLikeLatestPhotos(Object source, System.Timers.ElapsedEventArgs e)
@@ -456,6 +464,7 @@ namespace _500pxCracker
             {
                 Random rnd = new Random();
                 SetTimerDuration(TimerIndex.LikeLatestPhotos, TimeSpan.FromMilliseconds(rnd.Next(5000, 20000)));
+                Timers[(int)TimerIndex.LikeLatestPhotos].Start();
             }
         }
         private void frm2_FormClosed(object sender, FormClosedEventArgs e)
@@ -465,6 +474,7 @@ namespace _500pxCracker
         private void SetTimerDuration(TimerIndex index,TimeSpan duration)
         {
             Timers[(int)index].Interval = duration.TotalMilliseconds;
+
         }
         private void SetTimerActive(TimerIndex index,bool enabled,bool cyclic)
         {
@@ -811,6 +821,7 @@ namespace _500pxCracker
                         if (dialogResult == DialogResult.Yes)
                         {
                             PythonWorker.RunWorkerAsync("UpdateDB");
+                            return;
                         }
                         else if (dialogResult == DialogResult.No)
                         {
@@ -855,6 +866,7 @@ namespace _500pxCracker
                     count += DateTime.Parse(reader["liked"].ToString()).CompareTo(since) > -1 ? 1 : 0;
                 }
                 statsLikes.Text = count.ToString();
+                m_dbConnection.Close();
             }
             else
                 MessageBox.Show("Please choose one of the available options!");
@@ -893,7 +905,8 @@ namespace _500pxCracker
         }
         private long TimetoMS(DateTimePicker dateTimePicker)
         {
-            return ((dateTimePicker.Value.Hour * 60) + dateTimePicker.Value.Minute) * 60000;
+            long toReturn = ((dateTimePicker.Value.Hour * 60) + dateTimePicker.Value.Minute) * 60000;
+            return toReturn==0?100:toReturn;
         }
 
         private void saveTimersButton_Click(object sender, EventArgs e)
@@ -932,6 +945,13 @@ namespace _500pxCracker
                                 break;
                         }
                     }
+                    Properties.Settings.Default.UpdateDBDateTime = DBdateTimePicker.Value;
+                    Properties.Settings.Default.FreshDateTime = freshDateTimePicker.Value;
+                    Properties.Settings.Default.UpcomingDateTime = upcomingDateTimePicker.Value;
+                    Properties.Settings.Default.LastestDateTime = lastestDateTimePicker.Value;
+                    Properties.Settings.Default.FreshNumber = freshTimerTextBox.Text;
+                    Properties.Settings.Default.UpcomingNumber = upcomingTimerTextBox.Text;
+                    Properties.Settings.Default.Save();
                     SetTimerActive(TimerIndex.UpdateDB, BDcheckBox.Checked, DBcomboBox.SelectedIndex == 1);
                     SetTimerActive(TimerIndex.LikeFresh, freshCheckBox.Checked, comboBox1.SelectedIndex == 1);
                     SetTimerActive(TimerIndex.LikeUpcoming, upcomingCheckBox.Checked, comboBox2.SelectedIndex == 1);

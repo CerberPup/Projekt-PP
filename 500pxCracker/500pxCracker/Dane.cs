@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Data.SQLite;
+using System.Windows.Forms;
 
 namespace _500pxCracker
 {
@@ -67,6 +68,18 @@ namespace _500pxCracker
     {
         static public bool DBExist()
         {
+            if (!File.Exists(LocalizationData.DbDir + "scrapper.db"))
+            {
+                SQLiteConnection.CreateFile(LocalizationData.DbDir + "scrapper.db");
+                SQLiteConnection m_dbConnection = new SQLiteConnection("Data Source="+ LocalizationData.DbDir + "scrapper.db" + ";Version=3;");
+                m_dbConnection.Open();
+                SQLiteCommand command = new SQLiteCommand("CREATE TABLE IF NOT EXISTS Users (userID INTEGER PRIMARY KEY, name text, fullname text, following_since text, follower_since text)", m_dbConnection);
+                command.ExecuteNonQuery();
+                command = new SQLiteCommand("CREATE TABLE IF NOT EXISTS Likes (userID INTEGER, photoID INTEGER, liked text, FOREIGN KEY (userID) REFERENCES Users(userID), UNIQUE (userID, photoID))", m_dbConnection);
+                command.ExecuteNonQuery();
+                m_dbConnection.Close();
+                MessageBox.Show("Wygenerowano pustą bazę danych");
+            }
             return File.Exists(LocalizationData.DbDir + "scrapper.db");
         }
         public static Process process;

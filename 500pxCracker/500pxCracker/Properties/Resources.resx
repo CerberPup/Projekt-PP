@@ -117,19 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Timer1" xml:space="preserve">
-    <value>0:00</value>
-  </data>
-  <data name="Timer2" xml:space="preserve">
-    <value>0:00</value>
-  </data>
-  <data name="Timer3" xml:space="preserve">
-    <value>0:00</value>
-  </data>
-  <data name="Timer4" xml:space="preserve">
-    <value>0:00</value>
-  </data>
-  <data name="Timer5" xml:space="preserve">
-    <value>0:00</value>
-  </data>
 </root>

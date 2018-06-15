@@ -59,50 +59,5 @@ namespace _500pxCracker.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 0:00.
-        /// </summary>
-        internal static string Timer1 {
-            get {
-                return ResourceManager.GetString("Timer1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 0:00.
-        /// </summary>
-        internal static string Timer2 {
-            get {
-                return ResourceManager.GetString("Timer2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 0:00.
-        /// </summary>
-        internal static string Timer3 {
-            get {
-                return ResourceManager.GetString("Timer3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 0:00.
-        /// </summary>
-        internal static string Timer4 {
-            get {
-                return ResourceManager.GetString("Timer4", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 0:00.
-        /// </summary>
-        internal static string Timer5 {
-            get {
-                return ResourceManager.GetString("Timer5", resourceCulture);
-            }
-        }
     }
 }
