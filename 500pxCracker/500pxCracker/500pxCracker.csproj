@@ -73,6 +73,9 @@
     <Compile Include="mainScreen.Designer.cs">
       <DependentUpon>mainScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="PausableTimer.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs" />

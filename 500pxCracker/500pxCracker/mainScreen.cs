@@ -31,7 +31,7 @@ namespace _500pxCracker
         };
 
         private List<bool> TimersEnable = new List<bool>();
-        private List<System.Timers.Timer> Timers = new List<System.Timers.Timer>();
+        private List<PausableTimer> Timers = new List<PausableTimer>();
         private bool isPythonRunning;
         private List<string> SelectedUsers = new List<string>();
         private enum FollowersComboBoxState
@@ -334,7 +334,25 @@ namespace _500pxCracker
         }
 
         //-----------------------------------------------------------------------------------------
-
+        private void OverrideTimer(TimerIndex timerIndex, double interval)
+        {
+            Timers[(int)timerIndex] = new PausableTimer(interval);
+            switch (timerIndex)
+            {
+                case TimerIndex.UpdateDB:
+                    Timers[(int)timerIndex].Elapsed += TimerUpdateDB;
+                    break;
+                case TimerIndex.LikeFresh:
+                    Timers[(int)timerIndex].Elapsed += TimerLikeFresh;
+                    break;
+                case TimerIndex.LikeUpcoming:
+                    Timers[(int)timerIndex].Elapsed += TimerLikeUpcoming;
+                    break;
+                case TimerIndex.LikeLatestPhotos:
+                    Timers[(int)timerIndex].Elapsed += TimerLikeLatestPhotos;
+                    break;
+            }
+        }
         private void mainScreen_Load(object sender, EventArgs e)
         {
             followersComboBox.SelectedIndex = 0;
@@ -363,6 +381,9 @@ namespace _500pxCracker
             timersPanel.Location = new Point(119, 12);
             timersPanel.Size = new Size(559, 332);
 
+            DryftTimePicker.Format = DateTimePickerFormat.Custom;
+            DryftTimePicker.CustomFormat = "HH:mm";
+            DryftTimePicker.ShowUpDown = true;
             DBdateTimePicker.Format = DateTimePickerFormat.Custom;
             DBdateTimePicker.CustomFormat = "HH:mm";
             DBdateTimePicker.ShowUpDown = true;
@@ -389,6 +410,7 @@ namespace _500pxCracker
             comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 0;
             comboBox3.SelectedIndex = 0;
+            DryftTimePicker.Value = Properties.Settings.Default.DryftTimePicker;
             DBdateTimePicker.Value = Properties.Settings.Default.UpdateDBDateTime;
             freshDateTimePicker.Value = Properties.Settings.Default.FreshDateTime;
             upcomingDateTimePicker.Value = Properties.Settings.Default.UpcomingDateTime;
@@ -397,12 +419,11 @@ namespace _500pxCracker
             upcomingTimerTextBox.Text = Properties.Settings.Default.UpcomingNumber;
             InitTimers();
         }
-
         private void InitTimers()
         {
             for (int i = 0; i < (int)TimerIndex.Size; i++)
             {
-                System.Timers.Timer timmy = new System.Timers.Timer(360000);
+                PausableTimer timmy = new PausableTimer(360000);
                 switch (i)
                 {
                     case (int)TimerIndex.UpdateDB:
@@ -418,6 +439,7 @@ namespace _500pxCracker
                         timmy.Elapsed += TimerLikeLatestPhotos;
                         break;
                 }
+                 
                 timmy.Enabled = false;
                 TimersEnable.Add(false);
                 Timers.Add(timmy);
@@ -428,48 +450,52 @@ namespace _500pxCracker
         {
             try
             {
+                OverrideTimer(TimerIndex.UpdateDB, TimetoMS(Properties.Settings.Default.UpdateDBDateTime));
                 PythonWorker.RunWorkerAsync("UpdateDB");
             }
             catch (Exception)
             {
                 Random rnd = new Random();
-                SetTimerDuration(TimerIndex.UpdateDB, TimeSpan.FromMilliseconds(rnd.Next(5000, 20000)));
+                OverrideTimer(TimerIndex.UpdateDB, rnd.Next(5000, 20000));
                 Timers[(int)TimerIndex.UpdateDB].Start();
             }
         }
         public void TimerLikeFresh(Object source, System.Timers.ElapsedEventArgs e)
         {
-            try { 
-            PythonWorker.RunWorkerAsync("LikeFresh 0 " + int.Parse(freshTimerTextBox.Text));
+            try {
+                OverrideTimer(TimerIndex.LikeFresh, TimetoMS(Properties.Settings.Default.FreshDateTime));
+                PythonWorker.RunWorkerAsync("LikeFresh 0 " + int.Parse(Properties.Settings.Default.FreshNumber));
             }
             catch (Exception)
             {
                 Random rnd = new Random();
-                SetTimerDuration(TimerIndex.LikeFresh, TimeSpan.FromMilliseconds(rnd.Next(5000, 20000)));
+                OverrideTimer(TimerIndex.LikeFresh, rnd.Next(5000, 20000));
                 Timers[(int)TimerIndex.LikeFresh].Start();
             }
         }
         public void TimerLikeUpcoming(Object source, System.Timers.ElapsedEventArgs e)
         {
-            try { 
-            PythonWorker.RunWorkerAsync("LikeFresh 1 " + int.Parse(upcomingTimerTextBox.Text));
+            try {
+                OverrideTimer(TimerIndex.LikeUpcoming, TimetoMS(Properties.Settings.Default.UpcomingDateTime));
+                PythonWorker.RunWorkerAsync("LikeFresh 1 " + int.Parse(Properties.Settings.Default.FreshNumber));
             }
             catch (Exception)
             {
                 Random rnd = new Random();
-                SetTimerDuration(TimerIndex.LikeUpcoming, TimeSpan.FromMilliseconds(rnd.Next(5000,20000)));
+                OverrideTimer(TimerIndex.LikeUpcoming, rnd.Next(5000,20000));
                 Timers[(int)TimerIndex.LikeUpcoming].Start();
             }
         }
         public void TimerLikeLatestPhotos(Object source, System.Timers.ElapsedEventArgs e)
         {
             try {
-            PythonWorker.RunWorkerAsync("LikeLatestPhotos");
+                OverrideTimer(TimerIndex.LikeLatestPhotos, TimetoMS(Properties.Settings.Default.LastestDateTime));
+                PythonWorker.RunWorkerAsync("LikeLatestPhotos");
             }
             catch (Exception)
             {
                 Random rnd = new Random();
-                SetTimerDuration(TimerIndex.LikeLatestPhotos, TimeSpan.FromMilliseconds(rnd.Next(5000, 20000)));
+                OverrideTimer(TimerIndex.LikeLatestPhotos, rnd.Next(5000, 20000));
                 Timers[(int)TimerIndex.LikeLatestPhotos].Start();
             }
         }
@@ -477,26 +503,24 @@ namespace _500pxCracker
         {
             this.Close();
         }
-        private void SetTimerDuration(TimerIndex index,TimeSpan duration)
-        {
-            Timers[(int)index].Interval = duration.TotalMilliseconds;
-
-        }
         private void SetTimerActive(TimerIndex index,bool enabled,bool cyclic)
         {
-            TimersEnable[(int)index] = enabled;
-            if (!isPythonRunning||!enabled)
-            {
-                Timers[(int)index].Enabled = enabled;
-                Timers[(int)index].AutoReset = cyclic;
-            }
+            Timers[(int)index].Start();
+            //Timers[(int)index].AutoReset = cyclic;
         }
         public void SetPythonRunning(bool val)
         {
             CurrentUser.Get().isStopped = false;
             for (int i = 0; i < (int)TimerIndex.Size; i++)
             {
-                Timers[i].Enabled = TimersEnable[i]&&!val&&Timers[i].AutoReset;
+                if (val)
+                {
+                    Timers[i].Pause();
+                }
+                else
+                {
+                    Timers[i].Resume();
+                }
             }
             isPythonRunning = val;
             this.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () {
@@ -567,6 +591,26 @@ namespace _500pxCracker
                 startPanel.Visible = false;
         }
 
+        private void OnlyFloat_TextChanged(object sender, EventArgs e)
+        {
+            TextBox txtBox = sender as TextBox;
+            Regex regex = new Regex(@"^([0-9]{0,4}((\.[0-9]{0,2})|(\.?)))$");
+            if (!regex.Match(txtBox.Text).Success && txtBox.Text.Length!=0)
+            {
+                MessageBox.Show("Please enter only float numbers.\nExample: 1234.12");
+                ((TextBox)sender).Text = ((TextBox)sender).Text.Remove(((TextBox)sender).Text.Length - 1);
+            }
+        }
+        private void OnlyNumber_TextChanged(object sender, EventArgs e)
+        {
+            TextBox txtBox = sender as TextBox;
+
+            if (!new Regex(@"^([0-9])+$").Match(txtBox.Text).Success && txtBox.Text.Length != 0)
+            {
+                MessageBox.Show("Please enter only numbers.");
+                ((TextBox)sender).Text = ((TextBox)sender).Text.Remove(((TextBox)sender).Text.Length - 1);
+            }
+        }
         private void freshPhotosNumberTextBox_TextChanged(object sender, EventArgs e)
         {
             if (System.Text.RegularExpressions.Regex.IsMatch(freshPhotosNumberTextBox.Text, "[^0-9]"))
@@ -746,10 +790,10 @@ namespace _500pxCracker
             string where = " where ";
             foreach (string user in SelectedUsers)
             {
-                where += "fullname = '"+ user.Replace("'","\'")+"' or ";
+                where += "fullname = '"+ user.Replace("'","''")+"' or ";
             }
             where = where.Remove(where.Length - 4, 4);
-            SQLiteCommand command = new SQLiteCommand("select * from Users " , m_dbConnection);
+            SQLiteCommand command = new SQLiteCommand("select * from users where fullname in(select fullname from users" + where + " ) and following_since!=''" , m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection);
             while (reader.Read())
             {
@@ -760,7 +804,7 @@ namespace _500pxCracker
                 }
                 current.Unfollow(reader["name"].ToString());
             }
-            command = new SQLiteCommand("Update Users set following_since = ''"+where, m_dbConnection);
+            command = new SQLiteCommand("Update Users set following_since = '' where fullname in(select fullname from users" + where + " ) and following_since!=''", m_dbConnection);
             command.ExecuteNonQuery();
             command = new SQLiteCommand("DELETE from Users where follower_since='' AND following_since=''", m_dbConnection);
             command.ExecuteNonQuery();
@@ -787,10 +831,10 @@ namespace _500pxCracker
             string where = " where ";
             foreach (string user in SelectedUsers)
             {
-                where += "fullname = '" + user.Replace("'","\'") + "' or ";
+                where += "fullname = '" + user.Replace("'","''") + "' or ";
             }
             where = where.Remove(where.Length - 4, 4);
-            SQLiteCommand command = new SQLiteCommand("select * from Users " + where, m_dbConnection);
+            SQLiteCommand command = new SQLiteCommand("select * from users where fullname in(select fullname from users" + where+ " ) and following_since=''", m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection);
             while (reader.Read())
             {
@@ -801,7 +845,7 @@ namespace _500pxCracker
                 }
                 current.Follow(reader["name"].ToString());
             }
-            command = new SQLiteCommand("Update Users set following_since = '"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") +"'" + where, m_dbConnection);
+            command = new SQLiteCommand("Update Users set following_since = '"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' where fullname in(select fullname from users" + where+ " ) and following_since==''", m_dbConnection);
             command.ExecuteNonQuery();
             m_dbConnection.Close();
         }
@@ -913,6 +957,11 @@ namespace _500pxCracker
         {
             dataGetter.GetDb();
         }
+        private long TimetoMS(DateTime dateTime)
+        {
+            long toReturn = ((dateTime.Hour * 60) + dateTime.Minute) * 60000;
+            return toReturn == 0 ? 100 : toReturn;
+        }
         private long TimetoMS(DateTimePicker dateTimePicker)
         {
             long toReturn = ((dateTimePicker.Value.Hour * 60) + dateTimePicker.Value.Minute) * 60000;
@@ -940,21 +989,24 @@ namespace _500pxCracker
                         switch (i)
                         {
                             case TimerIndex.UpdateDB:
-                                Timers[(int)i].Interval = TimetoMS(DBdateTimePicker);
+                                OverrideTimer(i, TimetoMS(DBdateTimePicker));
                                 break;
                             case TimerIndex.LikeFresh:
-                                Timers[(int)i].Interval = TimetoMS(freshDateTimePicker);
+                                OverrideTimer(i, TimetoMS(freshDateTimePicker));
                                 break;
                             case TimerIndex.LikeUpcoming:
-                                Timers[(int)i].Interval = TimetoMS(upcomingDateTimePicker);
+                                OverrideTimer(i, TimetoMS(upcomingDateTimePicker));
                                 break;
                             case TimerIndex.LikeLatestPhotos:
-                                Timers[(int)i].Interval = TimetoMS(lastestDateTimePicker);
+                                OverrideTimer(i, TimetoMS(lastestDateTimePicker));
                                 break;
                             default:
                                 break;
                         }
+                        Timers[(int)i].Start();
                     }
+                    CurrentUser.Get().PythonDryft = PythonTimeDelay.Text.Length==0?"0": PythonTimeDelay.Text;
+                    Properties.Settings.Default.DryftTimePicker = DryftTimePicker.Value;
                     Properties.Settings.Default.UpdateDBDateTime = DBdateTimePicker.Value;
                     Properties.Settings.Default.FreshDateTime = freshDateTimePicker.Value;
                     Properties.Settings.Default.UpcomingDateTime = upcomingDateTimePicker.Value;
@@ -991,6 +1043,16 @@ namespace _500pxCracker
                 MessageBox.Show("Please enter only numbers.");
                 freshPhotosNumberTextBox.Text = freshPhotosNumberTextBox.Text.Remove(freshPhotosNumberTextBox.Text.Length - 1);
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Timers[0].Pause();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Timers[0].Resume();
         }
 
         private void updateDBButton_Click(object sender, EventArgs e)

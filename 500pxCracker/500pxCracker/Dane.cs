@@ -116,7 +116,7 @@ namespace _500pxCracker
             Credentials _Credentials = CurrentUser.Get().Get_Credentials();
              process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
-            process.StartInfo.Arguments = LocalizationData.MainPy + " " + _Credentials.login + " " + _Credentials.password + " -udb";
+            process.StartInfo.Arguments = LocalizationData.MainPy + " " + _Credentials.login + " " + _Credentials.password + " -s " + CurrentUser.Get().PythonDryft + " -udb";
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
@@ -150,7 +150,7 @@ namespace _500pxCracker
             Credentials credentials = CurrentUser.Get().Get_Credentials();
             process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
-            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + credentials.login + " " + credentials.password + " -f1 -f2";
+            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + credentials.login + " " + credentials.password + " -s " + CurrentUser.Get().PythonDryft + " -f1 -f2";
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
@@ -212,8 +212,7 @@ namespace _500pxCracker
 
     public class CurrentUser
     {
-        public List<string> UsersToRemove = new List<string>();
-        public List<string> UsersToAdd = new List<string>();
+        public string PythonDryft = "";
         private Credentials _Credentials;
         public bool isStopped = false;
         public Credentials Get_Credentials()
@@ -246,7 +245,7 @@ namespace _500pxCracker
         {
             Process process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
-            process.StartInfo.Arguments = LocalizationData.MainPy + " " + _Credentials.login + " " + _Credentials.password+" -ufl " + userName;
+            process.StartInfo.Arguments = LocalizationData.MainPy + " " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -ufl " + userName;
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
@@ -257,7 +256,7 @@ namespace _500pxCracker
         {
             Process process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
-            process.StartInfo.Arguments = LocalizationData.MainPy + " " + _Credentials.login + " " + _Credentials.password + " -fl " + userName;
+            process.StartInfo.Arguments = LocalizationData.MainPy + " " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -fl " + userName;
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
@@ -269,7 +268,7 @@ namespace _500pxCracker
         {
             Process process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
-            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -p -sf1 -galleries 1 -pages 1 -noCleanup";
+            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -p -sf1 -galleries 1 -pages 1 -noCleanup";
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
@@ -316,7 +315,7 @@ namespace _500pxCracker
                 }
                 process = new Process();
                 process.StartInfo.FileName = LocalizationData.Python;
-                process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -v" + newestPhoto.Key + " -noCleanup";
+                process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -v" + newestPhoto.Key + " -noCleanup";
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
                 process.Start();
@@ -341,7 +340,7 @@ namespace _500pxCracker
             Process process;
             process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
-            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -p -u " + _User._Name + " -noCleanup";
+            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -p -u " + _User._Name + " -noCleanup";
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
@@ -412,7 +411,7 @@ namespace _500pxCracker
                     return;
                 process = new Process();
                 process.StartInfo.FileName = LocalizationData.Python;
-                process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -l " + pht._PhotoId + " -noCleanup";
+                process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -l " + pht._PhotoId + " -noCleanup";
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
                 process.Start();
@@ -466,7 +465,7 @@ namespace _500pxCracker
             string joinedUser = String.Join(" ", liking.Keys);
             process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
-            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -p -u " + joinedUser + " -galleries 1 -pages 1 -noCleanup";
+            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -p -u " + joinedUser + " -galleries 1 -pages 1 -noCleanup";
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
@@ -504,7 +503,7 @@ namespace _500pxCracker
                       
                                 process = new Process();
                                 process.StartInfo.FileName = LocalizationData.Python;
-                                process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -v " + likingMatches[i].Groups[3].Value + " -noCleanup"; ;
+                                process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -v " + likingMatches[i].Groups[3].Value + " -noCleanup"; ;
                                 process.StartInfo.UseShellExecute = false;
                                 process.StartInfo.CreateNoWindow = true;
                                 process.Start();
@@ -540,7 +539,7 @@ namespace _500pxCracker
                                     return;
                                 process = new Process();
                                 process.StartInfo.FileName = LocalizationData.Python;
-                                process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -v " + likingMatches[i].Groups[3].Value + " -noCleanup"; ;
+                                process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -v " + likingMatches[i].Groups[3].Value + " -noCleanup"; ;
                                 process.StartInfo.UseShellExecute = false;
                                 process.StartInfo.CreateNoWindow = true;
                                 process.Start();
@@ -564,7 +563,7 @@ namespace _500pxCracker
         {
             Process process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
-            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password;
+            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft;
             switch (mode)
             {
                 case 0:

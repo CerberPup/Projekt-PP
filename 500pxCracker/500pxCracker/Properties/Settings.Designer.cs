@@ -94,5 +94,17 @@ namespace _500pxCracker.Properties {
                 this["UpcomingNumber"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("06/15/2018 00:01:00")]
+        public global::System.DateTime DryftTimePicker {
+            get {
+                return ((global::System.DateTime)(this["DryftTimePicker"]));
+            }
+            set {
+                this["DryftTimePicker"] = value;
+            }
+        }
     }
 }

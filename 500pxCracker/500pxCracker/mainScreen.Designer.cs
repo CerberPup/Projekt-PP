@@ -90,6 +90,8 @@
             this.closeButton = new System.Windows.Forms.PictureBox();
             this.PythonWorker = new System.ComponentModel.BackgroundWorker();
             this.timersPanel = new System.Windows.Forms.Panel();
+            this.PythonTimeDelay = new System.Windows.Forms.TextBox();
+            this.DryftTimePicker = new System.Windows.Forms.DateTimePicker();
             this.saveTimersButton = new System.Windows.Forms.PictureBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.lastestDateTimePicker = new System.Windows.Forms.DateTimePicker();
@@ -117,6 +119,8 @@
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.timersPanelButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.killingPythonButton)).BeginInit();
@@ -172,7 +176,7 @@
             this.menuPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.menuPanel.Location = new System.Drawing.Point(0, 0);
             this.menuPanel.Name = "menuPanel";
-            this.menuPanel.Size = new System.Drawing.Size(100, 525);
+            this.menuPanel.Size = new System.Drawing.Size(100, 830);
             this.menuPanel.TabIndex = 0;
             this.menuPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
             // 
@@ -195,7 +199,7 @@
             this.killingPythonButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.killingPythonButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.killingPythonButton.Image = ((System.Drawing.Image)(resources.GetObject("killingPythonButton.Image")));
-            this.killingPythonButton.Location = new System.Drawing.Point(60, 476);
+            this.killingPythonButton.Location = new System.Drawing.Point(60, 781);
             this.killingPythonButton.Name = "killingPythonButton";
             this.killingPythonButton.Size = new System.Drawing.Size(25, 25);
             this.killingPythonButton.TabIndex = 48;
@@ -223,7 +227,7 @@
             this.pythonRunningPic.Cursor = System.Windows.Forms.Cursors.Default;
             this.pythonRunningPic.Enabled = false;
             this.pythonRunningPic.Image = ((System.Drawing.Image)(resources.GetObject("pythonRunningPic.Image")));
-            this.pythonRunningPic.Location = new System.Drawing.Point(15, 476);
+            this.pythonRunningPic.Location = new System.Drawing.Point(15, 781);
             this.pythonRunningPic.Name = "pythonRunningPic";
             this.pythonRunningPic.Size = new System.Drawing.Size(25, 25);
             this.pythonRunningPic.TabIndex = 46;
@@ -236,7 +240,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PythonLabel.AutoSize = true;
             this.PythonLabel.Font = new System.Drawing.Font("Segoe UI", 6.75F);
-            this.PythonLabel.Location = new System.Drawing.Point(13, 504);
+            this.PythonLabel.Location = new System.Drawing.Point(13, 809);
             this.PythonLabel.Name = "PythonLabel";
             this.PythonLabel.Size = new System.Drawing.Size(74, 12);
             this.PythonLabel.TabIndex = 11;
@@ -434,9 +438,9 @@
             this.followersPanel.Controls.Add(this.mutualFolButton);
             this.followersPanel.Controls.Add(this.mutualFollowersSearchText);
             this.followersPanel.Controls.Add(this.followersPic);
-            this.followersPanel.Location = new System.Drawing.Point(127, 6);
+            this.followersPanel.Location = new System.Drawing.Point(592, 6);
             this.followersPanel.Name = "followersPanel";
-            this.followersPanel.Size = new System.Drawing.Size(600, 504);
+            this.followersPanel.Size = new System.Drawing.Size(600, 809);
             this.followersPanel.TabIndex = 2;
             this.followersPanel.Visible = false;
             this.followersPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
@@ -482,7 +486,7 @@
             this.followersSearchPanel.Controls.Add(this.usersToBeSelectedNumber);
             this.followersSearchPanel.Location = new System.Drawing.Point(13, 86);
             this.followersSearchPanel.Name = "followersSearchPanel";
-            this.followersSearchPanel.Size = new System.Drawing.Size(580, 410);
+            this.followersSearchPanel.Size = new System.Drawing.Size(580, 715);
             this.followersSearchPanel.TabIndex = 38;
             this.followersSearchPanel.Visible = false;
             // 
@@ -540,7 +544,7 @@
             this.FollowerSince});
             this.usersListView.Location = new System.Drawing.Point(18, 18);
             this.usersListView.Name = "usersListView";
-            this.usersListView.Size = new System.Drawing.Size(359, 373);
+            this.usersListView.Size = new System.Drawing.Size(359, 678);
             this.usersListView.TabIndex = 40;
             this.usersListView.UseCompatibleStateImageBehavior = false;
             this.usersListView.View = System.Windows.Forms.View.Details;
@@ -801,7 +805,7 @@
             this.photosNumberTextBox.Size = new System.Drawing.Size(30, 22);
             this.photosNumberTextBox.TabIndex = 20;
             this.photosNumberTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.photosNumberTextBox.TextChanged += new System.EventHandler(this.photosNumberTextBox_TextChanged);
+            this.photosNumberTextBox.TextChanged += new System.EventHandler(this.OnlyNumber_TextChanged);
             // 
             // photosText2
             // 
@@ -897,7 +901,7 @@
             this.freshPhotosNumberTextBox.Size = new System.Drawing.Size(30, 22);
             this.freshPhotosNumberTextBox.TabIndex = 17;
             this.freshPhotosNumberTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.freshPhotosNumberTextBox.TextChanged += new System.EventHandler(this.freshPhotosNumberTextBox_TextChanged);
+            this.freshPhotosNumberTextBox.TextChanged += new System.EventHandler(this.OnlyNumber_TextChanged);
             // 
             // photosText
             // 
@@ -958,6 +962,10 @@
             // 
             // timersPanel
             // 
+            this.timersPanel.Controls.Add(this.button2);
+            this.timersPanel.Controls.Add(this.button1);
+            this.timersPanel.Controls.Add(this.PythonTimeDelay);
+            this.timersPanel.Controls.Add(this.DryftTimePicker);
             this.timersPanel.Controls.Add(this.saveTimersButton);
             this.timersPanel.Controls.Add(this.comboBox3);
             this.timersPanel.Controls.Add(this.lastestDateTimePicker);
@@ -983,10 +991,27 @@
             this.timersPanel.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.timersPanel.Location = new System.Drawing.Point(804, 390);
             this.timersPanel.Name = "timersPanel";
-            this.timersPanel.Size = new System.Drawing.Size(556, 93);
+            this.timersPanel.Size = new System.Drawing.Size(633, 169);
             this.timersPanel.TabIndex = 41;
             this.timersPanel.Visible = false;
             this.timersPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
+            // 
+            // PythonTimeDelay
+            // 
+            this.PythonTimeDelay.Location = new System.Drawing.Point(412, 32);
+            this.PythonTimeDelay.Name = "PythonTimeDelay";
+            this.PythonTimeDelay.Size = new System.Drawing.Size(100, 22);
+            this.PythonTimeDelay.TabIndex = 38;
+            this.PythonTimeDelay.TextChanged += new System.EventHandler(this.OnlyFloat_TextChanged);
+            // 
+            // DryftTimePicker
+            // 
+            this.DryftTimePicker.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.DryftTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.DryftTimePicker.Location = new System.Drawing.Point(344, 31);
+            this.DryftTimePicker.Name = "DryftTimePicker";
+            this.DryftTimePicker.Size = new System.Drawing.Size(60, 25);
+            this.DryftTimePicker.TabIndex = 37;
             // 
             // saveTimersButton
             // 
@@ -1047,7 +1072,7 @@
             this.textBox14.Name = "textBox14";
             this.textBox14.Size = new System.Drawing.Size(282, 19);
             this.textBox14.TabIndex = 32;
-            this.textBox14.Text = "Like all lastest photos of the users I follow at";
+            this.textBox14.Text = "Like all lastest photos of the users I follow in";
             // 
             // comboBox2
             // 
@@ -1097,7 +1122,7 @@
             this.upcomingTimerTextBox.Size = new System.Drawing.Size(30, 22);
             this.upcomingTimerTextBox.TabIndex = 26;
             this.upcomingTimerTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.upcomingTimerTextBox.TextChanged += new System.EventHandler(this.upcomingTimerTextBox_TextChanged);
+            this.upcomingTimerTextBox.TextChanged += new System.EventHandler(this.OnlyNumber_TextChanged);
             // 
             // textBox11
             // 
@@ -1111,7 +1136,7 @@
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(175, 19);
             this.textBox11.TabIndex = 27;
-            this.textBox11.Text = "photos from Upcoming at";
+            this.textBox11.Text = "photos from Upcoming in";
             // 
             // textBox13
             // 
@@ -1175,7 +1200,7 @@
             this.freshTimerTextBox.Size = new System.Drawing.Size(30, 22);
             this.freshTimerTextBox.TabIndex = 20;
             this.freshTimerTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.freshTimerTextBox.TextChanged += new System.EventHandler(this.freshTimerTextBox_TextChanged);
+            this.freshTimerTextBox.TextChanged += new System.EventHandler(this.OnlyNumber_TextChanged);
             // 
             // textBox2
             // 
@@ -1189,7 +1214,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(138, 19);
             this.textBox2.TabIndex = 21;
-            this.textBox2.Text = "photos from Fresh at";
+            this.textBox2.Text = "photos from Fresh in";
             // 
             // textBox3
             // 
@@ -1252,7 +1277,7 @@
             this.DBtext.Name = "DBtext";
             this.DBtext.Size = new System.Drawing.Size(129, 19);
             this.DBtext.TabIndex = 14;
-            this.DBtext.Text = "Update database at";
+            this.DBtext.Text = "Update database in";
             // 
             // timersPic
             // 
@@ -1272,9 +1297,9 @@
             this.startPanel.Controls.Add(this.pictureBox3);
             this.startPanel.Controls.Add(this.pictureBox2);
             this.startPanel.Controls.Add(this.pictureBox1);
-            this.startPanel.Location = new System.Drawing.Point(113, 62);
+            this.startPanel.Location = new System.Drawing.Point(578, 62);
             this.startPanel.Name = "startPanel";
-            this.startPanel.Size = new System.Drawing.Size(89, 96);
+            this.startPanel.Size = new System.Drawing.Size(89, 83);
             this.startPanel.TabIndex = 42;
             this.startPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
             // 
@@ -1326,12 +1351,32 @@
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(83, 10);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 39;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(165, 9);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 40;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // mainScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.ClientSize = new System.Drawing.Size(773, 525);
+            this.ClientSize = new System.Drawing.Size(1703, 830);
             this.Controls.Add(this.startPanel);
             this.Controls.Add(this.timersPanel);
             this.Controls.Add(this.closeButton);
@@ -1486,5 +1531,9 @@
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.TextBox PythonTimeDelay;
+        private System.Windows.Forms.DateTimePicker DryftTimePicker;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
     }
 }

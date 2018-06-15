@@ -20,5 +20,8 @@
     <Setting Name="UpcomingNumber" Type="System.String" Scope="User">
       <Value Profile="(Default)">50</Value>
     </Setting>
+    <Setting Name="DryftTimePicker" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">06/15/2018 00:01:00</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
