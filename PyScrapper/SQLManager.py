@@ -138,6 +138,7 @@ class SQLManager(object):
             newUser = (user['id'], user['username'], user['fullname'], "", curDateTime)
             newUsers.append(newUser)
         self.ReplaceUsers(newUsers)
+        return webUsers
 
     def UpdateFollowings(self):
         dbUsersIDs = self.SelectUsersWhereNot(list(SQLManager.usersScheme.keys())[2], '', SQLManager.usersPrimaryKey[0])
@@ -163,6 +164,40 @@ class SQLManager(object):
             newUser = (user['id'], user['username'], user['fullname'], curDateTime, "")
             newUsers.append(newUser)
         self.ReplaceUsers(newUsers)
+        return webUsers
+
+    def CheckUsers(self, followers, followings):
+        followersIDs=[]
+        followingsIDs=[]
+        for follower in followers:
+            if follower is None:
+                continue
+            followerID = int(follower['id'])
+            if followerID not in followersIDs:
+                followersIDs.append(followerID)
+        for following in followings:
+            if following is None:
+                continue
+            followingID = int(following['id'])
+            if followingID not in followingsIDs:
+                followingsIDs.append(followingID)
+        followersDb = self.SelectUsersWhereNot(list(SQLManager.usersScheme.keys())[3], '')
+        followersToUpdate = []
+        followingsToUpdate=[]
+        for followerDb in followersDb:
+            if followerDb[0] not in followersIDs:
+               followersToUpdate.append((followerDb[0], followerDb[1], followerDb[2], followerDb[3],""))
+        self.ReplaceUsers(followersToUpdate)
+        followingsDb = self.SelectUsersWhereNot(list(SQLManager.usersScheme.keys())[2], '')
+        for followingDb in followingsDb:
+            if followingDb[0] not in followingsIDs:
+               followingsToUpdate.append((followingDb[0], followingDb[1], followingDb[2], "",followingDb[4]))
+        self.ReplaceUsers(followingsToUpdate)
+        deleteQuery = "DELETE FROM {0} WHERE {1} = '' AND {2} = ''".format(SQLManager.usersTableName, list(SQLManager.usersScheme.keys())[2], list(SQLManager.usersScheme.keys())[3])
+        self.dbCursor.execute(deleteQuery)
+        self.dbConection.commit()
+
+
 
     def UpdatePhotoInfo(self):
         curDateTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')

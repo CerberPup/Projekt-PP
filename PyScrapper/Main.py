@@ -68,6 +68,7 @@ if len(cmdParser.args) > 3:
 
         if cmdParser.GetDBUpdate():
             sqlManager = SQLManager(scrapper.dbDir+'/scrapper.db', scrapper.dbDir+'/dbLog', False, scrapper )
-            sqlManager.UpdateFollowers()
-            sqlManager.UpdateFollowings()
+            sqlManager.CheckUsers(sqlManager.UpdateFollowers(),sqlManager.UpdateFollowings())
             sqlManager.UpdatePhotoInfo()
+
+        scrapper.logger.LogLine("Done")
