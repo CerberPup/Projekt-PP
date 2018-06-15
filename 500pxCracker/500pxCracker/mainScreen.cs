@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.Drawing;
@@ -375,6 +376,11 @@ namespace _500pxCracker
             freshDateTimePicker.CustomFormat = "HH:mm";
             freshDateTimePicker.ShowUpDown = true;
 
+            //startPanel
+            startPanel.Location = new Point(113, 62);
+            startPanel.Size = new Size(648, 379);
+            pictureBox1.Location = new Point(200, 140);
+
 
             photoTypeDropDown.SelectedIndex = 0;
             timeDropDown.SelectedIndex = 0;
@@ -514,6 +520,8 @@ namespace _500pxCracker
                 likesPanel.Visible = false;
             if (timersPanel.Visible)
                 timersPanel.Visible = false;
+            if (startPanel.Visible)
+                startPanel.Visible = false;
         }
 
         private void followersButton_Click(object sender, EventArgs e)
@@ -526,6 +534,8 @@ namespace _500pxCracker
                 likesPanel.Visible = false;
             if (timersPanel.Visible)
                 timersPanel.Visible = false;
+            if (startPanel.Visible)
+                startPanel.Visible = false;
             followersComboBox_SelectedIndexChanged(this, new EventArgs());
         }
 
@@ -539,6 +549,8 @@ namespace _500pxCracker
                 profilePanel.Visible = false;
             if (timersPanel.Visible)
                 timersPanel.Visible = false;
+            if (startPanel.Visible)
+                startPanel.Visible = false;
         }
 
         private void timersPanelButton_Click(object sender, EventArgs e)
@@ -551,6 +563,8 @@ namespace _500pxCracker
                 followersPanel.Visible = false;
             if (profilePanel.Visible)
                 profilePanel.Visible = false;
+            if (startPanel.Visible)
+                startPanel.Visible = false;
         }
 
         private void freshPhotosNumberTextBox_TextChanged(object sender, EventArgs e)
@@ -736,16 +750,14 @@ namespace _500pxCracker
             }
             where = where.Remove(where.Length - 4, 4);
             SQLiteCommand command = new SQLiteCommand("select * from Users " , m_dbConnection);
-            SQLiteDataReader reader = command.ExecuteReader();
+            SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection);
             while (reader.Read())
             {
-                /*
                 if (current.isStopped)
                 {
-                    m_dbConnection.Close();
+                    reader.Close();
                     return;
                 }
-                */
                 current.Unfollow(reader["name"].ToString());
             }
             command = new SQLiteCommand("Update Users set following_since = ''"+where, m_dbConnection);
@@ -779,16 +791,14 @@ namespace _500pxCracker
             }
             where = where.Remove(where.Length - 4, 4);
             SQLiteCommand command = new SQLiteCommand("select * from Users " + where, m_dbConnection);
-            SQLiteDataReader reader = command.ExecuteReader();
+            SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection);
             while (reader.Read())
             {
-              /*
-              if (current.isStopped)
-              {
-                  m_dbConnection.Close();
-                  return;
-              }
-              */
+                if (current.isStopped)
+                {
+                    reader.Close();
+                    return;
+                }
                 current.Follow(reader["name"].ToString());
             }
             command = new SQLiteCommand("Update Users set following_since = '"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") +"'" + where, m_dbConnection);
