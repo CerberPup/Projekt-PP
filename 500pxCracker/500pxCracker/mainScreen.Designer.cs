@@ -90,10 +90,12 @@
             this.closeButton = new System.Windows.Forms.PictureBox();
             this.PythonWorker = new System.ComponentModel.BackgroundWorker();
             this.timersPanel = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.PythonTimeDelay = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.textBox16 = new System.Windows.Forms.TextBox();
+            this.textBox15 = new System.Windows.Forms.TextBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
             this.DryftTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.PythonTimeDelay = new System.Windows.Forms.TextBox();
             this.saveTimersButton = new System.Windows.Forms.PictureBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.lastestDateTimePicker = new System.Windows.Forms.DateTimePicker();
@@ -121,10 +123,6 @@
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.textBox15 = new System.Windows.Forms.TextBox();
-            this.textBox16 = new System.Windows.Forms.TextBox();
             this.menuPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.timersPanelButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.killingPythonButton)).BeginInit();
@@ -156,13 +154,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.likesPic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.closeButton)).BeginInit();
             this.timersPanel.SuspendLayout();
+            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.saveTimersButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.timersPic)).BeginInit();
             this.startPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuPanel
@@ -998,25 +996,70 @@
             this.timersPanel.Visible = false;
             this.timersPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
             // 
-            // button2
+            // panel1
             // 
-            this.button2.Location = new System.Drawing.Point(407, 31);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(86, 23);
-            this.button2.TabIndex = 40;
-            this.button2.Text = "pomocniczy2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.textBox16);
+            this.panel1.Controls.Add(this.textBox15);
+            this.panel1.Controls.Add(this.textBox4);
+            this.panel1.Controls.Add(this.DryftTimePicker);
+            this.panel1.Controls.Add(this.PythonTimeDelay);
+            this.panel1.Location = new System.Drawing.Point(28, 219);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(505, 100);
+            this.panel1.TabIndex = 42;
             // 
-            // button1
+            // textBox16
             // 
-            this.button1.Location = new System.Drawing.Point(315, 31);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(86, 23);
-            this.button1.TabIndex = 39;
-            this.button1.Text = "pomocniczy1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.textBox16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.textBox16.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox16.Cursor = System.Windows.Forms.Cursors.Default;
+            this.textBox16.Enabled = false;
+            this.textBox16.Font = new System.Drawing.Font("Segoe UI", 10.25F);
+            this.textBox16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.textBox16.Location = new System.Drawing.Point(22, 55);
+            this.textBox16.Name = "textBox16";
+            this.textBox16.Size = new System.Drawing.Size(74, 19);
+            this.textBox16.TabIndex = 43;
+            this.textBox16.Text = "Time drift:";
+            // 
+            // textBox15
+            // 
+            this.textBox15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.textBox15.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox15.Cursor = System.Windows.Forms.Cursors.Default;
+            this.textBox15.Enabled = false;
+            this.textBox15.Font = new System.Drawing.Font("Segoe UI", 10.25F);
+            this.textBox15.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.textBox15.Location = new System.Drawing.Point(174, 19);
+            this.textBox15.Name = "textBox15";
+            this.textBox15.Size = new System.Drawing.Size(20, 19);
+            this.textBox15.TabIndex = 42;
+            this.textBox15.Text = "[s]";
+            // 
+            // textBox4
+            // 
+            this.textBox4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
+            this.textBox4.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox4.Cursor = System.Windows.Forms.Cursors.Default;
+            this.textBox4.Enabled = false;
+            this.textBox4.Font = new System.Drawing.Font("Segoe UI", 10.25F);
+            this.textBox4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.textBox4.Location = new System.Drawing.Point(22, 20);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(83, 19);
+            this.textBox4.TabIndex = 41;
+            this.textBox4.Text = "Python delay:";
+            // 
+            // DryftTimePicker
+            // 
+            this.DryftTimePicker.CalendarMonthBackground = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
+            this.DryftTimePicker.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.DryftTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.DryftTimePicker.Location = new System.Drawing.Point(111, 50);
+            this.DryftTimePicker.Name = "DryftTimePicker";
+            this.DryftTimePicker.Size = new System.Drawing.Size(60, 25);
+            this.DryftTimePicker.TabIndex = 37;
             // 
             // PythonTimeDelay
             // 
@@ -1028,16 +1071,6 @@
             this.PythonTimeDelay.Size = new System.Drawing.Size(60, 22);
             this.PythonTimeDelay.TabIndex = 38;
             this.PythonTimeDelay.TextChanged += new System.EventHandler(this.OnlyFloat_TextChanged);
-            // 
-            // DryftTimePicker
-            // 
-            this.DryftTimePicker.CalendarMonthBackground = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.DryftTimePicker.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.DryftTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.DryftTimePicker.Location = new System.Drawing.Point(111, 50);
-            this.DryftTimePicker.Name = "DryftTimePicker";
-            this.DryftTimePicker.Size = new System.Drawing.Size(60, 25);
-            this.DryftTimePicker.TabIndex = 37;
             // 
             // saveTimersButton
             // 
@@ -1377,63 +1410,6 @@
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
             // 
-            // textBox4
-            // 
-            this.textBox4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.textBox4.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox4.Cursor = System.Windows.Forms.Cursors.Default;
-            this.textBox4.Enabled = false;
-            this.textBox4.Font = new System.Drawing.Font("Segoe UI", 10.25F);
-            this.textBox4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox4.Location = new System.Drawing.Point(22, 20);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(83, 19);
-            this.textBox4.TabIndex = 41;
-            this.textBox4.Text = "Python delay:";
-            // 
-            // panel1
-            // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.textBox16);
-            this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.textBox15);
-            this.panel1.Controls.Add(this.button1);
-            this.panel1.Controls.Add(this.textBox4);
-            this.panel1.Controls.Add(this.DryftTimePicker);
-            this.panel1.Controls.Add(this.PythonTimeDelay);
-            this.panel1.Location = new System.Drawing.Point(28, 219);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(505, 100);
-            this.panel1.TabIndex = 42;
-            // 
-            // textBox15
-            // 
-            this.textBox15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.textBox15.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox15.Cursor = System.Windows.Forms.Cursors.Default;
-            this.textBox15.Enabled = false;
-            this.textBox15.Font = new System.Drawing.Font("Segoe UI", 10.25F);
-            this.textBox15.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox15.Location = new System.Drawing.Point(174, 19);
-            this.textBox15.Name = "textBox15";
-            this.textBox15.Size = new System.Drawing.Size(20, 19);
-            this.textBox15.TabIndex = 42;
-            this.textBox15.Text = "[s]";
-            // 
-            // textBox16
-            // 
-            this.textBox16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.textBox16.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox16.Cursor = System.Windows.Forms.Cursors.Default;
-            this.textBox16.Enabled = false;
-            this.textBox16.Font = new System.Drawing.Font("Segoe UI", 10.25F);
-            this.textBox16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(91)))), ((int)(((byte)(91)))));
-            this.textBox16.Location = new System.Drawing.Point(22, 55);
-            this.textBox16.Name = "textBox16";
-            this.textBox16.Size = new System.Drawing.Size(74, 19);
-            this.textBox16.TabIndex = 43;
-            this.textBox16.Text = "Time drift:";
-            // 
             // mainScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1453,6 +1429,7 @@
             this.Name = "mainScreen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "mainScreen";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainScreen_FormClosing);
             this.Load += new System.EventHandler(this.mainScreen_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
             this.menuPanel.ResumeLayout(false);
@@ -1493,6 +1470,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.closeButton)).EndInit();
             this.timersPanel.ResumeLayout(false);
             this.timersPanel.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.saveTimersButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.timersPic)).EndInit();
             this.startPanel.ResumeLayout(false);
@@ -1500,8 +1479,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1598,8 +1575,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.TextBox PythonTimeDelay;
         private System.Windows.Forms.DateTimePicker DryftTimePicker;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.TextBox textBox15;

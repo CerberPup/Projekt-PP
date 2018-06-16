@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace _500pxCracker
@@ -21,7 +22,7 @@ namespace _500pxCracker
 
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
-        private enum TimerIndex
+        public enum TimerIndex
         {
             UpdateDB = 0,
             LikeFresh,
@@ -30,8 +31,60 @@ namespace _500pxCracker
             Size
         };
 
-        private List<bool> TimersEnable = new List<bool>();
-        private List<PausableTimer> Timers = new List<PausableTimer>();
+        public struct TimerProperites
+        {
+            public ManualResetEvent mrse;
+            public bool autoReset;
+            public bool shouldReset;
+            private bool enabled;
+            public long resetValue;
+            public long timeleft;
+            private bool isrunning;
+
+            public bool Enabled { get => enabled; set => enabled = value; }
+
+            public TimerProperites(bool EEnabled, long ResetValue, bool AutoReset = false)
+            {
+                mrse = new ManualResetEvent(false);
+                autoReset = AutoReset;
+                enabled = EEnabled;
+                resetValue = ResetValue;
+                timeleft = ResetValue;
+                isrunning = false;
+                shouldReset = false;
+
+            }
+
+            internal void SetValues(bool Enabled, long ResetValue, bool AutoReset = false)
+            {
+                autoReset = AutoReset;
+                this.Enabled = Enabled;
+                resetValue = ResetValue;
+                timeleft = ResetValue;
+            }
+            internal void DecreseTimer()
+            {
+                while (!Enabled&&!shouldReset)
+                    Thread.Sleep(1000);
+                timeleft--;
+            }
+            internal void Toggle() => Enabled = !Enabled;
+
+            internal void ShouldRestart(bool v1) => shouldReset = v1;
+
+            internal void Reset() => timeleft = resetValue;
+            internal bool IsRunning() => isrunning;
+            internal void SetRunning(bool v1) => isrunning = v1;
+
+            internal void RandomDelay(int v1, int v2)
+            {
+                Random rnd = new Random();
+                timeleft = rnd.Next(v1, v2);
+            }
+        }
+
+        public TimerProperites[] TimersProperties = new TimerProperites[(int)TimerIndex.Size];
+        private List<Thread> Timers = new List<Thread>();
         private bool isPythonRunning;
         private List<string> SelectedUsers = new List<string>();
         private enum FollowersComboBoxState
@@ -116,6 +169,9 @@ namespace _500pxCracker
         new Rectangle Top { get { return new Rectangle(0, 0, this.ClientSize.Width, _); } }
         //Rectangle Left { get { return new Rectangle(0, 0, _, this.ClientSize.Height); } }
         new Rectangle Bottom { get { return new Rectangle(0, this.ClientSize.Height - _, this.ClientSize.Width, _); } }
+
+        public bool shutdown { get; private set; }
+
         //Rectangle Right { get { return new Rectangle(this.ClientSize.Width - _, 0, _, this.ClientSize.Height); } }
         /*
         Rectangle TopLeft { get { return new Rectangle(0, 0, _, _); } }
@@ -143,8 +199,8 @@ namespace _500pxCracker
             }
         }
 
-
-    private void OnMouseEnterprofileButton(object sender, EventArgs e)
+        #region Guziki
+        private void OnMouseEnterprofileButton(object sender, EventArgs e)
         {
             profileButton.BackColor = Color.FromArgb(196, 196, 196);
         }
@@ -334,25 +390,8 @@ namespace _500pxCracker
         }
 
         //-----------------------------------------------------------------------------------------
-        private void OverrideTimer(TimerIndex timerIndex, double interval)
-        {
-            Timers[(int)timerIndex] = new PausableTimer(interval);
-            switch (timerIndex)
-            {
-                case TimerIndex.UpdateDB:
-                    Timers[(int)timerIndex].Elapsed += TimerUpdateDB;
-                    break;
-                case TimerIndex.LikeFresh:
-                    Timers[(int)timerIndex].Elapsed += TimerLikeFresh;
-                    break;
-                case TimerIndex.LikeUpcoming:
-                    Timers[(int)timerIndex].Elapsed += TimerLikeUpcoming;
-                    break;
-                case TimerIndex.LikeLatestPhotos:
-                    Timers[(int)timerIndex].Elapsed += TimerLikeLatestPhotos;
-                    break;
-            }
-        }
+        #endregion
+        
         private void mainScreen_Load(object sender, EventArgs e)
         {
             followersComboBox.SelectedIndex = 0;
@@ -419,84 +458,195 @@ namespace _500pxCracker
             upcomingTimerTextBox.Text = Properties.Settings.Default.UpcomingNumber;
             InitTimers();
         }
+        /*private void OverrideTimer(TimerIndex timerIndex, double interval)
+        {
+            Timers[(int)timerIndex] = new Thread(interval);
+            switch (timerIndex)
+            {
+                case TimerIndex.UpdateDB:
+                    Timers[(int)timerIndex].Elapsed += TimerUpdateDB;
+                    break;
+                case TimerIndex.LikeFresh:
+                    Timers[(int)timerIndex].Elapsed += TimerLikeFresh;
+                    break;
+                case TimerIndex.LikeUpcoming:
+                    Timers[(int)timerIndex].Elapsed += TimerLikeUpcoming;
+                    break;
+                case TimerIndex.LikeLatestPhotos:
+                    Timers[(int)timerIndex].Elapsed += TimerLikeLatestPhotos;
+                    break;
+            }
+        }*/
         private void InitTimers()
         {
             for (int i = 0; i < (int)TimerIndex.Size; i++)
             {
-                PausableTimer timmy = new PausableTimer(360000);
                 switch (i)
                 {
                     case (int)TimerIndex.UpdateDB:
-                        timmy.Elapsed += TimerUpdateDB;
+                        Timers.Add(new Thread(UpdateDBThread));
+                        TimersProperties[i] = new TimerProperites(false,5000);
                         break;
                     case (int)TimerIndex.LikeFresh:
-                        timmy.Elapsed += TimerLikeFresh;
+                        Timers.Add(new Thread(LikeFreshThread));
+                        TimersProperties[i] = new TimerProperites(false, 5000);
                         break;
                     case (int)TimerIndex.LikeUpcoming:
-                        timmy.Elapsed += TimerLikeUpcoming;
+                        Timers.Add(new Thread(LikeUpcomingThread));
+                        TimersProperties[i] = new TimerProperites(false, 5000);
                         break;
                     case (int)TimerIndex.LikeLatestPhotos:
-                        timmy.Elapsed += TimerLikeLatestPhotos;
+                        Timers.Add(new Thread(LikeLatestThread));
+                        TimersProperties[i] = new TimerProperites(false, 5000);
                         break;
                 }
-                 
-                timmy.Enabled = false;
-                TimersEnable.Add(false);
-                Timers.Add(timmy);
+                Timers[i].Start();
             }
         }
 
-        public void TimerUpdateDB(Object source, System.Timers.ElapsedEventArgs e)
+        public TimerProperites GetTimerProperties(TimerIndex timerIndex)
         {
-            try
+            return TimersProperties[(int)timerIndex];
+        }
+
+        public void UpdateDBThread()
+        {
+            int id = (int)TimerIndex.UpdateDB;
+            while (true)
             {
-                OverrideTimer(TimerIndex.UpdateDB, TimetoMS(Properties.Settings.Default.UpdateDBDateTime));
-                PythonWorker.RunWorkerAsync("UpdateDB");
-            }
-            catch (Exception)
-            {
-                Random rnd = new Random();
-                OverrideTimer(TimerIndex.UpdateDB, rnd.Next(5000, 20000));
-                Timers[(int)TimerIndex.UpdateDB].Start();
+                TimersProperties[id].SetRunning(false);
+                TimersProperties[id].mrse.WaitOne();
+                TimersProperties[id].mrse.Reset();
+                TimersProperties[id].SetRunning(true);
+                while (TimersProperties[id].timeleft > 0)
+                {
+                    TimersProperties[id].DecreseTimer();
+                    if (TimersProperties[id].shouldReset)
+                    {
+                        break;
+                    }
+                    Thread.Sleep(1000);
+                }
+                if (TimersProperties[id].shouldReset)
+                {
+                    TimersProperties[id].ShouldRestart(false);
+                    continue;
+                }
+                try
+                {
+                    PythonWorker.RunWorkerAsync("UpdateDB");
+                    TimersProperties[id].Reset();
+                }
+                catch (Exception)
+                {
+                    TimersProperties[id].RandomDelay(5,20);
+                    TimersProperties[id].mrse.Set();
+                }
             }
         }
-        public void TimerLikeFresh(Object source, System.Timers.ElapsedEventArgs e)
+        public void LikeFreshThread()
         {
-            try {
-                OverrideTimer(TimerIndex.LikeFresh, TimetoMS(Properties.Settings.Default.FreshDateTime));
-                PythonWorker.RunWorkerAsync("LikeFresh 0 " + int.Parse(Properties.Settings.Default.FreshNumber));
-            }
-            catch (Exception)
+            int id = (int)TimerIndex.LikeFresh;
+            while (true)
             {
-                Random rnd = new Random();
-                OverrideTimer(TimerIndex.LikeFresh, rnd.Next(5000, 20000));
-                Timers[(int)TimerIndex.LikeFresh].Start();
+                TimersProperties[id].SetRunning(false);
+                TimersProperties[id].mrse.WaitOne();
+                TimersProperties[id].mrse.Reset();
+                TimersProperties[id].SetRunning(true);
+                while (TimersProperties[id].timeleft > 0)
+                {
+                    TimersProperties[id].DecreseTimer();
+                    if (TimersProperties[id].shouldReset)
+                    {
+                        break;
+                    }
+                    Thread.Sleep(1000);
+                }
+                if (TimersProperties[id].shouldReset)
+                {
+                    TimersProperties[id].ShouldRestart(false);
+                    continue;
+                }
+                try
+                {
+                    PythonWorker.RunWorkerAsync("LikeFresh 0 " + int.Parse(Properties.Settings.Default.FreshNumber));
+                    TimersProperties[id].Reset();
+                }
+                catch (Exception)
+                {
+                    TimersProperties[id].RandomDelay(5, 20);
+                    TimersProperties[id].mrse.Set();
+                }
             }
         }
-        public void TimerLikeUpcoming(Object source, System.Timers.ElapsedEventArgs e)
+        public void LikeUpcomingThread()
         {
-            try {
-                OverrideTimer(TimerIndex.LikeUpcoming, TimetoMS(Properties.Settings.Default.UpcomingDateTime));
-                PythonWorker.RunWorkerAsync("LikeFresh 1 " + int.Parse(Properties.Settings.Default.FreshNumber));
-            }
-            catch (Exception)
+            int id = (int)TimerIndex.LikeUpcoming;
+            while (true)
             {
-                Random rnd = new Random();
-                OverrideTimer(TimerIndex.LikeUpcoming, rnd.Next(5000,20000));
-                Timers[(int)TimerIndex.LikeUpcoming].Start();
+                TimersProperties[id].SetRunning(false);
+                TimersProperties[id].mrse.WaitOne();
+                TimersProperties[id].mrse.Reset();
+                TimersProperties[id].SetRunning(true);
+                while (TimersProperties[id].timeleft > 0)
+                {
+                    TimersProperties[id].DecreseTimer();
+                    if (TimersProperties[id].shouldReset)
+                    {
+                        break;
+                    }
+                    Thread.Sleep(1000);
+                }
+                if (TimersProperties[id].shouldReset)
+                {
+                    TimersProperties[id].ShouldRestart(false);
+                    continue;
+                }
+                try
+                {
+                    PythonWorker.RunWorkerAsync("LikeFresh 1 " + int.Parse(Properties.Settings.Default.UpcomingNumber));
+                    TimersProperties[id].Reset();
+                }
+                catch (Exception)
+                {
+                    TimersProperties[id].RandomDelay(5, 20);
+                    TimersProperties[id].mrse.Set();
+                }
             }
         }
-        public void TimerLikeLatestPhotos(Object source, System.Timers.ElapsedEventArgs e)
+        public void LikeLatestThread()
         {
-            try {
-                OverrideTimer(TimerIndex.LikeLatestPhotos, TimetoMS(Properties.Settings.Default.LastestDateTime));
-                PythonWorker.RunWorkerAsync("LikeLatestPhotos");
-            }
-            catch (Exception)
+            int id = (int)TimerIndex.LikeLatestPhotos;
+            while (true)
             {
-                Random rnd = new Random();
-                OverrideTimer(TimerIndex.LikeLatestPhotos, rnd.Next(5000, 20000));
-                Timers[(int)TimerIndex.LikeLatestPhotos].Start();
+                TimersProperties[id].SetRunning(false);
+                TimersProperties[id].mrse.WaitOne();
+                TimersProperties[id].mrse.Reset();
+                TimersProperties[id].SetRunning(true);
+                while (TimersProperties[id].timeleft > 0)
+                {
+                    TimersProperties[id].DecreseTimer();
+                    if (TimersProperties[id].shouldReset)
+                    {
+                        break;
+                    }
+                    Thread.Sleep(1000);
+                }
+                if (TimersProperties[id].shouldReset)
+                {
+                    TimersProperties[id].ShouldRestart(false);
+                    continue;
+                }
+                try
+                {
+                    PythonWorker.RunWorkerAsync("LikeLatestPhotos");
+                    TimersProperties[id].Reset();
+                }
+                catch (Exception)
+                {
+                    TimersProperties[id].RandomDelay(5, 20);
+                    TimersProperties[id].mrse.Set();
+                }
             }
         }
         private void frm2_FormClosed(object sender, FormClosedEventArgs e)
@@ -510,17 +660,14 @@ namespace _500pxCracker
         }
         public void SetPythonRunning(bool val)
         {
+            if (!shutdown)
+            {
             CurrentUser.Get().isStopped = false;
             for (int i = 0; i < (int)TimerIndex.Size; i++)
             {
-                if (val)
-                {
-                    Timers[i].Pause();
-                }
-                else
-                {
-                    Timers[i].Resume();
-                }
+                TimersProperties[i].Toggle();
+                if (!val && TimersProperties[i].autoReset)
+                    TimersProperties[i].mrse.Set();
             }
             isPythonRunning = val;
             this.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate () {
@@ -532,6 +679,7 @@ namespace _500pxCracker
             
             if (val == false)
                 Console.Beep();
+            }
         }
 
         private void profileButton_Click(object sender, EventArgs e)
@@ -609,23 +757,6 @@ namespace _500pxCracker
             {
                 MessageBox.Show("Please enter only numbers.");
                 ((TextBox)sender).Text = ((TextBox)sender).Text.Remove(((TextBox)sender).Text.Length - 1);
-            }
-        }
-        private void freshPhotosNumberTextBox_TextChanged(object sender, EventArgs e)
-        {
-            if (System.Text.RegularExpressions.Regex.IsMatch(freshPhotosNumberTextBox.Text, "[^0-9]"))
-            {
-                MessageBox.Show("Please enter only numbers.");
-                freshPhotosNumberTextBox.Text = freshPhotosNumberTextBox.Text.Remove(freshPhotosNumberTextBox.Text.Length - 1);
-            }
-        }
-
-        private void photosNumberTextBox_TextChanged(object sender, EventArgs e)
-        {
-            if (System.Text.RegularExpressions.Regex.IsMatch(photosNumberTextBox.Text, "[^0-9]"))
-            {
-                MessageBox.Show("Please enter only numbers.");
-                photosNumberTextBox.Text = photosNumberTextBox.Text.Remove(photosNumberTextBox.Text.Length - 1);
             }
         }
         
@@ -749,14 +880,6 @@ namespace _500pxCracker
             }
             else
                 MessageBox.Show("Please provide a number!");
-        }
-        private void usersToBeSelectedNumber_TextChanged(object sender, EventArgs e)
-        {
-            if (System.Text.RegularExpressions.Regex.IsMatch(usersToBeSelectedNumber.Text, "[^0-9]"))
-            {
-                MessageBox.Show("Please enter only numbers.");
-                usersToBeSelectedNumber.Text = usersToBeSelectedNumber.Text.Remove(usersToBeSelectedNumber.Text.Length - 1);
-            }
         }
 
         private void selectAllUsersButton_Click(object sender, EventArgs e)
@@ -957,15 +1080,14 @@ namespace _500pxCracker
         {
             dataGetter.GetDb();
         }
-        private long TimetoMS(DateTime dateTime)
+        private long TimetoS(DateTimePicker dateTimePicker)
         {
-            long toReturn = ((dateTime.Hour * 60) + dateTime.Minute) * 60000;
-            return toReturn == 0 ? 100 : toReturn;
-        }
-        private long TimetoMS(DateTimePicker dateTimePicker)
-        {
-            long toReturn = ((dateTimePicker.Value.Hour * 60) + dateTimePicker.Value.Minute) * 60000;
-            return toReturn==0?100:toReturn;
+            DateTime d = Properties.Settings.Default.DryftTimePicker;
+            Random random = new Random();
+            long toReturn = (((dateTimePicker.Value.Hour * 60) + dateTimePicker.Value.Minute) * 60);
+            int randomized =((d.Hour * 60) + d.Minute) * 60;
+            toReturn += random.Next(-randomized, randomized);
+            return toReturn <=10?10:toReturn;
         }
 
         private void saveTimersButton_Click(object sender, EventArgs e)
@@ -989,21 +1111,27 @@ namespace _500pxCracker
                         switch (i)
                         {
                             case TimerIndex.UpdateDB:
-                                OverrideTimer(i, TimetoMS(DBdateTimePicker));
+                                TimersProperties[(int)i].SetValues(BDcheckBox.Checked, TimetoS(DBdateTimePicker), DBcomboBox.SelectedIndex == 1);
                                 break;
                             case TimerIndex.LikeFresh:
-                                OverrideTimer(i, TimetoMS(freshDateTimePicker));
+                                TimersProperties[(int)i].SetValues(freshCheckBox.Checked, TimetoS(freshDateTimePicker), comboBox1.SelectedIndex == 1);
                                 break;
                             case TimerIndex.LikeUpcoming:
-                                OverrideTimer(i, TimetoMS(upcomingDateTimePicker));
+                                TimersProperties[(int)i].SetValues(upcomingCheckBox.Checked, TimetoS(upcomingDateTimePicker), comboBox2.SelectedIndex == 1);
                                 break;
                             case TimerIndex.LikeLatestPhotos:
-                                OverrideTimer(i, TimetoMS(lastestDateTimePicker));
+                                TimersProperties[(int)i].SetValues(lastestCheckBox.Checked, TimetoS(lastestDateTimePicker), comboBox3.SelectedIndex == 1);
                                 break;
                             default:
                                 break;
                         }
-                        Timers[(int)i].Start();
+                        if (TimersProperties[(int)i].IsRunning() && !TimersProperties[(int)i].Enabled)
+                        {
+                            TimersProperties[(int)i].ShouldRestart(true);
+                        }
+                        else if (!TimersProperties[(int)i].IsRunning() && TimersProperties[(int)i].Enabled)
+                            TimersProperties[(int)i].mrse.Set();
+
                     }
                     CurrentUser.Get().PythonDryft = PythonTimeDelay.Text.Length==0?"0": PythonTimeDelay.Text;
                     Properties.Settings.Default.DryftTimePicker = DryftTimePicker.Value;
@@ -1014,10 +1142,6 @@ namespace _500pxCracker
                     Properties.Settings.Default.FreshNumber = freshTimerTextBox.Text;
                     Properties.Settings.Default.UpcomingNumber = upcomingTimerTextBox.Text;
                     Properties.Settings.Default.Save();
-                    SetTimerActive(TimerIndex.UpdateDB, BDcheckBox.Checked, DBcomboBox.SelectedIndex == 1);
-                    SetTimerActive(TimerIndex.LikeFresh, freshCheckBox.Checked, comboBox1.SelectedIndex == 1);
-                    SetTimerActive(TimerIndex.LikeUpcoming, upcomingCheckBox.Checked, comboBox2.SelectedIndex == 1);
-                    SetTimerActive(TimerIndex.LikeLatestPhotos, lastestCheckBox.Checked, comboBox3.SelectedIndex == 1);
                     MessageBox.Show("Successfully saved the timers!");
                 }
                 else if (dialogResult == DialogResult.No)
@@ -1045,14 +1169,17 @@ namespace _500pxCracker
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void mainScreen_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Timers[0].Pause();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Timers[0].Resume();
+            foreach (Thread t in Timers)
+            {
+                t.Abort();
+            }
+            if (isPythonRunning)
+            {
+                shutdown = true;//Workaround. python jak się zamyka odświerza kontrolki które nie istnieją.
+                killingPythonButton_Click(this, new EventArgs());
+            }
         }
 
         private void updateDBButton_Click(object sender, EventArgs e)
