@@ -379,7 +379,7 @@ namespace _500pxCracker
 
             //timers
             timersPanel.Location = new Point(119, 12);
-            timersPanel.Size = new Size(559, 332);
+            timersPanel.Size = new Size(559, 390);
 
             DryftTimePicker.Format = DateTimePickerFormat.Custom;
             DryftTimePicker.CustomFormat = "HH:mm";
