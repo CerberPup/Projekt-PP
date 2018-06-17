@@ -179,7 +179,7 @@
             this.menuPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.menuPanel.Location = new System.Drawing.Point(0, 0);
             this.menuPanel.Name = "menuPanel";
-            this.menuPanel.Size = new System.Drawing.Size(100, 788);
+            this.menuPanel.Size = new System.Drawing.Size(100, 525);
             this.menuPanel.TabIndex = 0;
             this.menuPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
             // 
@@ -202,7 +202,7 @@
             this.killingPythonButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.killingPythonButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.killingPythonButton.Image = ((System.Drawing.Image)(resources.GetObject("killingPythonButton.Image")));
-            this.killingPythonButton.Location = new System.Drawing.Point(60, 739);
+            this.killingPythonButton.Location = new System.Drawing.Point(60, 476);
             this.killingPythonButton.Name = "killingPythonButton";
             this.killingPythonButton.Size = new System.Drawing.Size(25, 25);
             this.killingPythonButton.TabIndex = 48;
@@ -230,7 +230,7 @@
             this.pythonRunningPic.Cursor = System.Windows.Forms.Cursors.Default;
             this.pythonRunningPic.Enabled = false;
             this.pythonRunningPic.Image = ((System.Drawing.Image)(resources.GetObject("pythonRunningPic.Image")));
-            this.pythonRunningPic.Location = new System.Drawing.Point(15, 739);
+            this.pythonRunningPic.Location = new System.Drawing.Point(15, 476);
             this.pythonRunningPic.Name = "pythonRunningPic";
             this.pythonRunningPic.Size = new System.Drawing.Size(25, 25);
             this.pythonRunningPic.TabIndex = 46;
@@ -243,7 +243,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PythonLabel.AutoSize = true;
             this.PythonLabel.Font = new System.Drawing.Font("Segoe UI", 6.75F);
-            this.PythonLabel.Location = new System.Drawing.Point(13, 767);
+            this.PythonLabel.Location = new System.Drawing.Point(13, 504);
             this.PythonLabel.Name = "PythonLabel";
             this.PythonLabel.Size = new System.Drawing.Size(74, 12);
             this.PythonLabel.TabIndex = 11;
@@ -441,9 +441,9 @@
             this.followersPanel.Controls.Add(this.mutualFolButton);
             this.followersPanel.Controls.Add(this.mutualFollowersSearchText);
             this.followersPanel.Controls.Add(this.followersPic);
-            this.followersPanel.Location = new System.Drawing.Point(434, 6);
+            this.followersPanel.Location = new System.Drawing.Point(127, 6);
             this.followersPanel.Name = "followersPanel";
-            this.followersPanel.Size = new System.Drawing.Size(600, 767);
+            this.followersPanel.Size = new System.Drawing.Size(600, 504);
             this.followersPanel.TabIndex = 2;
             this.followersPanel.Visible = false;
             this.followersPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
@@ -489,7 +489,7 @@
             this.followersSearchPanel.Controls.Add(this.usersToBeSelectedNumber);
             this.followersSearchPanel.Location = new System.Drawing.Point(13, 86);
             this.followersSearchPanel.Name = "followersSearchPanel";
-            this.followersSearchPanel.Size = new System.Drawing.Size(580, 673);
+            this.followersSearchPanel.Size = new System.Drawing.Size(580, 410);
             this.followersSearchPanel.TabIndex = 38;
             this.followersSearchPanel.Visible = false;
             // 
@@ -547,7 +547,7 @@
             this.FollowerSince});
             this.usersListView.Location = new System.Drawing.Point(18, 18);
             this.usersListView.Name = "usersListView";
-            this.usersListView.Size = new System.Drawing.Size(359, 636);
+            this.usersListView.Size = new System.Drawing.Size(359, 373);
             this.usersListView.TabIndex = 40;
             this.usersListView.UseCompatibleStateImageBehavior = false;
             this.usersListView.View = System.Windows.Forms.View.Details;
@@ -1356,9 +1356,9 @@
             this.startPanel.Controls.Add(this.pictureBox3);
             this.startPanel.Controls.Add(this.pictureBox2);
             this.startPanel.Controls.Add(this.pictureBox1);
-            this.startPanel.Location = new System.Drawing.Point(420, 62);
+            this.startPanel.Location = new System.Drawing.Point(113, 62);
             this.startPanel.Name = "startPanel";
-            this.startPanel.Size = new System.Drawing.Size(89, 41);
+            this.startPanel.Size = new System.Drawing.Size(89, 0);
             this.startPanel.TabIndex = 42;
             this.startPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MouseDownDrag);
             // 
@@ -1415,7 +1415,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.ClientSize = new System.Drawing.Size(1386, 788);
+            this.ClientSize = new System.Drawing.Size(773, 525);
             this.Controls.Add(this.startPanel);
             this.Controls.Add(this.timersPanel);
             this.Controls.Add(this.closeButton);

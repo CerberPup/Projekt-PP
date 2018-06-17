@@ -106,5 +106,65 @@ namespace _500pxCracker.Properties {
                 this["DryftTimePicker"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UpdateDBCyclic {
+            get {
+                return ((bool)(this["UpdateDBCyclic"]));
+            }
+            set {
+                this["UpdateDBCyclic"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FreshCyclic {
+            get {
+                return ((bool)(this["FreshCyclic"]));
+            }
+            set {
+                this["FreshCyclic"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UpcomingCyclic {
+            get {
+                return ((bool)(this["UpcomingCyclic"]));
+            }
+            set {
+                this["UpcomingCyclic"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LatestCyclic {
+            get {
+                return ((bool)(this["LatestCyclic"]));
+            }
+            set {
+                this["LatestCyclic"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public string PythonDelay {
+            get {
+                return ((string)(this["PythonDelay"]));
+            }
+            set {
+                this["PythonDelay"] = value;
+            }
+        }
     }
 }

@@ -162,7 +162,11 @@ namespace _500pxCracker
     }
     public class LocalizationData
     {
+#if DEBUG
         static public string ScriptsDir = Directory.GetCurrentDirectory()+ "\\..\\..\\..\\..\\PyScrapper\\";
+#else
+        static public string ScriptsDir = Directory.GetCurrentDirectory() + "\\PyScrapper\\";
+#endif
         static public string MainPy = ScriptsDir + "Main.py";
         static public string GalleriesDir = ScriptsDir + "galleriesDumps\\";
         static public string LikesForPhotosDir = ScriptsDir + "likesForPhotos\\";

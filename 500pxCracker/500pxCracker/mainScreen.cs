@@ -445,17 +445,19 @@ namespace _500pxCracker
             photoTypeDropDown.SelectedIndex = 0;
             timeDropDown.SelectedIndex = 0;
             followersComboBox.SelectedIndex = 0;
-            DBcomboBox.SelectedIndex = 0;
-            comboBox1.SelectedIndex = 0;
-            comboBox2.SelectedIndex = 0;
-            comboBox3.SelectedIndex = 0;
+            DBcomboBox.SelectedIndex = Properties.Settings.Default.UpdateDBCyclic ? 1 : 0;
+            comboBox1.SelectedIndex = Properties.Settings.Default.FreshCyclic ? 1 : 0;
+            comboBox2.SelectedIndex = Properties.Settings.Default.UpcomingCyclic ? 1 : 0;
+            comboBox3.SelectedIndex = Properties.Settings.Default.LatestCyclic ? 1 : 0;
             DryftTimePicker.Value = Properties.Settings.Default.DryftTimePicker;
+            PythonTimeDelay.Text = Properties.Settings.Default.PythonDelay;
             DBdateTimePicker.Value = Properties.Settings.Default.UpdateDBDateTime;
             freshDateTimePicker.Value = Properties.Settings.Default.FreshDateTime;
             upcomingDateTimePicker.Value = Properties.Settings.Default.UpcomingDateTime;
             lastestDateTimePicker.Value = Properties.Settings.Default.LastestDateTime;
             freshTimerTextBox.Text = Properties.Settings.Default.FreshNumber;
             upcomingTimerTextBox.Text = Properties.Settings.Default.UpcomingNumber;
+
             InitTimers();
         }
         /*private void OverrideTimer(TimerIndex timerIndex, double interval)
@@ -1135,12 +1137,17 @@ namespace _500pxCracker
                     }
                     CurrentUser.Get().PythonDryft = PythonTimeDelay.Text.Length==0?"0": PythonTimeDelay.Text;
                     Properties.Settings.Default.DryftTimePicker = DryftTimePicker.Value;
+                    Properties.Settings.Default.PythonDelay = PythonTimeDelay.Text;
                     Properties.Settings.Default.UpdateDBDateTime = DBdateTimePicker.Value;
                     Properties.Settings.Default.FreshDateTime = freshDateTimePicker.Value;
                     Properties.Settings.Default.UpcomingDateTime = upcomingDateTimePicker.Value;
                     Properties.Settings.Default.LastestDateTime = lastestDateTimePicker.Value;
                     Properties.Settings.Default.FreshNumber = freshTimerTextBox.Text;
                     Properties.Settings.Default.UpcomingNumber = upcomingTimerTextBox.Text;
+                    Properties.Settings.Default.UpdateDBCyclic = DBcomboBox.SelectedIndex == 0 ? false : true;
+                    Properties.Settings.Default.FreshCyclic = comboBox1.SelectedIndex == 0 ? false : true;
+                    Properties.Settings.Default.UpcomingCyclic = comboBox2.SelectedIndex == 0 ? false : true;
+                    Properties.Settings.Default.LatestCyclic = comboBox3.SelectedIndex == 0 ? false : true;
                     Properties.Settings.Default.Save();
                     MessageBox.Show("Successfully saved the timers!");
                 }

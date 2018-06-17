@@ -23,5 +23,20 @@
     <Setting Name="DryftTimePicker" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)">06/15/2018 00:01:00</Value>
     </Setting>
+    <Setting Name="UpdateDBCyclic" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="FreshCyclic" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="UpcomingCyclic" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="LatestCyclic" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="PythonDelay" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
