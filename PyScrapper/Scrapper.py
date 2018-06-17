@@ -525,15 +525,33 @@ class Scrapper:
         return Photos
 
     def PhotoIsLiked(self, photoID):
-        page=1
-        votes = self.GetVotesForPhoto(int(photoID), atPage=page)
-        while votes!=[]:
-            for vote in votes:
-                if vote['username'] == self.UserData['username']:
-                    return True
-            page+=1
-            votes = self.GetVotesForPhoto(int(photoID), atPage=page)
-        return False
+        return self.PhotoIsLikedEx(photoID)
+        # page=1
+        # votes = self.GetVotesForPhoto(int(photoID), atPage=page)
+        # while votes!=[]:
+        #     for vote in votes:
+        #         if vote['username'] == self.UserData['username']:
+        #             return True
+        #     page+=1
+        #     votes = self.GetVotesForPhoto(int(photoID), atPage=page)
+        # return False
+
+    def PhotoIsLikedEx(self, photoID):
+        URL = "https://api.500px.com/v1/photos?image_size%5B%5D=1&image_size%5B%5D=2&image_size%5B%5D=32&image_size%5B%5D=31&image_size%5B%5D=33&image_size%5B%5D=34&image_size%5B%5D=35&image_size%5B%5D=36&image_size%5B%5D=2048&image_size%5B%5D=4&image_size%5B%5D=14&expanded_user_info=true&include_tags=true&include_geo=true&is_following=true&include_equipment_info=true&include_licensing=true&include_releases=true&liked_by=1&following_sample=100&ids=" + str(photoID)
+        self.logger.LogLine("Checking if photo " + str(photoID) + " is liked...")
+        response = self.requestWebPage("GET", URL, data=self.payload)
+        if response.status_code == 200:
+            self.logger.LogLine("Checking successfully")
+            photoIDStr = str(photoID)
+            try:
+                response_json = json.loads(response.text)['photos'][photoIDStr]
+                return response_json['liked']==True
+            except KeyError:
+                return True
+        else:
+            self.logger.LogLine("Error in retrieving checking: " + str(response.status_code))
+        return True
+
 
     def VoteFreshOrUpcoming(self, fresh=True, amount=100):
         Photos=[]
@@ -557,6 +575,8 @@ class Scrapper:
                     if random.randint(0,100) > 20:
                         if self.VoteForPhoto(photo['id']):
                             amount-=1
+                            if amount <= 0:
+                                break
                 else:
                     ctr+=1
                     if ctr >=10:

@@ -185,7 +185,7 @@ class CmdParser:
         print("\t-s\t-\tsets the delay value in seconds as floating point number")
         print("\t-debug\t-\tturns on debug info on std output (anyway logged to log_email file), should be used in terminal only")
         print("\nexample: email@domain.com samplepasswd -f1")
-        print("\nexample: email@domain.com samplepasswd -p -u username1 username2")
+        print("\nexample: email@domain.com samplepasswd -p -u username1 username2"  )
         print("\nexample: email@domain.com samplepasswd -sf1")
         print("\nexample: email@domain.com samplepasswd -fl someUser")
         print("\nexample: email@domain.com samplepasswd -v 123456789")
