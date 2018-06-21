@@ -42,6 +42,8 @@ if len(cmdParser.args) > 3:
                 pagesAmount=-1
             if cmdParser.UseFollowingsList():
                 usersList=scrapper.ParseFollowingsFiles()
+            elif cmdParser.GetParamFile()!="":
+                usersList=cmdParser.ParseParamFile()
             else:
                 usersList = cmdParser.GetUsers()
             if len(usersList) > 0:
@@ -49,10 +51,18 @@ if len(cmdParser.args) > 3:
                    scrapper.GetPhotosForUser(user, galleriesAmount, pagesAmount)
 
         if cmdParser.GetVote():
-            if scrapper.PhotoIsLiked(cmdParser.VoteForPhoto()):
-                scrapper.logger.LogLine("Photo already liked")
+            if cmdParser.GetParamFile()!="":
+                votes = cmdParser.ParseParamFile()
+                for vote in votes:
+                    if scrapper.PhotoIsLiked(vote):
+                        scrapper.logger.LogLine("Photo already liked")
+                    else:
+                        scrapper.VoteForPhoto(vote)
             else:
-                scrapper.VoteForPhoto(cmdParser.VoteForPhoto())
+                if scrapper.PhotoIsLiked(cmdParser.VoteForPhoto()):
+                    scrapper.logger.LogLine("Photo already liked")
+                else:
+                    scrapper.VoteForPhoto(cmdParser.VoteForPhoto())
 
         if cmdParser.UnvotePhoto()!="":
             scrapper.DeleteVoteForPhoto(cmdParser.UnvotePhoto())
