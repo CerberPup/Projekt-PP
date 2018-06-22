@@ -451,6 +451,7 @@ namespace _500pxCracker
             comboBox3.SelectedIndex = Properties.Settings.Default.LatestCyclic ? 1 : 0;
             DryftTimePicker.Value = Properties.Settings.Default.DryftTimePicker;
             PythonTimeDelay.Text = Properties.Settings.Default.PythonDelay;
+            CurrentUser.Get().PythonDryft = PythonTimeDelay.Text.Length == 0 ? "0" : PythonTimeDelay.Text;
             DBdateTimePicker.Value = Properties.Settings.Default.UpdateDBDateTime;
             freshDateTimePicker.Value = Properties.Settings.Default.FreshDateTime;
             upcomingDateTimePicker.Value = Properties.Settings.Default.UpcomingDateTime;
@@ -488,18 +489,22 @@ namespace _500pxCracker
                     case (int)TimerIndex.UpdateDB:
                         Timers.Add(new Thread(UpdateDBThread));
                         TimersProperties[i] = new TimerProperites(false,5000);
+                        Timers[i].Name = "UpdateTimer";
                         break;
                     case (int)TimerIndex.LikeFresh:
                         Timers.Add(new Thread(LikeFreshThread));
                         TimersProperties[i] = new TimerProperites(false, 5000);
+                        Timers[i].Name = "LikeFreshTimer";
                         break;
                     case (int)TimerIndex.LikeUpcoming:
                         Timers.Add(new Thread(LikeUpcomingThread));
                         TimersProperties[i] = new TimerProperites(false, 5000);
+                        Timers[i].Name = "LikeUpcomingTimer";
                         break;
                     case (int)TimerIndex.LikeLatestPhotos:
                         Timers.Add(new Thread(LikeLatestThread));
                         TimersProperties[i] = new TimerProperites(false, 5000);
+                        Timers[i].Name = "LikeLatestPhotosTimer";
                         break;
                 }
                 Timers[i].Start();
@@ -1130,6 +1135,7 @@ namespace _500pxCracker
                         if (TimersProperties[(int)i].IsRunning() && !TimersProperties[(int)i].Enabled)
                         {
                             TimersProperties[(int)i].ShouldRestart(true);
+                            TimersProperties[(int)i].autoReset = false;
                         }
                         else if (!TimersProperties[(int)i].IsRunning() && TimersProperties[(int)i].Enabled)
                             TimersProperties[(int)i].mrse.Set();
