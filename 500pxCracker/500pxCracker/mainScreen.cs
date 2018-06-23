@@ -808,8 +808,8 @@ namespace _500pxCracker
         {
             dataGetter.GetFollowersandFollowings();
             CurrentUser.Get().LikeLatestPhotos();
-            if (!CurrentUser.Get().isStopped)
-                MessageBox.Show("Successfully liked all the photos");
+        //    if (!CurrentUser.Get().isStopped)
+         //       MessageBox.Show("Successfully liked all the photos");
         }
         private void likeLatestButton_Click(object sender, EventArgs e)
         {
@@ -822,8 +822,8 @@ namespace _500pxCracker
         private void LikeLikingMe(int number)
         {
             CurrentUser.Get().LikeLikingMe(number);
-            if (!CurrentUser.Get().isStopped)
-              MessageBox.Show("Successfully liked all the photos");
+           // if (!CurrentUser.Get().isStopped)
+        //      MessageBox.Show("Successfully liked all the photos");
         }
 
 
@@ -1396,15 +1396,27 @@ namespace _500pxCracker
                 }
                 if (Directory.Exists(LocalizationData.GalleriesDir))
                 {
-                    Directory.Delete(LocalizationData.GalleriesDir, true);
+                    try
+                    {
+                        Directory.Delete(LocalizationData.GalleriesDir, true);
+                    }
+                    catch (Exception) { }
                 }
                 if (Directory.Exists(LocalizationData.LikesForPhotosDir))
                 {
-                    Directory.Delete(LocalizationData.LikesForPhotosDir, true);
+                    try
+                    {
+                        Directory.Delete(LocalizationData.LikesForPhotosDir, true);
+                    }
+                    catch (Exception) { }
                 }
                 if (Directory.Exists(LocalizationData.PhotosDir))
                 {
-                    Directory.Delete(LocalizationData.PhotosDir, true);
+                    try
+                    {
+                        Directory.Delete(LocalizationData.PhotosDir, true);
+                    }
+                    catch (Exception) { }
                 }
 
               
