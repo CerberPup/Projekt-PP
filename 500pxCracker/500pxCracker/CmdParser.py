@@ -164,22 +164,6 @@ class CmdParser:
                     break
         return delay
 
-    def GetParamFile(self):
-        it = iter(self.args)
-        for arg in it:
-            if arg == "-file":
-                return next(it)
-        return ""
-
-    def ParseParamFile(self):
-        args=[]
-        paramFile = self.GetParamFile()
-        if paramFile == "":
-            return args
-        with open(paramFile, 'r') as f:
-            for line in f:
-                args.append(line.strip())
-        return args
 
 
     def DisplayHelp(self):
@@ -200,10 +184,8 @@ class CmdParser:
         print("\t-udb\t-\tupdate local database")
         print("\t-s\t-\tsets the delay value in seconds as floating point number")
         print("\t-debug\t-\tturns on debug info on std output (anyway logged to log_email file), should be used in terminal only")
-        print("\t-file\t-\tparse parameters from file")
         print("\nexample: email@domain.com samplepasswd -f1")
-        print("\nexample: email@domain.com samplepasswd -v -file UserInfo/photos -debug -s 0")
-        print("\nexample: email@domain.com samplepasswd -p -u username1 username2"  )
+        print("\nexample: email@domain.com samplepasswd -p -u username1 username2")
         print("\nexample: email@domain.com samplepasswd -sf1")
         print("\nexample: email@domain.com samplepasswd -fl someUser")
         print("\nexample: email@domain.com samplepasswd -v 123456789")

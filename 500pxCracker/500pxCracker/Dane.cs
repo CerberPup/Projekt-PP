@@ -408,29 +408,34 @@ namespace _500pxCracker
             Process process;
             DirectoryInfo dir;
             getLocalUserPhotos();
-            //getting likes for our photos
-            foreach (Photo pht in _User._Photos)
-            {
-                if (isStopped)
-                    return;
-                process = new Process();
-                process.StartInfo.FileName = LocalizationData.Python;
-                process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -l " + pht._PhotoId + " -noCleanup";
-                process.StartInfo.UseShellExecute = false;
-                process.StartInfo.CreateNoWindow = true;
-                process.Start();
-                Pids.pid = process.Id;
-                process.WaitForExit();
-            }
 
             //selecting most recent photo
             foreach (Photo pht in _User._Photos)
             {
+                if (isStopped)
+                    return;
                 if (newestPhoto._PhotoUploadDate < pht._PhotoUploadDate)
                 {
                     newestPhoto = pht;
                 }
             }
+
+            //getting likes for most recent photo
+          //  foreach (Photo pht in _User._Photos)
+          //  {
+                if (isStopped)
+                    return;
+                process = new Process();
+                process.StartInfo.FileName = LocalizationData.Python;
+                process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -l " + newestPhoto._PhotoId + " -noCleanup";
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+                process.Start();
+                Pids.pid = process.Id;
+                process.WaitForExit();
+          //  }
+
+ 
             if (isStopped)
                 return;
             dir = new DirectoryInfo(LocalizationData.LikesForPhotosDir);

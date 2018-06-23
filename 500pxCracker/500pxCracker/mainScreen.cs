@@ -41,7 +41,25 @@ namespace _500pxCracker
             public long timeleft;
             private bool isrunning;
 
-            public bool Enabled { get => enabled; set => enabled = value; }
+
+            /* vs 2017getter and setter
+            public bool Enabled
+            {
+                get => enabled; set => enabled = value; }
+            */
+
+            //vs2015 getter and setter
+            public bool Enabled {
+                get
+                {
+                    return enabled;
+                }
+                set
+                {
+                    enabled = value;    
+                }
+
+            }
 
             public TimerProperites(bool EEnabled, long ResetValue, bool AutoReset = false)
             {
