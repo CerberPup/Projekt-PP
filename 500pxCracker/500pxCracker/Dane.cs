@@ -343,7 +343,7 @@ namespace _500pxCracker
 
             process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
-            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -v " + LocalizationData.PhotosDir + "photos.txt"+ " -noCleanup";
+            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -v -file " + LocalizationData.PhotosDir + "photos.txt"+ " -noCleanup";
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
