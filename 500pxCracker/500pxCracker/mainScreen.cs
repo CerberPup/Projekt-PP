@@ -1105,13 +1105,18 @@ namespace _500pxCracker
         {
             dataGetter.GetDb();
         }
-        private long TimetoS(DateTimePicker dateTimePicker)
+        private long TimetoS(DateTimePicker dateTimePicker, bool enabled)
         {
-            DateTime d = Properties.Settings.Default.DryftTimePicker;
+            DateTime d = DryftTimePicker.Value;
             Random random = new Random();
-            long toReturn = (((dateTimePicker.Value.Hour * 60) + dateTimePicker.Value.Minute) * 60);
+            int toReturn = (((dateTimePicker.Value.Hour * 60) + dateTimePicker.Value.Minute) * 60);
             int randomized =((d.Hour * 60) + d.Minute) * 60;
-            toReturn += random.Next(-randomized, randomized);
+            if(randomized> toReturn * 2 / 3 && enabled)
+            {
+                randomized = toReturn *2 / 3;
+                MessageBox.Show("Dla podanego dryftu, ustawienia " + dateTimePicker.Name + " są nie poprawne.\n Zostanie ustawiony dryft = 2/3 " + dateTimePicker.Name);
+            }
+            toReturn += random.Next(-randomized/2, randomized/2);
             return toReturn <=10?10:toReturn;
         }
 
@@ -1136,16 +1141,16 @@ namespace _500pxCracker
                         switch (i)
                         {
                             case TimerIndex.UpdateDB:
-                                TimersProperties[(int)i].SetValues(BDcheckBox.Checked, TimetoS(DBdateTimePicker), DBcomboBox.SelectedIndex == 1);
+                                TimersProperties[(int)i].SetValues(BDcheckBox.Checked, TimetoS(DBdateTimePicker, BDcheckBox.Checked), DBcomboBox.SelectedIndex == 1);
                                 break;
                             case TimerIndex.LikeFresh:
-                                TimersProperties[(int)i].SetValues(freshCheckBox.Checked, TimetoS(freshDateTimePicker), comboBox1.SelectedIndex == 1);
+                                TimersProperties[(int)i].SetValues(freshCheckBox.Checked, TimetoS(freshDateTimePicker, freshCheckBox.Checked), comboBox1.SelectedIndex == 1);
                                 break;
                             case TimerIndex.LikeUpcoming:
-                                TimersProperties[(int)i].SetValues(upcomingCheckBox.Checked, TimetoS(upcomingDateTimePicker), comboBox2.SelectedIndex == 1);
+                                TimersProperties[(int)i].SetValues(upcomingCheckBox.Checked, TimetoS(upcomingDateTimePicker, upcomingCheckBox.Checked), comboBox2.SelectedIndex == 1);
                                 break;
                             case TimerIndex.LikeLatestPhotos:
-                                TimersProperties[(int)i].SetValues(lastestCheckBox.Checked, TimetoS(lastestDateTimePicker), comboBox3.SelectedIndex == 1);
+                                TimersProperties[(int)i].SetValues(lastestCheckBox.Checked, TimetoS(lastestDateTimePicker , lastestCheckBox.Checked), comboBox3.SelectedIndex == 1);
                                 break;
                             default:
                                 break;
