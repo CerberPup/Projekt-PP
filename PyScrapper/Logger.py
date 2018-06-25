@@ -18,10 +18,10 @@ class Logger:
 
     def LogLine(self, line):
         logTime = time.strftime('%H:%M:%S')
-        try:
-            with open(self.LogFile, 'a+') as f:
-                f.write(logTime + ' - ' + line + '\n')
-            if self.DebugMode==True:
-                print(logTime + ' - ' + line)
-        except ValueError:
-                pass
+        if self.DebugMode == True:
+            try:
+                with open(self.LogFile, 'a+') as f:
+                    f.write(logTime + ' - ' + line + '\n')
+                    print(logTime + ' - ' + line)
+            except ValueError:
+                    pass
