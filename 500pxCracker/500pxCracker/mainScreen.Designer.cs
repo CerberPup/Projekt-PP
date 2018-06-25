@@ -724,6 +724,7 @@
             this.usersToBeSelectedNumber.Size = new System.Drawing.Size(33, 22);
             this.usersToBeSelectedNumber.TabIndex = 43;
             this.usersToBeSelectedNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.usersToBeSelectedNumber.TextChanged += new System.EventHandler(this.OnlyNumber_TextChanged);
             // 
             // mutualFolButton
             // 

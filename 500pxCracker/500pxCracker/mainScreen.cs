@@ -469,6 +469,7 @@ namespace _500pxCracker
             comboBox3.SelectedIndex = Properties.Settings.Default.LatestCyclic ? 1 : 0;
             DryftTimePicker.Value = Properties.Settings.Default.DryftTimePicker;
             PythonTimeDelay.Text = Properties.Settings.Default.PythonDelay;
+            CurrentUser.Get().PythonDryft = PythonTimeDelay.Text.Length == 0 ? "0" : PythonTimeDelay.Text;
             DBdateTimePicker.Value = Properties.Settings.Default.UpdateDBDateTime;
             freshDateTimePicker.Value = Properties.Settings.Default.FreshDateTime;
             upcomingDateTimePicker.Value = Properties.Settings.Default.UpcomingDateTime;
@@ -506,18 +507,22 @@ namespace _500pxCracker
                     case (int)TimerIndex.UpdateDB:
                         Timers.Add(new Thread(UpdateDBThread));
                         TimersProperties[i] = new TimerProperites(false,5000);
+                        Timers[i].Name = "UpdateTimer";
                         break;
                     case (int)TimerIndex.LikeFresh:
                         Timers.Add(new Thread(LikeFreshThread));
                         TimersProperties[i] = new TimerProperites(false, 5000);
+                        Timers[i].Name = "LikeFreshTimer";
                         break;
                     case (int)TimerIndex.LikeUpcoming:
                         Timers.Add(new Thread(LikeUpcomingThread));
                         TimersProperties[i] = new TimerProperites(false, 5000);
+                        Timers[i].Name = "LikeUpcomingTimer";
                         break;
                     case (int)TimerIndex.LikeLatestPhotos:
                         Timers.Add(new Thread(LikeLatestThread));
                         TimersProperties[i] = new TimerProperites(false, 5000);
+                        Timers[i].Name = "LikeLatestPhotosTimer";
                         break;
                 }
                 Timers[i].Start();
@@ -803,8 +808,8 @@ namespace _500pxCracker
         {
             dataGetter.GetFollowersandFollowings();
             CurrentUser.Get().LikeLatestPhotos();
-            if (!CurrentUser.Get().isStopped)
-                MessageBox.Show("Successfully liked all the photos");
+        //    if (!CurrentUser.Get().isStopped)
+         //       MessageBox.Show("Successfully liked all the photos");
         }
         private void likeLatestButton_Click(object sender, EventArgs e)
         {
@@ -817,8 +822,8 @@ namespace _500pxCracker
         private void LikeLikingMe(int number)
         {
             CurrentUser.Get().LikeLikingMe(number);
-            if (!CurrentUser.Get().isStopped)
-              MessageBox.Show("Successfully liked all the photos");
+           // if (!CurrentUser.Get().isStopped)
+        //      MessageBox.Show("Successfully liked all the photos");
         }
 
 
@@ -1100,13 +1105,18 @@ namespace _500pxCracker
         {
             dataGetter.GetDb();
         }
-        private long TimetoS(DateTimePicker dateTimePicker)
+        private long TimetoS(DateTimePicker dateTimePicker, bool enabled)
         {
-            DateTime d = Properties.Settings.Default.DryftTimePicker;
+            DateTime d = DryftTimePicker.Value;
             Random random = new Random();
-            long toReturn = (((dateTimePicker.Value.Hour * 60) + dateTimePicker.Value.Minute) * 60);
+            int toReturn = (((dateTimePicker.Value.Hour * 60) + dateTimePicker.Value.Minute) * 60);
             int randomized =((d.Hour * 60) + d.Minute) * 60;
-            toReturn += random.Next(-randomized, randomized);
+            if(randomized> toReturn * 2 / 3 && enabled)
+            {
+                randomized = toReturn *2 / 3;
+                MessageBox.Show("Dla podanego dryftu, ustawienia " + dateTimePicker.Name + " są nie poprawne.\n Zostanie ustawiony dryft = 2/3 " + dateTimePicker.Name);
+            }
+            toReturn += random.Next(-randomized/2, randomized/2);
             return toReturn <=10?10:toReturn;
         }
 
@@ -1131,16 +1141,16 @@ namespace _500pxCracker
                         switch (i)
                         {
                             case TimerIndex.UpdateDB:
-                                TimersProperties[(int)i].SetValues(BDcheckBox.Checked, TimetoS(DBdateTimePicker), DBcomboBox.SelectedIndex == 1);
+                                TimersProperties[(int)i].SetValues(BDcheckBox.Checked, TimetoS(DBdateTimePicker, BDcheckBox.Checked), DBcomboBox.SelectedIndex == 1);
                                 break;
                             case TimerIndex.LikeFresh:
-                                TimersProperties[(int)i].SetValues(freshCheckBox.Checked, TimetoS(freshDateTimePicker), comboBox1.SelectedIndex == 1);
+                                TimersProperties[(int)i].SetValues(freshCheckBox.Checked, TimetoS(freshDateTimePicker, freshCheckBox.Checked), comboBox1.SelectedIndex == 1);
                                 break;
                             case TimerIndex.LikeUpcoming:
-                                TimersProperties[(int)i].SetValues(upcomingCheckBox.Checked, TimetoS(upcomingDateTimePicker), comboBox2.SelectedIndex == 1);
+                                TimersProperties[(int)i].SetValues(upcomingCheckBox.Checked, TimetoS(upcomingDateTimePicker, upcomingCheckBox.Checked), comboBox2.SelectedIndex == 1);
                                 break;
                             case TimerIndex.LikeLatestPhotos:
-                                TimersProperties[(int)i].SetValues(lastestCheckBox.Checked, TimetoS(lastestDateTimePicker), comboBox3.SelectedIndex == 1);
+                                TimersProperties[(int)i].SetValues(lastestCheckBox.Checked, TimetoS(lastestDateTimePicker , lastestCheckBox.Checked), comboBox3.SelectedIndex == 1);
                                 break;
                             default:
                                 break;
@@ -1148,6 +1158,7 @@ namespace _500pxCracker
                         if (TimersProperties[(int)i].IsRunning() && !TimersProperties[(int)i].Enabled)
                         {
                             TimersProperties[(int)i].ShouldRestart(true);
+                            TimersProperties[(int)i].autoReset = false;
                         }
                         else if (!TimersProperties[(int)i].IsRunning() && TimersProperties[(int)i].Enabled)
                             TimersProperties[(int)i].mrse.Set();
@@ -1390,15 +1401,27 @@ namespace _500pxCracker
                 }
                 if (Directory.Exists(LocalizationData.GalleriesDir))
                 {
-                    Directory.Delete(LocalizationData.GalleriesDir, true);
+                    try
+                    {
+                        Directory.Delete(LocalizationData.GalleriesDir, true);
+                    }
+                    catch (Exception) { }
                 }
                 if (Directory.Exists(LocalizationData.LikesForPhotosDir))
                 {
-                    Directory.Delete(LocalizationData.LikesForPhotosDir, true);
+                    try
+                    {
+                        Directory.Delete(LocalizationData.LikesForPhotosDir, true);
+                    }
+                    catch (Exception) { }
                 }
                 if (Directory.Exists(LocalizationData.PhotosDir))
                 {
-                    Directory.Delete(LocalizationData.PhotosDir, true);
+                    try
+                    {
+                        Directory.Delete(LocalizationData.PhotosDir, true);
+                    }
+                    catch (Exception) { }
                 }
 
               

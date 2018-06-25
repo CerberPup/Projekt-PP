@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Data.SQLite;
 using System.Windows.Forms;
+using System.Text;
 
 namespace _500pxCracker
 {
@@ -280,6 +281,8 @@ namespace _500pxCracker
             if (isStopped)
                 return;
             process.WaitForExit();
+            var sb = new StringBuilder();
+
             foreach (User u in _Following)
             {
                 if (isStopped)
@@ -317,6 +320,9 @@ namespace _500pxCracker
                     if (newestPhoto.Value < p.Value)
                         newestPhoto = p;
                 }
+                sb.Append(newestPhoto.Key);
+
+                /*
                 process = new Process();
                 process.StartInfo.FileName = LocalizationData.Python;
                 process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -v" + newestPhoto.Key + " -noCleanup";
@@ -325,7 +331,27 @@ namespace _500pxCracker
                 process.Start();
                 Pids.pid = process.Id;
                 process.WaitForExit();
+                */
             }
+            if (!File.Exists(LocalizationData.PhotosDir + "photos.txt"))
+            {
+                // Create a file to write to.
+                //string[] createText = { "Hello", "And", "Welcome" };
+                // string[] a = sb.ToString().Split(' ').Skip(1).ToArray(); ;
+                File.WriteAllLines(LocalizationData.PhotosDir + "photos.txt", sb.ToString().Split(' ').Skip(1).ToArray());
+            }
+
+            process = new Process();
+            process.StartInfo.FileName = LocalizationData.Python;
+            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -v -file " + LocalizationData.PhotosDir + "photos.txt"+ " -noCleanup";
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
+            process.Start();
+            Pids.pid = process.Id;
+            process.WaitForExit();
+
+
+
             process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
             process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -offline";
@@ -334,6 +360,7 @@ namespace _500pxCracker
             process.Start();
             Pids.pid = process.Id;
             process.WaitForExit();
+
         }
 
 
@@ -460,6 +487,8 @@ namespace _500pxCracker
             }
 
             //adding user who liked our most recent photos, key-username, value-id
+            using (System.IO.StreamWriter userID =
+                     new System.IO.StreamWriter(LocalizationData.PhotosDir + "users.txt"))
             foreach (var like in likesForNewestPhoto)
             {
                 if (isStopped)
@@ -467,49 +496,106 @@ namespace _500pxCracker
                 if (!liking.Keys.Contains(like.Key) & !like.Key.Contains("-"))
                 {
                     liking.Add(like.Key, like.Value);
+                    userID.WriteLine(like.Key);
                 }
             }
+
+            /* onnly for testing
+            if (!File.Exists(LocalizationData.PhotosDir + "users.txt"))
+            {
+                // Create a file to write to.
+                string[] createText = { "smmaikel723", "DanielVanHoecke", "kjmck" };
+                File.WriteAllLines(LocalizationData.PhotosDir + "users.txt", createText);
+            }
+            */
+
+
+
 
             //donwloading photos
             string joinedUser = String.Join(" ", liking.Keys);
             process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
-            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -p -u " + joinedUser + " -galleries 1 -pages 1 -noCleanup";
+            //process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -p -u " + joinedUser + " -galleries 1 -pages 1 -noCleanup";
+            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -p -file " + LocalizationData.PhotosDir + "users.txt" + " -galleries 1 -pages 1 -noCleanup";
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.Start();
             Pids.pid = process.Id;
             process.WaitForExit();
             //parsing downloaded json and sending like requests
+            var sb = new StringBuilder();
             foreach (var user in liking)
             {
-                if (isStopped)
-                    return;
-                DirectoryInfo d = new DirectoryInfo(LocalizationData.PhotosDir + "User" + user.Value);
-                if (d.Exists)
-                {
-                    foreach (var gallery in d.GetDirectories())
+                    if (isStopped)
+                        return;
+                    DirectoryInfo d = new DirectoryInfo(LocalizationData.PhotosDir + "User" + user.Value);
+                    if (d.Exists)
                     {
-                        string likingFiles = File.ReadAllText(d + "\\" + gallery.Name + "\\photos");
-                        Regex regexp = new Regex("\"liked\":(.*?),.*?\"feature_date\": \"(.*?)\".*?\"id\":(.*?),");
-                        MatchCollection likingMatches = regexp.Matches(likingFiles);
-                        int iterMax;
-
-                        if (likingMatches.Count >= number)
+                        foreach (var gallery in d.GetDirectories())
                         {
-                            iterMax = number;
+                            string likingFiles = File.ReadAllText(d + "\\" + gallery.Name + "\\photos");
+                            Regex regexp = new Regex("\"liked\":(.*?),.*?\"feature_date\": \"(.*?)\".*?\"id\":(.*?),");
+                            MatchCollection likingMatches = regexp.Matches(likingFiles);
+                            int iterMax;
 
-                        }
-                        else
-                        {
-                            iterMax = likingMatches.Count;
-                        }
-                        for (int i = 0; i < iterMax; i++)
-                        {
-
-                            if (likingMatches[i].Success && !bool.Parse(likingMatches[i].Groups[1].Value))
+                            if (likingMatches.Count >= number)
                             {
-                      
+                                iterMax = number;
+
+                            }
+                            else
+                            {
+                                iterMax = likingMatches.Count;
+                            }
+
+                            for (int i = 0; i < iterMax; i++)
+                            {
+
+                                if (likingMatches[i].Success && !bool.Parse(likingMatches[i].Groups[1].Value) && likingMatches[i].Groups[3].Value!="")
+                                {
+                                /*
+                                          process = new Process();
+                                          process.StartInfo.FileName = LocalizationData.Python;
+                                          process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -v " + likingMatches[i].Groups[3].Value + " -noCleanup"; ;
+                                          process.StartInfo.UseShellExecute = false;
+                                          process.StartInfo.CreateNoWindow = true;
+                                          process.Start();
+                                          Pids.pid = process.Id;
+                                          process.WaitForExit();
+                                         */
+                                // photosID.WriteLine(likingMatches[i].Groups[3].Value, true);
+                                //      photosID.WriteLine("abc", true);
+                                //   listOfIds.Add(likingMatches[i].Groups[3].Value);
+                                sb.Append(likingMatches[i].Groups[3].Value);
+                            }
+                            }
+                        }
+
+                        if (File.Exists(d + "\\photos_unassigned"))
+                        {
+                            string likingFiles = File.ReadAllText(d + "\\photos_unassigned");
+                            Regex regexp = new Regex("\"liked\":(.*?),.*?\"feature_date\": \"(.*?)\".*?\"id\":(.*?),");
+                            MatchCollection likingMatches = regexp.Matches(likingFiles);
+                            int iterMax;                     
+                            if (likingMatches.Count >= number)
+
+                            {
+                                iterMax = number;
+                            }
+                            else
+                            {
+                                iterMax = likingMatches.Count;
+                            }
+
+                            for (int i = 0; i < iterMax; i++)
+                            {
+                                if (likingMatches[i].Success && !bool.Parse(likingMatches[i].Groups[1].Value) && likingMatches[i].Groups[3].Value != "")
+                                {
+                                /*
+                                    if (isStopped)
+                                        return;
+                                
                                 process = new Process();
                                 process.StartInfo.FileName = LocalizationData.Python;
                                 process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -v " + likingMatches[i].Groups[3].Value + " -noCleanup"; ;
@@ -518,47 +604,36 @@ namespace _500pxCracker
                                 process.Start();
                                 Pids.pid = process.Id;
                                 process.WaitForExit();
+                                */
+                                //      photosID.WriteLine(likingMatches[i].Groups[3].Value, true);
+                                //     photosID.WriteLine("bcd", true);
+                                sb.Append(likingMatches[i].Groups[3].Value);
+
                             }
-
                         }
-                    }
-
-                    if (File.Exists(d + "\\photos_unassigned"))
-                    {
-                        string likingFiles = File.ReadAllText(d + "\\photos_unassigned");
-                        Regex regexp = new Regex("\"liked\":(.*?),.*?\"feature_date\": \"(.*?)\".*?\"id\":(.*?),");
-                        MatchCollection likingMatches = regexp.Matches(likingFiles);
-                        int iterMax;
-
-                        if (likingMatches.Count >= number)
-
-                        {
-                            iterMax = number;
-                        }
-                        else
-                        {
-                            iterMax = likingMatches.Count;
-                        }
-
-                        for (int i = 0; i < iterMax; i++)
-                        {
-                            if (likingMatches[i].Success && !bool.Parse(likingMatches[i].Groups[1].Value))
-                            {
-                                if (isStopped)
-                                    return;
-                                process = new Process();
-                                process.StartInfo.FileName = LocalizationData.Python;
-                                process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -v " + likingMatches[i].Groups[3].Value + " -noCleanup"; ;
-                                process.StartInfo.UseShellExecute = false;
-                                process.StartInfo.CreateNoWindow = true;
-                                process.Start();
-                                Pids.pid = process.Id;
-                                process.WaitForExit();
-                            }
                         }
                     }
                 }
+            if (!File.Exists(LocalizationData.PhotosDir + "photos.txt"))
+            {
+                // Create a file to write to.
+                //string[] createText = { "Hello", "And", "Welcome" };
+               // string[] a = sb.ToString().Split(' ').Skip(1).ToArray(); ;
+                File.WriteAllLines(LocalizationData.PhotosDir + "photos.txt", sb.ToString().Split(' ').Skip(1).ToArray());
             }
+
+
+            process = new Process();
+            process.StartInfo.FileName = LocalizationData.Python;
+            process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -s " + PythonDryft + " -v -file " + LocalizationData.PhotosDir + "photos.txt" + " -noCleanup"; ;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
+            process.Start();
+            Pids.pid = process.Id;
+            process.WaitForExit();
+
+
+
             process = new Process();
             process.StartInfo.FileName = LocalizationData.Python;
             process.StartInfo.Arguments = "\"" + LocalizationData.MainPy + "\" " + _Credentials.login + " " + _Credentials.password + " -offline";
