@@ -854,22 +854,6 @@ namespace _500pxCracker
 
                 if(!numberOfXTextBox.Visible)
                     numberOfXTextBox.Visible = true;
-
-                if(followersComboBox.SelectedIndex == 0)
-                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " all users on your list.";
-                if(followersComboBox.SelectedIndex == 1)
-                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Only Followers on your list..";
-                if(followersComboBox.SelectedIndex == 2)
-                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Only Followings on your list.";
-                if (followersComboBox.SelectedIndex == 3)
-                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Followers on your list.";
-                if (followersComboBox.SelectedIndex == 4)
-                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Followings on your list.";
-                if (followersComboBox.SelectedIndex == 5)
-                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Mutual Followers on your list.";
-                
-
-                //PythonWorker.RunWorkerAsync("MutualFollow");
             }
             else
                     MessageBox.Show("Please choose one of the available options!");
@@ -1236,7 +1220,7 @@ namespace _500pxCracker
 
         private void followersComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (followersSearchPanel.Visible && !isPythonRunning && dataGetter.DBExist())
+            if (followersSearchPanel.Visible && dataGetter.DBExist())
             {
                 List<ListViewItem> listViewItems = new List<ListViewItem>();
                 SQLiteConnection m_dbConnection = new SQLiteConnection("Data Source = " + LocalizationData.DbDir + "scrapper.db" + "; Version = 3; UseUTF16Encoding = True;");
@@ -1275,28 +1259,32 @@ namespace _500pxCracker
                     listViewItems.Add(item);
                 }
                 m_dbConnection.Close();
-                //listViewItems.Sort();// Crash przy jakims userze
                 usersListView.Items.Clear();
                 usersListView.Items.AddRange(listViewItems.ToArray());
 
-                switch (followersComboBox.SelectedIndex)
+                switch ((FollowersComboBoxState)followersComboBox.SelectedIndex)
                 {
-                    case 0:
+                    case FollowersComboBoxState.All:
+                        numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " all users on your list.";
+                        break;
+                    case FollowersComboBoxState.OnlyFollowers:
+                        numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Only Followers on your list..";
+                        break;
+                    case FollowersComboBoxState.OnlyFollowing:
+                        numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Only Followings on your list.";
+                        break;
+                    case FollowersComboBoxState.Followers:
+                        numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Followers on your list.";
+                        break;
+                    case FollowersComboBoxState.Following:
+                        numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Followings on your list.";
+                        break;
+                    case FollowersComboBoxState.Mutuals:
+                        numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Mutual Followers on your list.";
+                        break;
                     default:
                         break;
-                }
-                if (followersComboBox.SelectedIndex == 0)
-                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " all users on your list.";
-                if (followersComboBox.SelectedIndex == 1)
-                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Only Followers on your list..";
-                if (followersComboBox.SelectedIndex == 2)
-                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Only Followings on your list.";
-                if (followersComboBox.SelectedIndex == 3)
-                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Followers on your list.";
-                if (followersComboBox.SelectedIndex == 4)
-                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Followings on your list.";
-                if (followersComboBox.SelectedIndex == 5)
-                    numberOfXTextBox.Text = "You have " + usersListView.Items.Count + " Mutual Followers on your list.";
+                }               
             }
         }
 
