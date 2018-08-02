@@ -104,6 +104,14 @@ namespace _500pxCracker
         public TimerProperites[] TimersProperties = new TimerProperites[(int)TimerIndex.Size];
         private List<Thread> Timers = new List<Thread>();
         private bool isPythonRunning;
+        private bool isUpdatingDB;
+        struct sortDataStruct
+        {
+            public string sortString;
+            public bool sortAscending;
+            public int lastColumn;
+        }
+        private sortDataStruct sortData;
         private List<string> SelectedUsers = new List<string>();
         private enum FollowersComboBoxState
         {
@@ -459,7 +467,14 @@ namespace _500pxCracker
             startPanel.Size = new Size(648, 379);
             pictureBox1.Location = new Point(200, 140);
 
-
+            sortData = new sortDataStruct()
+            {
+                lastColumn = 0,
+                sortString = "",
+                sortAscending = true
+            };
+            
+            isUpdatingDB = false;
             photoTypeDropDown.SelectedIndex = 0;
             timeDropDown.SelectedIndex = 0;
             followersComboBox.SelectedIndex = 0;
@@ -479,25 +494,6 @@ namespace _500pxCracker
 
             InitTimers();
         }
-        /*private void OverrideTimer(TimerIndex timerIndex, double interval)
-        {
-            Timers[(int)timerIndex] = new Thread(interval);
-            switch (timerIndex)
-            {
-                case TimerIndex.UpdateDB:
-                    Timers[(int)timerIndex].Elapsed += TimerUpdateDB;
-                    break;
-                case TimerIndex.LikeFresh:
-                    Timers[(int)timerIndex].Elapsed += TimerLikeFresh;
-                    break;
-                case TimerIndex.LikeUpcoming:
-                    Timers[(int)timerIndex].Elapsed += TimerLikeUpcoming;
-                    break;
-                case TimerIndex.LikeLatestPhotos:
-                    Timers[(int)timerIndex].Elapsed += TimerLikeLatestPhotos;
-                    break;
-            }
-        }*/
         private void InitTimers()
         {
             for (int i = 0; i < (int)TimerIndex.Size; i++)
@@ -1171,22 +1167,33 @@ namespace _500pxCracker
             }
         }
 
-        private void freshTimerTextBox_TextChanged(object sender, EventArgs e)
+        private void usersListView_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            if (System.Text.RegularExpressions.Regex.IsMatch(freshPhotosNumberTextBox.Text, "[^0-9]"))
+            if (e.Column == sortData.lastColumn)
             {
-                MessageBox.Show("Please enter only numbers.");
-                freshPhotosNumberTextBox.Text = freshPhotosNumberTextBox.Text.Remove(freshPhotosNumberTextBox.Text.Length - 1);
+                sortData.sortAscending = !sortData.sortAscending;
             }
-        }
-
-        private void upcomingTimerTextBox_TextChanged(object sender, EventArgs e)
-        {
-            if (System.Text.RegularExpressions.Regex.IsMatch(freshPhotosNumberTextBox.Text, "[^0-9]"))
+            else
             {
-                MessageBox.Show("Please enter only numbers.");
-                freshPhotosNumberTextBox.Text = freshPhotosNumberTextBox.Text.Remove(freshPhotosNumberTextBox.Text.Length - 1);
+                sortData.sortAscending = true;
             }
+            switch (e.Column)
+            {
+                case 0:
+                    sortData.sortString = sortData.sortAscending? " order by fullname asc" : " order by fullname desc";
+                    break;
+                case 1:
+                    sortData.sortString = sortData.sortAscending ? " order by following_since asc" : " order by following_since desc";
+                    break;
+                case 2:
+                    sortData.sortString = sortData.sortAscending ? " order by follower_since asc" : " order by follower_since desc";
+                    break;
+                default:
+                    break;
+            }
+            
+            sortData.lastColumn = e.Column;
+            followersComboBox_SelectedIndexChanged(this, new EventArgs());
         }
 
         private void mainScreen_FormClosing(object sender, FormClosingEventArgs e)
@@ -1202,25 +1209,9 @@ namespace _500pxCracker
             }
         }
 
-        private void updateDBButton_Click(object sender, EventArgs e)
-        {
-            if (!isPythonRunning)
-            {
-                DialogResult dialogResult = MessageBox.Show("Are you sure you want to download DataBase? ", "", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    PythonWorker.RunWorkerAsync("UpdateDB");
-                }
-                else if (dialogResult == DialogResult.No)
-                {
-                    //do nothing
-                }
-            }
-        }
-
         private void followersComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (followersSearchPanel.Visible && dataGetter.DBExist())
+            if (followersSearchPanel.Visible && dataGetter.DBExist() && !isUpdatingDB)
             {
                 List<ListViewItem> listViewItems = new List<ListViewItem>();
                 SQLiteConnection m_dbConnection = new SQLiteConnection("Data Source = " + LocalizationData.DbDir + "scrapper.db" + "; Version = 3; UseUTF16Encoding = True;");
@@ -1229,22 +1220,22 @@ namespace _500pxCracker
                 switch ((FollowersComboBoxState)followersComboBox.SelectedIndex)
                 {
                     case FollowersComboBoxState.All:
-                        sql = "select * from Users";
+                        sql = "select * from Users"+sortData.sortString;
                         break;
                     case FollowersComboBoxState.OnlyFollowers:
-                        sql = "select * from Users WHERE follower_since!='' AND following_since=''";
+                        sql = "select * from Users WHERE follower_since!='' AND following_since=''" + sortData.sortString;
                         break;
                     case FollowersComboBoxState.OnlyFollowing:
-                        sql = "select * from Users WHERE following_since!='' AND follower_since=''";
+                        sql = "select * from Users WHERE following_since!='' AND follower_since=''" + sortData.sortString;
                         break;
                     case FollowersComboBoxState.Followers:
-                        sql = "select * from Users WHERE follower_since!=''";
+                        sql = "select * from Users WHERE follower_since!=''" + sortData.sortString;
                         break;
                     case FollowersComboBoxState.Following:
-                        sql = "select * from Users WHERE following_since!=''";
+                        sql = "select * from Users WHERE following_since!=''" + sortData.sortString;
                         break;
                     case FollowersComboBoxState.Mutuals:
-                        sql = "select * from Users WHERE follower_since!='' AND following_since!=''";
+                        sql = "select * from Users WHERE follower_since!='' AND following_since!=''" + sortData.sortString;
                         break;
                     default:
                         return;
@@ -1261,6 +1252,7 @@ namespace _500pxCracker
                 m_dbConnection.Close();
                 usersListView.Items.Clear();
                 usersListView.Items.AddRange(listViewItems.ToArray());
+                
 
                 switch ((FollowersComboBoxState)followersComboBox.SelectedIndex)
                 {
@@ -1286,6 +1278,8 @@ namespace _500pxCracker
                         break;
                 }               
             }
+            if (isUpdatingDB)
+                MessageBox.Show("Database is updating");
         }
 
         private void PythonLabel_Click(object sender, EventArgs e)
@@ -1316,6 +1310,7 @@ namespace _500pxCracker
             {
                 case "UpdateDB":
                     UpdateDB();
+                    isUpdatingDB = false;
                     break;
                 case "LikeFresh":
                     LikeFresh(arg[0], arg[1]);
@@ -1355,6 +1350,7 @@ namespace _500pxCracker
                 DialogResult dialogResult = MessageBox.Show("Are you sure you want to download DataBase? ", "", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
+                    isUpdatingDB = true;
                     PythonWorker.RunWorkerAsync("UpdateDB");
                  
                 }
@@ -1412,7 +1408,7 @@ namespace _500pxCracker
                     catch (Exception) { }
                 }
 
-              
+                isUpdatingDB = false;
 
             }
             else if (dialogResult == DialogResult.No)

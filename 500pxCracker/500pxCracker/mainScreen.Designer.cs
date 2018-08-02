@@ -551,6 +551,7 @@
             this.usersListView.TabIndex = 40;
             this.usersListView.UseCompatibleStateImageBehavior = false;
             this.usersListView.View = System.Windows.Forms.View.Details;
+            this.usersListView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.usersListView_ColumnClick);
             // 
             // Usesrname
             // 
